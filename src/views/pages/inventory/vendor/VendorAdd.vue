@@ -150,7 +150,7 @@
 
         .vs-sidebar {
             z-index: 52010;
-            width: 300px !important;
+            width: 400px !important;
             max-width: 90vw !important;
 
             .img-upload {

@@ -90,7 +90,7 @@
                             container: "#button-with-loading",
                             scale: 0.45
                         });
-                        this.$store.dispatch('auth/loginAttempt', payload);
+                        this.$store.dispatch('loginAttempt', payload);
                     } else {
                         // form have errors
                     }

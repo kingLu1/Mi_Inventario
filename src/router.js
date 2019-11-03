@@ -20,6 +20,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import {app} from './stitch/app'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -43,7 +45,10 @@ const router = new Router({
         {
           path: '/',
           name: 'dashboard',
-          component: () => import('./views/pages/dashboard/Index.vue')
+          component: () => import('./views/pages/dashboard/Index.vue'),
+          meta: {
+            requiresAuth: true
+          }
         },
 
         // Inventory
@@ -284,5 +289,21 @@ router.afterEach(() => {
     appLoading.style.display = "none";
   }
 })
+
+router.beforeEach((to, from, next) => {
+  const currentUser = app.auth.isLoggedIn;
+
+
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  // const appLoading = document.getElementById('loading-bg')
+  // if (appLoading) {
+  //     appLoading.style.display = "none";
+  // }
+  if (requiresAuth && !currentUser) next('/login');
+  else if (requiresAuth && currentUser) next();
+  else if (!requiresAuth && currentUser) next();
+  else next()
+
+});
 
 export default router
