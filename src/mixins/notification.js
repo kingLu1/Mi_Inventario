@@ -1,7 +1,15 @@
 export default {
   methods: {
-    clicked(value) {
-      alert(value);
+    notify(value) {
+      this.$vs.notify({
+        time: 2500,
+        title: value.title,
+        text: value.text,
+        position: 'top-right',
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
+        color: value.color
+      });
     }
   }
 };

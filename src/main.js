@@ -15,7 +15,7 @@ import App from './App.vue'
 import Vuesax from 'vuesax'
 import 'material-icons/iconfont/material-icons.css' //Material Icons
 import 'vuesax/dist/vuesax.css'; // Vuesax
-Vue.use(Vuesax)
+Vue.use(Vuesax);
 
 
 // Theme Configurations
@@ -45,7 +45,7 @@ import store from './store/store'
 // Vuejs - Vue wrapper for hammerjs
 import {VueHammer} from 'vue2-hammer'
 
-Vue.use(VueHammer)
+Vue.use(VueHammer);
 
 
 // PrismJS
@@ -54,7 +54,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 
 
 // Feather font icon
-require('./assets/css/iconfont.css')
+require('./assets/css/iconfont.css');
 
 //Vue-Axios
 import axios from 'axios'
@@ -69,6 +69,7 @@ Vue.use(VeeValidate);
 
 // vue-currency
 import VueCurrencyFilter from 'vue-currency-filter'
+import notification from "./mixins/notification";
 
 Vue.use(VueCurrencyFilter
   ,
@@ -79,7 +80,13 @@ Vue.use(VueCurrencyFilter
     fractionSeparator: '.',
     symbolPosition: 'front',
     symbolSpacing: true
-  })
+  });
+
+// mixins for notification
+import notify from './mixins/notification'
+Vue.mixin(notify);
+
+
 
 
 // Vue select css
@@ -93,4 +100,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

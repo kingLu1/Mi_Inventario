@@ -18,8 +18,9 @@
           <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
             <div class="flex flex-wrap-reverse items-center">
               <!-- ADD NEW -->
-              <div class="p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-between text-lg font-medium text-base text-primary border border-solid border-primary"
-                   @click="addCategory = true">
+              <div
+                class="p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-between text-lg font-medium text-base text-primary border border-solid border-primary"
+                @click="addCategory = true">
                 <feather-icon icon="PlusIcon" svgClasses="h-4 w-4"/>
                 <span class="ml-2 text-base text-primary">Add New</span>
               </div>
@@ -95,7 +96,7 @@
                 this.selected = {}
             },
             edit(tr) {
-                this.editCategory = true
+                this.editCategory = true;
                 this.selected = tr
             },
             openConfirm(tr) {
@@ -169,7 +170,7 @@
 </script>
 
 <style scoped>
-body{
-  background: black;
-}
+  body {
+    background: black;
+  }
 </style>
