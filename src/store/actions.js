@@ -7,10 +7,13 @@
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 // Auth
-import {app} from "../stitch/app";
+import {app,} from "../stitch/app";
 import {UserPasswordCredential} from "mongodb-stitch-browser-sdk";
 import router from '@/router'
 // Auth
+// User
+import {getClient, userPasswordClient} from '../stitch/app'
+// User
 
 
 const actions = {
@@ -133,8 +136,33 @@ const actions = {
         }
       );
     }
-  }
+  },
   ////////////////////// Auth //////////////////////////////////
+
+  ////////////////////// User //////////////////////////////////
+
+  createUser({dispatch}, payload) {
+    const emailPassClient = getClient().auth.getProviderClient(userPasswordClient);
+    emailPassClient.registerWithEmail(payload.model.user.email, payload.model.user.password).then(res => {
+      console.log(res);
+      dispatch('temporaryUser', payload)
+    }).catch(err => {
+      console.log("Error registering new user:", err);
+    });
+  },
+
+  temporaryUser({dispatch}, payload) {
+    console.log(payload.model.user)
+    let data;
+    data = [payload.model.user];
+    getClient().callFunction('AddTemporaryUser', data).then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  ////////////////////// User //////////////////////////////////
 
 }
 

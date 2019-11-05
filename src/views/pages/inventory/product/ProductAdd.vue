@@ -129,14 +129,7 @@
                             getClient().callFunction('createCategory', data).then(
                                 res => {
                                     this.$emit('newCategory');
-                                    this.$vs.notify({
-                                        time: 2500,
-                                        text: 'Successfully Added New Category!',
-                                        position: 'top-right',
-                                        iconPack: 'feather',
-                                        icon: 'icon-alert-circle',
-                                        color: 'success'
-                                    });
+                                    this.notify({text: 'Successfully Added New Category!', title: '', color: 'success'})
                                     this.model.category.name = '';
                                     this.isSidebarActiveLocal = false;
                                     this.$vs.loading.close('#button-with-loading > .con-vs-loading');
@@ -144,15 +137,7 @@
                                 }
                             ).catch(
                                 err => {
-                                    this.$vs.notify({
-                                        time: 2500,
-                                        title: 'Error',
-                                        text: err.message,
-                                        position: 'top-right',
-                                        iconPack: 'feather',
-                                        icon: 'icon-alert-circle',
-                                        color: 'danger'
-                                    });
+                                    this.notify({text: err.message, title: 'Error', color: 'danger'})
                                 }
                             )
                         } else {

@@ -86,6 +86,12 @@ Vue.use(VueCurrencyFilter
 import notify from './mixins/notification'
 Vue.mixin(notify);
 
+Vue.directive('lowercase', {
+  update (el) {
+    el.value = el.value.toLowerCase()
+  },
+})
+
 
 
 

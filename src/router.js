@@ -218,19 +218,19 @@ const router = new Router({
             requiresAuth: true
           }
         },
-        // {
-        //   path: '/purchase/pool',
-        //   name: 'purchase_pool',
-        //   component: () => import('./views/pages/purchase/pool/Index.vue'),
-        //   meta: {
-        //     breadcrumb: [
-        //       {title: 'Dashboard', url: '/'},
-        //       {title: 'Pool', active: true},
-        //     ],
-        //     pageTitle: 'Purchase',
-        //     requiresAuth: true
-        //   }
-        // },
+        {
+          path: '/users',
+          name: 'users',
+          component: () => import('./views/pages/user/User'),
+          meta: {
+            breadcrumb: [
+              {title: 'Dashboard', url: '/'},
+              {title: 'All', active: true},
+            ],
+            pageTitle: 'Users',
+            requiresAuth: true
+          }
+        },
 
       ],
     },

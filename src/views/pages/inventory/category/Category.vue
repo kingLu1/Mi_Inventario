@@ -116,15 +116,8 @@
                     type: 'sound',
                     scale: 1
                 });
-                getClient().callFunction('deleteCategory', data).then(() => {
-                        this.$vs.notify({
-                            time: 2500,
-                            text: 'Deleted Successful!',
-                            position: 'top-right',
-                            iconPack: 'feather',
-                            icon: 'icon-alert-circle',
-                            color: 'success'
-                        });
+                getClient().callFunction('CategoryDelete', data).then(() => {
+                        this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
                         this.getCategories()
                     }
                 ).catch(

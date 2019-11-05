@@ -2,7 +2,6 @@
 
   <vs-sidebar click-not-close position-right parent="body"
               color="primary"
-              style=""
               class="items-no-padding add-new-data-sidebar"
               spacer
               v-model="isSidebarActiveLocal">
@@ -27,7 +26,7 @@
       </div>
     </VuePerfectScrollbar>
     <div class="flex flex-wrap items-center justify-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="addCategory()">Save</vs-button>
+      <vs-button class="mr-6" @click="editCategory()">Save</vs-button>
       <vs-button type="border" color="danger" @click.stop="isSidebarActiveLocal = false">Cancel</vs-button>
     </div>
   </vs-sidebar>
@@ -36,8 +35,7 @@
 </template>
 
 <script>
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-
+    import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
     export default {
         name: "CategoryEdit",
@@ -72,7 +70,7 @@
             },
         }),
         methods: {
-            addCategory() {
+            editCategory() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         const payload = {
@@ -80,7 +78,7 @@
                             notify: this.$vs.notify,
                             loading: this.$vs.loading
                         };
-                        this.$store.dispatch('user/createCategory', payload);
+                        // this.$store.dispatch('user/createCategory', payload);
 
                     } else {
                         // form have errors

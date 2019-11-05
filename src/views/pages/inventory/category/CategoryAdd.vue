@@ -71,7 +71,6 @@
             },
             model: {
                 category: {
-                    name: '',
                     created_on: Date(),
                     created_by: ''
                 }
@@ -88,17 +87,30 @@
                         })
                         let data = [this.model.category];
                         if (result) {
-                            getClient().callFunction('createCategory', data).then(
+                            getClient().callFunction('CategoryCreate', data).then(
                                 res => {
+                                    // if (res === 1) {
+                                    console.log(res)
                                     this.$emit('newCategory');
-                                    this.notify({text: 'Successfully Added New Category!', title: '', color: 'success'});
+                                    this.notify({
+                                        text: 'Successfully Added New Category!',
+                                        title: '',
+                                        color: 'success'
+                                    });
                                     this.model.category.name = '';
                                     this.isSidebarActiveLocal = false;
+                                    // return
+                                    // } else {
+                                    //     this.notify({text: 'Category exist already', title: 'Notice', color: 'danger'});
+                                    //     this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                                    // }
+
                                     this.$vs.loading.close('#button-with-loading > .con-vs-loading');
 
                                 }
                             ).catch(
                                 err => {
+                                    console.log(err)
                                     this.notify({text: err.message, title: 'Error', color: 'danger'})
                                 }
                             )

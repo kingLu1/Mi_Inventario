@@ -131,7 +131,7 @@
         },
         created() {
             this.getParams()
-            this.resend()
+            // this.resend()
         }
     }
 </script>

@@ -114,5 +114,11 @@ export default [
       },
     ]
   },
+  {
+    url: "/users",
+    name: "Users",
+    slug: "users",
+    icon: "UsersIcon",
+  },
 
 ]
