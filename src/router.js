@@ -292,8 +292,6 @@ router.afterEach(() => {
 
 router.beforeEach((to, from, next) => {
   const currentUser = app.auth.isLoggedIn;
-
-
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   // const appLoading = document.getElementById('loading-bg')
   // if (appLoading) {

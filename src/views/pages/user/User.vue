@@ -1,5 +1,5 @@
 <template>
-  <div id="data-list-list-view" class="data-list-container ">
+  <div  id="table-loader" class="vs-con-loading__container">
     <vs-row>
       <vs-col vs-lg="2" vs-sm="4" vs-xs="12">
         <add :isSidebarActive="addUser" @closeSidebar="addUser= false" class=" sidebarX"/>
@@ -7,8 +7,8 @@
 
     </vs-row>
     <!--        class="theme-dark-->
-    <vx-card>
-      <vs-table max-items="10"  stripe hoverFlat noDataText="No User Available" pagination :data="users" search>
+    <vx-card  >
+      <vs-table max-items="10" stripe hoverFlat noDataText="No User Available" pagination :data="users" search>
         <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
           <div class="flex flex-wrap-reverse items-center">
             <!-- ADD NEW -->
@@ -54,8 +54,10 @@
 </template>
 
 <script>
-    import add from './UserAdd'
+    import add from './UserAdd';
     // import {db} from "../../../firebase/firebaseConfig";
+
+    import {getAllUsers} from '../../../stitch/api/user'
 
     export default {
         name: "User",
@@ -150,9 +152,38 @@
                 }
             }
         },
-        methods: {},
+        methods: {
+            getAllUsers() {
+                this.$vs.loading({
+                    container: '#table-loader',
+                    type: 'sound',
+                    scale: 1
+                });
+                this.axios.get(getAllUsers).then((res) => {
+                    console.log(res.data);
+                    this.user = res.data;
+                    this.$vs.loading.close('#table-loader > .con-vs-loading');
+                }).catch((err) => {
+                    this.$vs.notify({
+                        time: 2500,
+                        title: 'Error',
+                        text: err.message,
+                        position: 'top-right',
+                        iconPack: 'feather',
+                        icon: 'icon-alert-circle',
+                        color: 'danger'
+                    });
+                    console.log(err.message);
+                    this.$vs.loading.close('#table-loader  > .con-vs-loading')
+
+                });
+            }
+        },
         created() {
 
+        },
+        mounted() {
+            this.getAllUsers()
         }
     }
 </script>

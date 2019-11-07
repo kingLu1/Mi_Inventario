@@ -1,5 +1,4 @@
 <template>
-
   <vs-sidebar click-not-close position-right parent="body"
               color="primary"
               class="items-no-padding add-new-data-sidebar"
@@ -14,7 +13,6 @@
     </div>
     <vs-divider class="mb-0"></vs-divider>
     <VuePerfectScrollbar class="scroll-area--data-list-add-new pt-4 pb-6" :settings="settings">
-
       <div class="p-6">
         <vs-input label="Name"
                   name="Category Name" v-validate="'required'"
@@ -30,9 +28,8 @@
       <vs-button type="border" color="danger" @click.stop="isSidebarActiveLocal = false">Cancel</vs-button>
     </div>
   </vs-sidebar>
-
-
 </template>
+
 
 <script>
     import VuePerfectScrollbar from 'vue-perfect-scrollbar';

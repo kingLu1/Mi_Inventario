@@ -66,16 +66,16 @@ export default [
         name: "Bar",
         slug: "purchase_bar",
       },
-      {
-        url: '/purchase/barbeque',
-        name: "Barbeque",
-        slug: "purchase_barbeque",
-      },
-      {
-        url: '/purchase/kitchen',
-        name: "Kitchen",
-        slug: "purchase_kitchen",
-      },
+      // {
+      //   url: '/purchase/barbeque',
+      //   name: "Barbeque",
+      //   slug: "purchase_barbeque",
+      // },
+      // {
+      //   url: '/purchase/kitchen',
+      //   name: "Kitchen",
+      //   slug: "purchase_kitchen",
+      // },
       // {
       //   url: '/purchase/pool',
       //   name: "Pool",
@@ -99,19 +99,20 @@ export default [
         url: '/sales/bar',
         name: "Bar",
         slug: "sales_bar",
-      }, {
-        url: '/sales/barbeque',
-        name: "Barbeque",
-        slug: "sales_barbecue",
-      }, {
-        url: '/sales/kitchen',
-        name: "Kitchen",
-        slug: "sales_kitchen",
-      }, {
-        url: '/sales/pool',
-        name: "Pool",
-        slug: "sales_pool",
       },
+      // {
+      //   url: '/sales/barbeque',
+      //   name: "Barbeque",
+      //   slug: "sales_barbecue",
+      // }, {
+      //   url: '/sales/kitchen',
+      //   name: "Kitchen",
+      //   slug: "sales_kitchen",
+      // }, {
+      //   url: '/sales/pool',
+      //   name: "Pool",
+      //   slug: "sales_pool",
+      // },
     ]
   },
   {

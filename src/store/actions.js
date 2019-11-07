@@ -89,7 +89,20 @@ const actions = {
   login({commit, state}, payload) {
     const credential = new UserPasswordCredential(payload.userDetails.email, payload.userDetails.password);
     app.auth.loginWithCredential(credential)
-      .then(() => {
+      .then((res) => {
+        console.log(typeof(res.id))
+        let data = [{user_id : res.id}]
+        getClient().callFunction('UserGetData', data).then((res) => {
+          console.log(res)
+          commit('GET_USER_DATA', res)
+          }
+        ).catch(
+          (err) => {
+            // this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
+
         payload.loading.close("#button-with-loading > .con-vs-loading");
         router.push('/');
         payload.notify({

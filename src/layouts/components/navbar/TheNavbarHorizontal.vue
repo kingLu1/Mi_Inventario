@@ -136,17 +136,20 @@
         </vs-dropdown>
 
         <!-- USER META -->
-        <div class="the-navbar__user-meta flex items-center" v-if="activeUserInfo.displayName">
+<!--        v-if="activeUserInfo.displayName"-->
+        <div class="the-navbar__user-meta flex items-center" >
           <div class="text-right leading-tight hidden sm:block">
-            <p class="font-semibold">{{ user_displayName }}</p>
+<!--            <p class="font-semibold">{{ user_displayName }}</p>-->
             <small>Available</small>
           </div>
           <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
             <div class="con-img ml-3">
+<!--              :src="activeUserImg"-->
+<!--              v-if="activeUserImg"-->
               <img
-                v-if="activeUserImg"
+
                 key="onlineImg"
-                :src="activeUserImg"
+
                 alt="user-img"
                 width="40"
                 height="40"
@@ -355,12 +358,12 @@
             activeUserInfo() {
                 return this.$store.state.AppActiveUser
             },
-            user_displayName() {
-                return this.activeUserInfo.displayName
-            },
-            activeUserImg() {
-                return this.$store.state.AppActiveUser.photoURL;
-            }
+            // user_displayName() {
+            //     return this.activeUserInfo.displayName
+            // },
+            // activeUserImg() {
+            //     return this.$store.state.AppActiveUser.photoURL;
+            // }
         },
         methods: {
             selected(item) {
