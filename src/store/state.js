@@ -30,7 +30,7 @@ import colors from "@/../themeConfig.js"
 // /////////////////////////////////////////////
 
 let state = {
-    AppActiveUser           : {},
+    AppActiveUser           : { },
     bodyOverlay             : false,
     isVerticalNavMenuActive : true,
     mainLayoutType          : themeConfig.mainLayoutType || "vertical",

@@ -83,38 +83,38 @@ export default [
       // },
     ]
   },
-  {
-    url: "/report",
-    name: "Report",
-    slug: "report",
-    icon: "ArchiveIcon",
-  },
-  {
-    url: "null",
-    name: "Sales",
-    slug: "report",
-    icon: "TrendingUpIcon",
-    submenu: [
-      {
-        url: '/sales/bar',
-        name: "Bar",
-        slug: "sales_bar",
-      },
-      // {
-      //   url: '/sales/barbeque',
-      //   name: "Barbeque",
-      //   slug: "sales_barbecue",
-      // }, {
-      //   url: '/sales/kitchen',
-      //   name: "Kitchen",
-      //   slug: "sales_kitchen",
-      // }, {
-      //   url: '/sales/pool',
-      //   name: "Pool",
-      //   slug: "sales_pool",
-      // },
-    ]
-  },
+  // {
+  //   url: "/report",
+  //   name: "Report",
+  //   slug: "report",
+  //   icon: "ArchiveIcon",
+  // },
+  // {
+  //   url: "null",
+  //   name: "Sales",
+  //   slug: "report",
+  //   icon: "TrendingUpIcon",
+  //   submenu: [
+  //     {
+  //       url: '/sales/bar',
+  //       name: "Bar",
+  //       slug: "sales_bar",
+  //     },
+  //     // {
+  //     //   url: '/sales/barbeque',
+  //     //   name: "Barbeque",
+  //     //   slug: "sales_barbecue",
+  //     // }, {
+  //     //   url: '/sales/kitchen',
+  //     //   name: "Kitchen",
+  //     //   slug: "sales_kitchen",
+  //     // }, {
+  //     //   url: '/sales/pool',
+  //     //   name: "Pool",
+  //     //   slug: "sales_pool",
+  //     // },
+  //   ]
+  // },
   {
     url: "/users",
     name: "Users",

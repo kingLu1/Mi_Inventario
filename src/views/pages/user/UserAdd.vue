@@ -1,5 +1,5 @@
 <template>
-
+<!--TODO: User Role(admin) and User Position(manager)-->
   <vs-sidebar click-not-close position-right parent="body"
               color="primary" style=""
               class="items-no-padding add-new-data-sidebar" spacer v-model="isSidebarActiveLocal">

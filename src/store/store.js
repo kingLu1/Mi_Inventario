@@ -10,6 +10,10 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from "vuex-persistedstate";
+// import Cookies from 'js-cookie';
+import SecureLS from "secure-ls";
+var ls = new SecureLS({ isCompression: false });
 
 import state from "./state"
 import getters from "./getters"
@@ -23,5 +27,14 @@ export default new Vuex.Store({
   mutations,
   state,
   actions,
+  plugins: [createPersistedState(
+    {
+      state: {
+        getItem: key => ls.get(key),
+        setItem: (key, value) => ls.set(key, value),
+        removeItem: key => ls.remove(key)
+      }
+    }
+  )],
   strict: process.env.NODE_ENV !== 'production'
 })
