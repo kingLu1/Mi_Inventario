@@ -129,6 +129,7 @@ const actions = {
     // Logout the currently logged in user (if there is one)
     if (app.auth.isLoggedIn) {
       return app.auth.logoutUserWithId(app.auth.user.id).then(() => {
+          commit('CLEAR_USER_DATA');
           router.push('/login');
           payload.notify({
             time: 2500,

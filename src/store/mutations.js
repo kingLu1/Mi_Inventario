@@ -132,6 +132,13 @@ const mutations = {
     console.log(state)
 
   },
+  CLEAR_USER_DATA(state, payload) {
+    state.AppActiveUser = {
+      role:'public'
+    };
+    console.log(state)
+
+  },
 }
 
 export default mutations

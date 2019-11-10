@@ -41,6 +41,9 @@ import router from './router'
 // Vuex Store
 import store from './store/store'
 
+// ACL
+import acl from './acl/acl'
+
 
 // Vuejs - Vue wrapper for hammerjs
 import {VueHammer} from 'vue2-hammer'
@@ -97,5 +100,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  acl,
   render: h => h(App)
 }).$mount('#app');

@@ -170,20 +170,20 @@
                   <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4"/>
                   <span class="ml-2">Tasks</span>
                 </li>
-                <li
-                  class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                  @click="$router.push('/apps/chat').catch(() => {})">
+<!--                <li-->
+<!--                  class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"-->
+<!--                  @click="$router.push('/apps/chat').catch(() => {})">-->
 
-                  <feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4"/>
-                  <span class="ml-2">Chat</span>
-                </li>
-                <li
-                  class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                  @click="$router.push('/apps/eCommerce/wish-list').catch(() => {})">
+<!--                  <feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4"/>-->
+<!--                  <span class="ml-2">Chat</span>-->
+<!--                </li>-->
+<!--                <li-->
+<!--                  class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"-->
+<!--                  @click="$router.push('/apps/eCommerce/wish-list').catch(() => {})">-->
 
-                  <feather-icon icon="HeartIcon" svgClasses="w-4 h-4"/>
-                  <span class="ml-2">Wish List</span>
-                </li>
+<!--                  <feather-icon icon="HeartIcon" svgClasses="w-4 h-4"/>-->
+<!--                  <span class="ml-2">Wish List</span>-->
+<!--                </li>-->
 
                 <vs-divider class="m-1"></vs-divider>
 

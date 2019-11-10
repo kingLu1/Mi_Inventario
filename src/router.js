@@ -47,8 +47,10 @@ const router = new Router({
           name: 'dashboard',
           component: () => import('./views/pages/dashboard/Index.vue'),
           meta: {
-            requiresAuth: true
-          }
+            requiresAuth: true,
+            rule: 'admin'
+          },
+
         },
 
         // Inventory
@@ -63,7 +65,8 @@ const router = new Router({
               {title: 'Categories', active: true},
             ],
             pageTitle: 'Inventory',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'staff'
           }
         },
         {
@@ -76,7 +79,9 @@ const router = new Router({
               {title: 'Products', active: true},
             ],
             pageTitle: 'Inventory',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'staff'
+
           }
         }
         ,
@@ -90,7 +95,9 @@ const router = new Router({
               {title: 'Vendors', active: true},
             ],
             pageTitle: 'Inventory',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'staff'
+
           }
         },
 
@@ -106,7 +113,9 @@ const router = new Router({
               {title: 'Bar', active: true},
             ],
             pageTitle: 'Sales',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
+
           }
         },
         {
@@ -119,7 +128,9 @@ const router = new Router({
               {title: 'Barbeque', active: true},
             ],
             pageTitle: 'Sales',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin',
+
           }
         },
         {
@@ -132,7 +143,9 @@ const router = new Router({
               {title: 'Kitchen', active: true},
             ],
             pageTitle: 'Sales',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
+
           }
         },
         {
@@ -145,7 +158,9 @@ const router = new Router({
               {title: 'Pool', active: true},
             ],
             pageTitle: 'Sales',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
+
           }
         },
 
@@ -160,7 +175,9 @@ const router = new Router({
               {title: 'All', active: true},
             ],
             pageTitle: 'Report',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
+
           }
         },
 
@@ -175,7 +192,9 @@ const router = new Router({
               {title: 'All', active: true},
             ],
             pageTitle: 'Expense',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
+
           }
         },
 
@@ -191,7 +210,8 @@ const router = new Router({
               {title: 'Bar', active: true},
             ],
             pageTitle: 'Purchase',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
           }
         }, {
           path: '/purchase/barbeque',
@@ -203,7 +223,8 @@ const router = new Router({
               {title: 'Barbeque', active: true},
             ],
             pageTitle: 'Purchase',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
           }
         }, {
           path: '/purchase/kitchen',
@@ -215,7 +236,8 @@ const router = new Router({
               {title: 'Kitchen', active: true},
             ],
             pageTitle: 'Purchase',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'admin'
           }
         },
         {
@@ -228,7 +250,8 @@ const router = new Router({
               {title: 'All', active: true},
             ],
             pageTitle: 'Users',
-            requiresAuth: true
+            requiresAuth: true,
+            rule: 'superAdmin'
           }
         },
 
@@ -247,37 +270,58 @@ const router = new Router({
         {
           path: '/login',
           name: 'page-login',
-          component: () => import('./views/auth/Login.vue')
+          component: () => import('./views/auth/Login.vue'),
+          meta: {
+            rule: 'public'
+          }
         },
         {
           path: '/error-404',
           name: 'page-error-404',
-          component: () => import('./views/error/Error404.vue')
+          component: () => import('./views/error/Error404.vue'),
+          meta: {
+            rule: 'public'
+          }
         },
         {
           path: '/not-authorised',
           name: 'notAuthorised',
-          component: () => import('./views/error/NotAuthorized.vue')
+          component: () => import('./views/error/NotAuthorized.vue'),
+          meta: {
+            rule: 'public'
+          }
         },
         {
           path: '/forgot-password',
           name: 'forgotPassword',
-          component: () => import('./views/auth/ForgotPassword')
+          component: () => import('./views/auth/ForgotPassword'),
+          meta: {
+            rule: 'public'
+          }
         }, {
           path: '/reset-password',
           name: 'resetPassword',
-          component: () => import('./views/auth/ResetPassword')
+          component: () => import('./views/auth/ResetPassword'),
+          meta: {
+            rule: 'public'
+          }
         }, {
           path: '/confirm-email',
           name: 'confirmEmail',
-          component: () => import('./views/auth/ConfirmEmail')
+          component: () => import('./views/auth/ConfirmEmail'),
+          meta: {
+            rule: 'public'
+          }
         },
       ]
     },
     // Redirect to 404 page, if no match found
     {
       path: '*',
-      redirect: '/pages/error-404'
+      redirect: '/pages/error-404',
+      meta: {
+        rule: 'public'
+      }
     }
   ],
 })

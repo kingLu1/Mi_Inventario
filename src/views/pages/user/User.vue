@@ -38,21 +38,21 @@
 <!--            <vs-td :data="data[indextr].id">-->
 <!--              {{ data[indextr].id }}-->
 <!--            </vs-td>-->
-            <vs-td :data="data[indextr].email">
-              {{ data[indextr].email }}
+            <vs-td :data="data[indextr].first_name ">
+              {{ data[indextr].first_name + " " + data[indextr].last_name}}
             </vs-td>
 
-            <vs-td :data="data[indextr].username">
-              {{ data[indextr].username }}
+            <vs-td :data="data[indextr].post">
+              {{ data[indextr].post }}
             </vs-td>
 
-            <vs-td :data="data[indextr].website">
-              {{ data[indextr].website }}
-            </vs-td> <vs-td :data="data[indextr].website">
-              {{ data[indextr].website }}
+            <vs-td :data="data[indextr].role">
+              {{ data[indextr].role }}
+            </vs-td> <vs-td :data="data[indextr].created_by">
+              {{ data[indextr].created_by }}
             </vs-td>
-            <vs-td :data="data[indextr].website">
-              {{ data[indextr].website }}
+            <vs-td :data="data[indextr].created_at">
+              {{ data[indextr].created_at }}
             </vs-td>
             <vs-td>
               <div class="flex">
@@ -191,8 +191,7 @@
                     scale: 1
                 });
                 this.axios.get(getAllUsers).then((res) => {
-                    console.log(res.data);
-                    this.user = res.data;
+                    this.users = res.data;
                     this.$vs.loading.close('#table-loader > .con-vs-loading');
                 }).catch((err) => {
                     this.$vs.notify({
