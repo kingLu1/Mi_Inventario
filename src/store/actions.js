@@ -63,7 +63,7 @@ const actions = {
   loginAttempt({dispatch}, payload) {
     if (!payload.checkbox_remember_me) {
       localStorage.removeItem('remember_me');
-      localStorage.removeItem('lastEmail')
+      localStorage.removeItem('lastEmail');
       if (app.auth.isLoggedIn) {
         payload.notify({
           title: 'Login Attempt',
@@ -74,7 +74,6 @@ const actions = {
           color: 'warning'
         });
         router.push('/')
-
       } else {
         dispatch('login', payload)
       }
@@ -90,11 +89,9 @@ const actions = {
     const credential = new UserPasswordCredential(payload.userDetails.email, payload.userDetails.password);
     app.auth.loginWithCredential(credential)
       .then((res) => {
-        console.log(typeof(res.id))
-        let data = [{user_id : res.id}]
+        let data = [{user_id: res.id}]
         getClient().callFunction('UserGetData', data).then((res) => {
-          console.log(res)
-          commit('GET_USER_DATA', res)
+            commit('GET_USER_DATA', res)
           }
         ).catch(
           (err) => {
@@ -157,8 +154,28 @@ const actions = {
   createUser({dispatch}, payload) {
     const emailPassClient = getClient().auth.getProviderClient(userPasswordClient);
     emailPassClient.registerWithEmail(payload.model.user.email, payload.model.password).then(res => {
+      payload.loading.close("#button-with-loading > .con-vs-loading");
+      payload.notify({
+        time: 2500,
+        title: '',
+        text: 'Successfully Created.',
+        position: 'top-right',
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
+        color: 'success'
+      });
       dispatch('temporaryUser', payload)
     }).catch(err => {
+      payload.loading.close("#button-with-loading > .con-vs-loading");
+      payload.notify({
+        time: 2500,
+        title: 'Error',
+        text: err.message,
+        position: 'top-right',
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
+        color: 'danger'
+      });
       console.log("Error registering new user:", err);
     });
   },
@@ -168,7 +185,7 @@ const actions = {
     let data;
     data = [payload.model.user];
     getClient().callFunction('AddTemporaryUser', data).then(res => {
-      console.log(res)
+      // console.log(res)
     }).catch(err => {
       console.log(err)
     })

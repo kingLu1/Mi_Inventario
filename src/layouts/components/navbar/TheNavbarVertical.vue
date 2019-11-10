@@ -143,7 +143,7 @@
         <div class="the-navbar__user-meta flex items-center">
           <div class="text-right leading-tight hidden sm:block">
             <p class="font-semibold">{{ user_displayName }}</p>
-            <small>Available</small>
+            <small>{{user_role}} - {{user_post}}</small>
           </div>
           <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
             <vs-avatar color="primary" :text="user_displayName"/>
@@ -325,6 +325,12 @@
             },
             user_displayName() {
                 return this.activeUserInfo.first_name + ' ' + this.activeUserInfo.last_name
+            },
+            user_role(){
+                return this.activeUserInfo.role
+            } ,
+            user_post(){
+                return this.activeUserInfo.post
             }
         },
         methods: {

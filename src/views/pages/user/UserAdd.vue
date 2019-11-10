@@ -16,35 +16,52 @@
 
       <div class="p-6">
         <vs-input label="First Name"
-                  name="first name" v-validate="'required'"
+                  name="first name"
+                  v-validate="'required'"
                   data-vv-validate-on="blur"
                   v-model="model.user.first_name"
                   class="mt-5 w-full"/>
         <span class="text-danger text-sm"
               v-show="errors.has('first name')">{{ errors.first('first name') }}</span>
 
-        <vs-input label="Last Name" v-validate="'required'" data-vv-validate-on="blur"
-                  name="last name" v-model="model.user.last_name" class="mt-5 w-full"/>
+        <vs-input
+          label="Last Name"
+          v-validate="'required'"
+          data-vv-validate-on="blur"
+          name="last name"
+          v-model="model.user.last_name"
+          class="mt-5 w-full"/>
         <span class="text-danger text-sm"
               v-show="errors.has('last name')">{{ errors.first('last name') }}</span>
 
-        <vs-input v-model="model.user.email" v-validate="'required|email'"
-                  data-vv-validate-on="blur" label="Email" name="email" class="mt-5 w-full"/>
+        <vs-input v-model="model.user.email"
+                  v-validate="'required|email'"
+                  data-vv-validate-on="blur"
+                  label="Email"
+                  name="email"
+                  class="mt-5 w-full"/>
         <span class="text-danger text-sm" v-show="errors.has('email')">{{ errors.first('email') }}</span>
 
-        <vs-select v-model="model.role" name="role" label="Position" class="mt-5 w-full" v-validate="'required'"
-                   data-vv-validate-on="blur">
-          <vs-select-item :key="role.title" :value="role.title" :text="role.title" v-for="role in roles"/>
-        </vs-select>
-        <span class="text-danger text-sm" v-show="errors.has('role')">{{ errors.first('role') }}</span>
-        <vs-select v-model="model.role" name="role" label="User Role" class="mt-5 w-full" v-validate="'required'"
-                   data-vv-validate-on="blur">
-          <vs-select-item :key="post.title" :value="post.title" :text="post.title" v-for="post in posts"/>
+        <vs-select v-model="model.user.role"
+                   name="role"
+                   label="User Role"
+                   class="mt-5 w-full"
+                   v-validate="'required'">
+          <vs-select-item :key="index" :value="role.title" :text="role.title" v-for="(role, index) in roles"/>
         </vs-select>
         <span class="text-danger text-sm" v-show="errors.has('role')">{{ errors.first('role') }}</span>
 
+        <vs-select v-model="model.user.post"
+                   name="post"
+                   label="Position"
+                   class="mt-5 w-full"
+                   v-validate="'required'">
+          <vs-select-item :key="index" :value="post.title" :text="post.title" v-for="(post,index ) in posts"/>
+        </vs-select>
+        <span class="text-danger text-sm" v-show="errors.has('post')">{{ errors.first('post') }}</span>
 
-        <vs-input v-model="model.user.password"
+
+        <vs-input v-model="model.password"
                   type="password"
                   v-validate="'required'"
                   data-vv-validate-on="blur"
@@ -54,11 +71,14 @@
                   name="password"
                   class="mt-5 w-full"/>
         <span class="text-danger text-sm" v-show="errors.has('password')">{{ errors.first('password') }}</span>
+
         <vs-input v-model="model.confirm_password"
                   type="password"
                   label="Confirm Password"
-                  v-validate="'required'"
+                  v-validate="'required' |'confirmed:password'"
                   data-vv-validate-on="blur"
+                  icon-after="true"
+                  icon="check"
                   name="confirm password"
                   class="mt-5 w-full"/>
         <span class="text-danger text-sm"
@@ -69,7 +89,7 @@
     </VuePerfectScrollbar>
 
     <div class="flex flex-wrap items-center justify-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="addUser()">Add</vs-button>
+      <vs-button class="mr-6 vs-con-loading__container" @click="addUser()" ref="loadableButton" id="button-with-loading">Add</vs-button>
       <vs-button type="border" color="danger" @click="isSidebarActiveLocal = false">Cancel</vs-button>
     </div>
 
@@ -106,9 +126,10 @@
                     first_name: '',
                     last_name: '',
                     email: '',
-                    position: '',
+                    post: '',
+                    role: '',
                     created_by: "",
-                    created_at: ''
+                    created_at: Date()
                 },
                 password: '',
                 confirm_password: '',
@@ -116,11 +137,20 @@
             },
             posts: [],
             roles: [],
+            // button loading
+            backgroundLoading: '#7367F0',
+            colorLoading: 'white',
         }),
         methods: {
             addUser() {
                 this.$validator.validateAll().then(result => {
                     if (result) {
+                        this.$vs.loading({
+                            background: this.backgroundLoading,
+                            color: this.colorLoading,
+                            container: "#button-with-loading",
+                            scale: 0.45
+                        });
                         const payload = {
                             model: this.model,
                             notify: this.$vs.notify,
@@ -133,7 +163,7 @@
                 })
             },
             user() {
-                this.model.user.created_by = this.$store.state.AppActiveUser.name
+                this.model.user.created_by = this.$store.state.AppActiveUser.first_name + ' ' + this.$store.state.AppActiveUser.last_name
             },
             getRoles() {
                 this.axios.get(getRoles).then((res) => {
