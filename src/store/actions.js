@@ -156,8 +156,7 @@ const actions = {
 
   createUser({dispatch}, payload) {
     const emailPassClient = getClient().auth.getProviderClient(userPasswordClient);
-    emailPassClient.registerWithEmail(payload.model.user.email, payload.model.user.password).then(res => {
-      console.log(res);
+    emailPassClient.registerWithEmail(payload.model.user.email, payload.model.password).then(res => {
       dispatch('temporaryUser', payload)
     }).catch(err => {
       console.log("Error registering new user:", err);

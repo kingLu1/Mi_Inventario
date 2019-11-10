@@ -1,12 +1,14 @@
 <template>
-<!--TODO: User Role(admin) and User Position(manager)-->
+  <!--TODO: User Role(admin) and User Position(manager)-->
   <vs-sidebar click-not-close position-right parent="body"
               color="primary" style=""
               class="items-no-padding add-new-data-sidebar" spacer v-model="isSidebarActiveLocal">
     <div class="mt-6 flex items-center justify-between px-6">
-      <h4>Add New User</h4>
-      <feather-icon icon="XIcon" @click.stop="isSidebarActiveLocal = false"
-                    class="cursor-pointer"></feather-icon>
+      <h4>Add User</h4>
+      <feather-icon icon="XIcon"
+                    @click.stop="isSidebarActiveLocal = false"
+                    class="cursor-pointer"
+      ></feather-icon>
     </div>
     <vs-divider class="mb-0"></vs-divider>
 
@@ -30,11 +32,17 @@
                   data-vv-validate-on="blur" label="Email" name="email" class="mt-5 w-full"/>
         <span class="text-danger text-sm" v-show="errors.has('email')">{{ errors.first('email') }}</span>
 
-        <!--                <vs-select v-model="model.role" name="role" label="Position" class="mt-5 w-full" v-validate="'required'"-->
-        <!--                           data-vv-validate-on="blur">-->
-        <!--                    <vs-select-item :key="role.value" :value="role.value" :text="role.value" v-for="role in roles"/>-->
-        <!--                </vs-select>-->
+        <vs-select v-model="model.role" name="role" label="Position" class="mt-5 w-full" v-validate="'required'"
+                   data-vv-validate-on="blur">
+          <vs-select-item :key="role.title" :value="role.title" :text="role.title" v-for="role in roles"/>
+        </vs-select>
         <span class="text-danger text-sm" v-show="errors.has('role')">{{ errors.first('role') }}</span>
+        <vs-select v-model="model.role" name="role" label="User Role" class="mt-5 w-full" v-validate="'required'"
+                   data-vv-validate-on="blur">
+          <vs-select-item :key="post.title" :value="post.title" :text="post.title" v-for="post in posts"/>
+        </vs-select>
+        <span class="text-danger text-sm" v-show="errors.has('role')">{{ errors.first('role') }}</span>
+
 
         <vs-input v-model="model.user.password"
                   type="password"
@@ -61,7 +69,7 @@
     </VuePerfectScrollbar>
 
     <div class="flex flex-wrap items-center justify-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="addUser()">Add User</vs-button>
+      <vs-button class="mr-6" @click="addUser()">Add</vs-button>
       <vs-button type="border" color="danger" @click="isSidebarActiveLocal = false">Cancel</vs-button>
     </div>
 
@@ -71,10 +79,10 @@
 </template>
 
 <script>
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+    import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+    import vSelect from 'vue-select';
+    import {getPosts, getRoles} from '../../../stitch/api/structure'
 
-    // import 'firebase/auth'
-    // import firebase from 'firebase/app'
 
     export default {
         name: "AddUser",
@@ -85,9 +93,10 @@
             }
         },
         components: {
-            VuePerfectScrollbar
+            VuePerfectScrollbar, vSelect
         },
         data: () => ({
+            // VuePerfectScrollbar
             settings: {
                 maxScrollbarLength: 60,
                 wheelSpeed: .60,
@@ -97,13 +106,16 @@
                     first_name: '',
                     last_name: '',
                     email: '',
-                    password: '',
                     position: '',
-                    created_by: '',
+                    created_by: "",
                     created_at: ''
                 },
+                password: '',
                 confirm_password: '',
+
             },
+            posts: [],
+            roles: [],
         }),
         methods: {
             addUser() {
@@ -115,7 +127,6 @@
                             loading: this.$vs.loading
                         };
                         this.$store.dispatch('createUser', payload);
-
                     } else {
                         // form have errors
                     }
@@ -123,7 +134,21 @@
             },
             user() {
                 this.model.user.created_by = this.$store.state.AppActiveUser.name
-            }
+            },
+            getRoles() {
+                this.axios.get(getRoles).then((res) => {
+                    this.roles = res.data;
+                }).catch((err) => {
+                    this.notify({text: err.message, title: 'Error', color: 'danger'});
+                });
+            },
+            getPosts() {
+                this.axios.get(getPosts).then((res) => {
+                    this.posts = res.data;
+                }).catch((err) => {
+                    this.notify({text: err.message, title: 'Error', color: 'danger'});
+                });
+            },
         },
         computed: {
             isSidebarActiveLocal: {
@@ -140,6 +165,8 @@
         mounted() {
             this.isMounted = true;
             this.user();
+            this.getPosts();
+            this.getRoles();
         }
     }
 </script>

@@ -24,9 +24,13 @@
 
         <template slot="thead">
           <vs-th sort-key="id">Id</vs-th>
-          <vs-th sort-key="email">Email</vs-th>
-          <vs-th sort-key="name">Name</vs-th>
-          <vs-th sort-key="website">Website</vs-th>
+          <vs-th sort-key="email">Name</vs-th>
+          <vs-th sort-key="name">Position</vs-th>
+          <vs-th sort-key="website">User Role</vs-th>
+          <vs-th sort-key="website">Created By</vs-th>
+          <vs-th sort-key="website">Created On</vs-th>
+          <vs-th sort-key="website">Actions</vs-th>
+
         </template>
 
         <template slot-scope="{data}">

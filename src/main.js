@@ -69,7 +69,6 @@ Vue.use(VeeValidate);
 
 // vue-currency
 import VueCurrencyFilter from 'vue-currency-filter'
-import notification from "./mixins/notification";
 
 Vue.use(VueCurrencyFilter
   ,
@@ -84,8 +83,8 @@ Vue.use(VueCurrencyFilter
 
 // mixins for notification
 import notify from './mixins/notification'
-Vue.mixin(notify);
 
+Vue.mixin(notify);
 
 
 // Vue select css
