@@ -22,9 +22,14 @@
 export default [
   {
     url: "/",
-    name: "Dashboard",
+    name: "Home",
     slug: "home",
     icon: "HomeIcon",
+  }, {
+    url: "/dashboard",
+    name: "Dashboard",
+    slug: "home",
+    icon: "ImageIcon",
   },
   {
     url: "/expense",

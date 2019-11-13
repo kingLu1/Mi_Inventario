@@ -10,11 +10,11 @@
 import {app,} from "../stitch/app";
 import {UserPasswordCredential} from "mongodb-stitch-browser-sdk";
 import router from '@/router'
+// import acl from '../acl/acl'
 // Auth
 // User
 import {getClient, userPasswordClient} from '../stitch/app'
 // User
-
 
 const actions = {
 
@@ -86,6 +86,7 @@ const actions = {
   },
 
   login({commit, state}, payload) {
+
     const credential = new UserPasswordCredential(payload.userDetails.email, payload.userDetails.password);
     app.auth.loginWithCredential(credential)
       .then((res) => {
@@ -98,10 +99,9 @@ const actions = {
             // this.$vs.loading.close('#table-loader > .con-vs-loading');
             console.log(err)
           }
-        )
+        );
 
         payload.loading.close("#button-with-loading > .con-vs-loading");
-        router.push('/');
         payload.notify({
           time: 2500,
           title: 'Welcome Back',
@@ -111,6 +111,15 @@ const actions = {
           icon: 'icon-alert-circle',
           color: 'success'
         });
+        // console.log(this.access)
+        // if (this.access === "SuperAdmin") {
+          router.push({path: '/'});
+        // } else if (this.access === "Admin") {
+        //   router.push({path: '/sales/bar'})
+        // } else {
+        //   router.push({path: '/inventory/product'})
+        // }
+
 
       }).catch((err) => {
       payload.loading.close("#button-with-loading > .con-vs-loading");

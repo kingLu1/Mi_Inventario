@@ -44,11 +44,20 @@ const router = new Router({
         // =============================================================================
         {
           path: '/',
+          name: 'home',
+          component: () => import('./views/Home.vue'),
+          meta: {
+            requiresAuth: true,
+            rule: 'public'
+          },
+
+        },{
+          path: '/dashboard',
           name: 'dashboard',
           component: () => import('./views/pages/dashboard/Index.vue'),
           meta: {
             requiresAuth: true,
-            rule: 'admin'
+            rule: 'superAdmin'
           },
 
         },
@@ -80,7 +89,7 @@ const router = new Router({
             ],
             pageTitle: 'Inventory',
             requiresAuth: true,
-            rule: 'staff'
+            rule: 'public'
 
           }
         }

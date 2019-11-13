@@ -10,7 +10,7 @@
 // added so later we can keep breakpoint in sync automatically using this config file
 // import tailwindConfig from "../../tailwind.config.js"
 
-const getters = {
+let getters = {
 
 	// COMPONENT
 		// vx-autosuggest
@@ -23,7 +23,11 @@ const getters = {
     else if (state.windowWidth >= 768) return "md"
     else if (state.windowWidth >= 576) return "sm"
     else return "xs"
+  },
+  user: state => {
+    return state.AppActiveUser
   }
+
 }
 
 export default getters

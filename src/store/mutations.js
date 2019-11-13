@@ -129,14 +129,11 @@ const mutations = {
   /////////////////userData///////////////////
   GET_USER_DATA(state, payload) {
     state.AppActiveUser = payload;
-    console.log(state)
-
+    // console.log(state)
   },
-  CLEAR_USER_DATA(state, payload) {
-    state.AppActiveUser = {
-      role:'public'
-    };
-    console.log(state)
+  CLEAR_USER_DATA(state) {
+    state.AppActiveUser = {};
+    // console.log(state)
 
   },
 }
