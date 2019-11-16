@@ -10,11 +10,10 @@
 import {app,} from "../stitch/app";
 import {UserPasswordCredential} from "mongodb-stitch-browser-sdk";
 import router from '@/router'
-// import acl from '../acl/acl'
-// Auth
 // User
 import {getClient, userPasswordClient} from '../stitch/app'
 // User
+import eventBus from "../eventBus";
 
 const actions = {
 
@@ -113,7 +112,7 @@ const actions = {
         });
         // console.log(this.access)
         // if (this.access === "SuperAdmin") {
-          router.push({path: '/'});
+        router.push({path: '/'});
         // } else if (this.access === "Admin") {
         //   router.push({path: '/sales/bar'})
         // } else {

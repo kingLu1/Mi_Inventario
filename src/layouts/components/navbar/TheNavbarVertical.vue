@@ -165,7 +165,7 @@
                 </li>
                 <li
                   class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                  @click="$router.push('/apps/todo').catch(() => {})">
+                  @click="$router.push('/inventory/product').catch(() => {})">
 
                   <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4"/>
                   <span class="ml-2">Tasks</span>

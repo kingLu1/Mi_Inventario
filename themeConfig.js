@@ -32,7 +32,7 @@ const themeConfig = {
   navbarType        : "static",  // options[String]  : floating(default) / static / sticky / hidden
   routerTransition  : "fade-bottom", // options[String]  : zoom-fade / slide-fade / fade-bottom / fade / zoom-out / none(default)
   sidebarCollapsed  : false,       // options[Boolean] : true, false(default)
-  theme             : "dark",     // options[String]  : "light"(default), "dark", "semi-dark"
+  theme             : "light",     // options[String]  : "light"(default), "dark", "semi-dark"
 
   // Not required yet - WIP
   userInfoLocalStorageKey: "userInfo",

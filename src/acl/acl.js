@@ -10,7 +10,6 @@ let initialRole = "public";
 let userInfo = store.getters.user;
 if (userInfo && userInfo.role) initialRole = userInfo.role;
 
-console.log(initialRole);
 
 export default new AclCreate({
   initial: initialRole,
@@ -22,5 +21,6 @@ export default new AclCreate({
     admin: new AclRule("Admin").or('SuperAdmin').generate(),
     staff: new AclRule("Staff").or("Admin").or("SuperAdmin").generate(),
     public: new AclRule("public").or("Admin").or("SuperAdmin").or("Staff").generate(),
-  }
+  },
+
 })
