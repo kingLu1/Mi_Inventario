@@ -51,7 +51,7 @@ const router = new Router({
             rule: 'public'
           },
 
-        },{
+        }, {
           path: '/dashboard',
           name: 'dashboard',
           component: () => import('./views/pages/dashboard/Index.vue'),
@@ -264,6 +264,7 @@ const router = new Router({
           }
         },
 
+
       ],
     },
     // =============================================================================
@@ -319,6 +320,24 @@ const router = new Router({
           name: 'confirmEmail',
           component: () => import('./views/auth/ConfirmEmail'),
           meta: {
+            rule: 'public'
+          }
+        },
+      ]
+    },
+    {
+      path: '',
+      component: () => import('@/layouts/custom/NoNavBar'),
+      children: [
+        // =============================================================================
+        // PAGES
+        // =============================================================================
+        {
+          path: '/user/profile',
+          name: 'profile',
+          component: () => import('./views/pages/user/Profile'),
+          meta: {
+            requiresAuth: true,
             rule: 'public'
           }
         },

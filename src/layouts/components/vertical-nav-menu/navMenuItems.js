@@ -44,15 +44,16 @@ export default [
     icon: "FolderIcon",
     submenu: [
       {
-        url: '/inventory/product',
-        name: "Product",
-        slug: "product",
-      },
-      {
         url: '/inventory/category',
         name: "Category",
         slug: "category"
       },
+      {
+        url: '/inventory/product',
+        name: "Product",
+        slug: "product",
+      },
+
       {
         url: '/inventory/vendor',
         name: "Vendor",

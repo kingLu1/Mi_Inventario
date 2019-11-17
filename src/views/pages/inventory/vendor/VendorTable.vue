@@ -15,7 +15,7 @@
             <vx-card>
 
 
-                <vs-table max-items="10" pagination stripe hoverFlat noDataText="No Category Available"
+                <vs-table max-items="10" pagination stripe hoverFlat noDataText="No Vendor Available"
                           :data="categories" search>
                     <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
                         <div class="flex flex-wrap-reverse items-center">

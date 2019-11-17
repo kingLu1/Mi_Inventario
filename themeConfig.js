@@ -22,7 +22,7 @@ Vue.use(Vuesax, { theme:{ colors } })
 
 
 // CONFIGS
-const themeConfig = {
+let themeConfig = {
   disableCustomizer : false,       // options[Boolean] : true, false(default)
   disableThemeTour  : true,        // options[Boolean] : true, false(default)
   footerType        : "hidden",    // options[String]  : static(default) / sticky / hidden
