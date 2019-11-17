@@ -22,10 +22,6 @@
         watch: {
             '$store.state.theme'(val) {
                 this.toggleClassInBody(val)
-            },
-            '$store.state.AppActiveUser'() {
-                eventBus.$emit('getCurrentAccess')
-
             }
         },
         methods: {

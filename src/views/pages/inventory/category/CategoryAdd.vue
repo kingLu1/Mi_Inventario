@@ -48,6 +48,8 @@
 <script>
     import VuePerfectScrollbar from 'vue-perfect-scrollbar';
     import {getClient} from '../../../../stitch/app';
+    import {mapState} from 'vuex'
+
 
     export default {
         name: "CategoryAdd",
@@ -89,8 +91,6 @@
                         if (result) {
                             getClient().callFunction('CategoryCreate', data).then(
                                 res => {
-                                    // if (res === 1) {
-                                    console.log(res)
                                     this.$emit('newCategory');
                                     this.notify({
                                         text: 'Successfully Added New Category!',
@@ -99,11 +99,6 @@
                                     });
                                     this.model.category.name = '';
                                     this.isSidebarActiveLocal = false;
-                                    // return
-                                    // } else {
-                                    //     this.notify({text: 'Category exist already', title: 'Notice', color: 'danger'});
-                                    //     this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-                                    // }
 
                                     this.$vs.loading.close('#button-with-loading > .con-vs-loading');
 
@@ -111,6 +106,7 @@
                             ).catch(
                                 err => {
                                     console.log(err)
+                                    this.$vs.loading.close('#button-with-loading > .con-vs-loading');
                                     this.notify({text: err.message, title: 'Error', color: 'danger'})
                                 }
                             )
@@ -132,11 +128,11 @@
                         this.$emit('closeSidebar');
                     }
                 }
-            }
-            ,
+            },
+            ...mapState(['AppActiveUser'])
         },
         mounted() {
-            // this.model.category.created_by = this.$store.state.auth.activeUser
+            this.model.category.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
 
         }
     }

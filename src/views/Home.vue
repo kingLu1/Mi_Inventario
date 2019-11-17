@@ -1,4 +1,4 @@
-<template>
+<template class="vs-con-loading__container" id="div-with-loading">
   <!--  TODO: Add Content and finalize design-->
   <div>
     <div class="vx-row mb-base">
@@ -7,34 +7,57 @@
         <h6 class="font-semibold"> {{salute}}</h6>
       </div>
     </div>
-    <div class="vx-row vs-con-loading__container" id="div-with-loading">
+    <div class="vx-row" v-if="this.$acl.check('superAdmin')">
+      <div class="vx-col w-full mb-3">
+        <vs-chip class="font-semibold cursor-pointer" @click="$router.push('/dashboard')">Information</vs-chip>
+      </div>
+
+      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+        <bar/>
+      </div>
+      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+        <barbeque/>
+      </div>
+      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+        <kitchen/>
+      </div>
+      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+        <pool/>
+      </div>
+      <div class="vx-col w-full mb-3 flex justify-center">
+              <vs-chip class="font-semibold cursor-pointer text-primary" @click="$router.push('/dashboard')"> View all Information</vs-chip>
+
+      </div>
+    </div>
+    <div class="vx-row">
       <div class="vx-col w-full mb-3">
         <vs-chip class="font-bold">Actions</vs-chip>
       </div>
-      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-base">
-        <!--                 title-color="#fff"-->
-        <!--                 content-color="#fff"-->
-        <vx-card title="Record Daily Sales" noShadow cardBorder>
+      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-base" v-if="this.$acl.check('admin')">
+        <vx-card title="Daily Sales" noShadow cardBorder>
           <template slot="actions">
             <vs-button radius color="primary" class="mr-2" type="filled"
                        icon-pack="feather" icon="icon-trending-up">
             </vs-button>
           </template>
           <p>
-            Add Sales for <span class="font-black " @click="">Bar</span>, <span class="font-black">kitchen</span>
+            Record Sales for
+            <span class="font-black cursor-pointer " @click="$router.push('sales/bar')">Bar</span>
+            <!--            <span class="font-black" @click="$router.push('purchase/kitchen')">kitchen</span>-->
           </p>
         </vx-card>
       </div>
-      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-base">
-        <vx-card title="Purchases" noShadow cardBorder>
+      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-base" v-if="this.$acl.check('admin')">
+        <vx-card title="Purchasing" noShadow cardBorder>
           <template slot="actions">
             <vs-button radius color="danger" class="mr-2" type="filled"
                        icon-pack="feather" icon="icon-truck">
             </vs-button>
           </template>
           <p>
-            Add Sales for <span class="font-black" @click="">Bar</span>, <span
-            class="font-bold underline">kitchen</span>
+            Keep Records of stock added to
+            <span class="font-black cursor-pointer" @click="$router.push('purchase/bar')">Bar</span>
+            <!--            <span class="font-bold underline">kitchen</span>-->
           </p>
         </vx-card>
       </div>
@@ -46,12 +69,16 @@
             </vs-button>
           </template>
           <p>
-            Add Sales for <span class="font-bold underline" @click="">Bar</span>, <span class="font-bold underline">kitchen</span>
+            Add New
+            <span class="font-bold cursor-pointer" @click="$router.push('inventory/product')"> Product</span>,
+            <span class="font-bold cursor-pointer"
+                  @click="$router.push({path:'/inventory/category'})">Category</span>,
+            <span class="font-bold cursor-pointer" @click="$router.push('inventory/vendor')">Vendor</span>
           </p>
         </vx-card>
       </div
       >
-      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-base">
+      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-base" v-if="this.$acl.check('superAdmin')">
         <vx-card title="Users" noShadow cardBorder>
           <template slot="actions">
             <vs-button radius color="success" class="mr-2" type="filled"
@@ -59,40 +86,28 @@
             </vs-button>
           </template>
           <p>
-            Add Sales for <span class="font-bold underline" @click="">Bar</span>, <span class="font-bold underline">kitchen</span>
-          </p>
-        </vx-card>
-      </div>
-      <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mb-base">
-        <vx-card title="Reports" noShadow cardBorder>
-          <template slot="actions">
-            <vs-button radius color="primary" class="mr-2" type="filled"
-                       icon-pack="feather" icon="icon-archive">
-            </vs-button>
-          </template>
-          <p>
-            Add Sales for <span class="font-bold underline" @click="$router.push('/users')">Bar</span>, <span class="font-bold underline">kitchen</span>
+            <span class="font-bold cursor-pointer" @click="$router.push('/users')">Add New Users</span>,
+            <span class="font-bold cursor-pointer" @click="$router.push('/users')">View All Users</span>
           </p>
         </vx-card>
       </div>
     </div>
-    <div class="vx-row">
-      <div class="vx-col w-full mb-3">
-        <vs-chip class="font-semibold">Information</vs-chip>
 
-      </div>
-    </div>
   </div>
 
 </template>
 <script>
     import {mapGetters, mapState} from 'vuex'
-    import stats from './pages/dashboard/Stats'
     import eventBus from "../eventBus";
+
+    import kitchen from './pages/dashboard/7days/KitchenStat';
+    import bar from './pages/dashboard/7days/BarStat';
+    import pool from './pages/dashboard/7days/PoolStat';
+    import barbeque from './pages/dashboard/7days/BarbequeStat';
 
     export default {
         components: {
-            stats
+            kitchen, bar, pool, barbeque
         },
         data: () => ({
             timeOfDay: new Date().getHours(),
@@ -106,6 +121,9 @@
             ]),
             ...mapState(['AppActiveUser']),
         },
+
+        watch: {}
+        ,
         methods: {
             greeting() {
                 if (this.timeOfDay <= 12) {
@@ -118,14 +136,22 @@
                     this.salute = "How was day? I hope it was as amazing as you !!!";
                     this.greet = "Good Evening";
                 }
+            },
+            listener() {
+                eventBus.$once('changeAccess', (payload) => {
+                    this.$acl.change(payload)
+                })
             }
         },
         beforeCreate() {
         },
         created() {
             this.greeting()
+            this.listener()
+            // console.log(this.$route)
         },
         mounted() {
+
         }
     }
 </script>

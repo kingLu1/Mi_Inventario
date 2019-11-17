@@ -1,6 +1,5 @@
 <template>
   <div id="table-loader" class="vs-con-loading__container">
-    <!--        <network/>-->
     <div id="data-list-list-view " class="data-list-container ">
       <vs-row>
         <vs-col vs-lg="4" vs-sm="6" vs-xs="12">
@@ -11,7 +10,6 @@
         </vs-col>
 
       </vs-row>
-      <!--        class="theme-dark-->
       <vx-card>
         <vs-table max-items="10" pagination stripe hoverFlat noDataText="No Category Available"
                   :data="categories" search>
@@ -30,6 +28,7 @@
           <template slot="thead">
             <vs-th>#</vs-th>
             <vs-th sort-key="name">Name</vs-th>
+            <vs-th sort-key="name">Description</vs-th>
             <vs-th sort-key="created_by">Created By</vs-th>
             <vs-th sort-key="created_on">Created On</vs-th>
             <vs-th>Action</vs-th>
@@ -41,6 +40,9 @@
               </vs-td>
               <vs-td :data="data[indextr].name">
                 {{ data[indextr].name }}
+              </vs-td>
+              <vs-td :data="data[indextr].desc">
+                {{ data[indextr].desc }}
               </vs-td>
               <vs-td :data="data[indextr].created_by">
                 {{ data[indextr].created_by }}
@@ -67,7 +69,6 @@
           </template>
         </vs-table>
       </vx-card>
-
     </div>
   </div>
 </template>
@@ -134,7 +135,6 @@
                     scale: 1
                 });
                 this.axios.get(category).then((res) => {
-                    console.log(res.data);
                     this.categories = res.data;
                     this.$vs.loading.close('#table-loader > .con-vs-loading');
                 }).catch((err) => {
@@ -158,6 +158,7 @@
         },
         mounted() {
             this.getCategories()
+
         }
     }
 </script>

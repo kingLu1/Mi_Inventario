@@ -41,8 +41,7 @@ import router from './router'
 // Vuex Store
 import store from './store/store'
 
-// ACL
-import acl from './acl/acl'
+
 
 
 // Vuejs - Vue wrapper for hammerjs
@@ -95,6 +94,9 @@ Vue.mixin(notify);
 
 
 Vue.config.productionTip = false
+
+// ACL
+import acl from './acl/acl'
 
 new Vue({
   router,

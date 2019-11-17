@@ -85,13 +85,13 @@ const actions = {
   },
 
   login({commit, state}, payload) {
-
     const credential = new UserPasswordCredential(payload.userDetails.email, payload.userDetails.password);
     app.auth.loginWithCredential(credential)
       .then((res) => {
         let data = [{user_id: res.id}]
         getClient().callFunction('UserGetData', data).then((res) => {
             commit('GET_USER_DATA', res)
+            eventBus.$emit('changeAccess', res.role)
           }
         ).catch(
           (err) => {

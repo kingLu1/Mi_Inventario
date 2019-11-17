@@ -54,7 +54,7 @@
                 wheelSpeed: .60,
             },
             model: {
-                user: {
+                category: {
                     first_name: '',
                     last_name: '',
                     email: '',
@@ -75,15 +75,10 @@
                             notify: this.$vs.notify,
                             loading: this.$vs.loading
                         };
-                        // this.$store.dispatch('user/createCategory', payload);
-
                     } else {
                         // form have errors
                     }
                 })
-            },
-            user() {
-                // this.model.user.created_by = this.$store.state.AppActiveCategory.name
             }
         },
         computed: {
@@ -100,8 +95,6 @@
         },
         mounted() {
             this.isMounted = true;
-            this.user();
-            console.log(this.selected)
         }
     }
 </script>
