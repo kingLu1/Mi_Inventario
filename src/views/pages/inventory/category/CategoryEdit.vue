@@ -17,14 +17,21 @@
         <vs-input label="Name"
                   name="Category Name" v-validate="'required'"
                   data-vv-validate-on="blur"
-                  v-model="selected.name"
+                  v-model="editValue.name"
                   class="mt-5 w-full"/>
         <span class="text-danger text-sm"
-              v-show="errors.has('first name')">{{ errors.first('first name') }}</span>
+              v-show="errors.has('first name')">{{ errors.first('first name') }}
+        </span>
+        <div class="mt-2">
+          <p style="font-size: .85rem;">Description</p>
+          <vs-textarea height="200" v-model="editValue.desc"/>
+        </div>
       </div>
     </VuePerfectScrollbar>
     <div class="flex flex-wrap items-center justify-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="editCategory()">Save</vs-button>
+      <vs-button @click="editCategory()" ref="loadableButton" id="button-with-loading"
+                 class="mr-6 vs-con-loading__container">Save
+      </vs-button>
       <vs-button type="border" color="danger" @click.stop="isSidebarActiveLocal = false">Cancel</vs-button>
     </div>
   </vs-sidebar>
@@ -33,6 +40,8 @@
 
 <script>
     import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+    import {getClient} from '../../../../stitch/app';
+    import {mapState} from 'vuex'
 
     export default {
         name: "CategoryEdit",
@@ -54,27 +63,41 @@
                 wheelSpeed: .60,
             },
             model: {
-                category: {
-                    first_name: '',
-                    last_name: '',
-                    email: '',
-                    password: '',
-                    position: '',
-                    created_by: '',
-                    created_at: ''
-                },
-                confirm_password: '',
+                category: {}
             },
         }),
         methods: {
             editCategory() {
                 this.$validator.validateAll().then(result => {
+                    this.$vs.loading({
+                        background: this.backgroundLoading,
+                        color: this.colorLoading,
+                        container: '#button-with-loading',
+                        scale: 0.45
+                    })
+                    let data = [this.selected];
                     if (result) {
-                        const payload = {
-                            model: this.model,
-                            notify: this.$vs.notify,
-                            loading: this.$vs.loading
-                        };
+                        getClient().callFunction('CategoryEdit', data).then(
+                            res => {
+                                console.log(res)
+                                this.$emit('newCategory');
+                                this.notify({
+                                    text: 'Successfully Edited Category!',
+                                    title: '',
+                                    color: 'success'
+                                });
+                                this.isSidebarActiveLocal = false;
+
+                                this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+
+                            }
+                        ).catch(
+                            err => {
+                                console.log(err)
+                                this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                                this.notify({text: err.message, title: 'Error', color: 'danger'})
+                            }
+                        )
                     } else {
                         // form have errors
                     }
@@ -92,10 +115,19 @@
                     }
                 }
             },
+            ...mapState(['AppActiveUser']),
+            editValue(){
+                return this.selected
+            }
+
         },
         mounted() {
             this.isMounted = true;
+        },
+        created() {
+
         }
+
     }
 </script>
 

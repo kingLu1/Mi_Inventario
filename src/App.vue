@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import eventBus from "./eventBus";
+
     import themeConfig from '@/../themeConfig.js'
 
     export default {

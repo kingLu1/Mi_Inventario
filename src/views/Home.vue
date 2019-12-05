@@ -9,7 +9,10 @@
     </div>
     <div class="vx-row" v-if="this.$acl.check('superAdmin')">
       <div class="vx-col w-full mb-3">
-        <vs-chip class="font-semibold cursor-pointer" @click="$router.push('/dashboard')">Information</vs-chip>
+        <p @click="$router.push('dashboard')">
+          <vs-chip class="font-semibold cursor-pointer">Information</vs-chip>
+        </p>
+
       </div>
 
       <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
@@ -25,8 +28,12 @@
         <pool/>
       </div>
       <div class="vx-col w-full mb-3 flex justify-center">
-              <vs-chip class="font-semibold cursor-pointer text-primary" @click="$router.push('/dashboard')"> View all Information</vs-chip>
+        <p @click="$router.push('dashboard')">
 
+          <vs-chip class="font-semibold cursor-pointer text-primary"> View all
+            Information
+          </vs-chip>
+        </p>
       </div>
     </div>
     <div class="vx-row">
@@ -97,7 +104,7 @@
 
 </template>
 <script>
-    import {mapGetters, mapState} from 'vuex'
+    import  {mapGetters, mapState} from 'vuex'
     import eventBus from "../eventBus";
 
     import kitchen from './pages/dashboard/7days/KitchenStat';

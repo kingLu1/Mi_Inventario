@@ -323,15 +323,6 @@ const router = new Router({
             rule: 'public'
           }
         },
-      ]
-    },
-    {
-      path: '',
-      component: () => import('@/layouts/custom/NoNavBar'),
-      children: [
-        // =============================================================================
-        // PAGES
-        // =============================================================================
         {
           path: '/user/profile',
           name: 'profile',
@@ -341,6 +332,16 @@ const router = new Router({
             rule: 'public'
           }
         },
+      ]
+    },
+    {
+      path: '',
+      component: () => import('@/layouts/custom/NoNavBar'),
+      children: [
+        // =============================================================================
+        // PAGES
+        // =============================================================================
+
       ]
     },
     // Redirect to 404 page, if no match found

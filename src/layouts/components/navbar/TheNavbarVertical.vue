@@ -151,7 +151,7 @@
               <ul style="min-width: 9rem">
                 <li
                   class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                  @click="$router.push('/user/profile').catch(() => {})">
+                  @click="goToProfile">
 
                   <feather-icon icon="UserIcon" svgClasses="w-4 h-4"/>
                   <span class="ml-2">Profile</span>
@@ -405,6 +405,9 @@
                 if (sec) date.setSeconds(date.getSeconds() - sec)
 
                 return date
+            },
+            goToProfile(){
+                this.$router.push('/user/profile')
             }
         },
         directives: {

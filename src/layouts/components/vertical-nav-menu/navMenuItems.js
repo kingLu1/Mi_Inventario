@@ -46,7 +46,7 @@ export default [
       {
         url: '/inventory/category',
         name: "Category",
-        slug: "category"
+        slug: "category",
       },
       {
         url: '/inventory/product',
