@@ -1,6 +1,10 @@
 <template>
   <component :is="activeComponent"
-             @view="viewDetail"/>
+
+             @view="viewDetail"
+             @backToTable="viewTable"
+             :activeVendor = activeVendor
+  />
 </template>
 
 <script>
@@ -10,18 +14,21 @@
     export default {
         name: "Vendor",
         data: () => ({
-            activeComponent: Table
+            activeComponent: Table,
+            activeVendor: {}
         }),
         components: {
             Table,
             Details
         },
         methods: {
-            viewDetail(){
+            viewDetail(tr) {
+                this.activeVendor = tr;
                 this.activeComponent = Details
+            },
+            viewTable() {
+                this.activeComponent = Table
             }
-        },
-        mounted() {
         }
     }
 </script>

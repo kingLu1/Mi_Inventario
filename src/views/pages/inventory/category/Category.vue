@@ -76,7 +76,7 @@
 <script>
     import Add from './CategoryAdd'
     import Edit from './CategoryEdit'
-    import {category} from '../../../../stitch/api/category'
+    import {getCategory} from '../../../../stitch/api/inventory'
     import {getClient} from '../../../../stitch/app'
 
     export default {
@@ -134,7 +134,7 @@
                     type: 'sound',
                     scale: 1
                 });
-                this.axios.get(category).then((res) => {
+                this.axios.get(getCategory).then((res) => {
                     this.categories = res.data;
                     this.$vs.loading.close('#table-loader > .con-vs-loading');
                 }).catch((err) => {

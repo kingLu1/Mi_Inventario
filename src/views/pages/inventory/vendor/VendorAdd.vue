@@ -18,13 +18,29 @@
 
       <div class="p-6">
         <vs-input label="Name"
-                  name="Category Name" v-validate="'required'"
-                  placeholder="Category"
+                  name="Vendor Name" v-validate="'required'"
+                  placeholder="Vendor Name"
                   data-vv-validate-on="blur"
                   v-model="model.vendor.name"
                   class="mt-5 w-full"/>
         <span class="text-danger text-sm"
-              v-show="errors.has('Category Name')">{{ errors.first('Category Name') }}</span>
+              v-show="errors.has('Vendor Name')">{{ errors.first('Vendor Name') }}</span>
+        <vs-input label="Contact Name"
+                  name="Contact Name" v-validate="'required'"
+                  placeholder="Contact Name"
+                  data-vv-validate-on="blur"
+                  v-model="model.vendor.contact"
+                  class="mt-5 w-full"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Contact Name')">{{ errors.first('Contact Name') }}</span>
+        <vs-input label="Phone"
+                  name="Contact Phone" v-validate="'required'"
+                  placeholder="Contact Phone"
+                  data-vv-validate-on="blur"
+                  v-model="model.vendor.phone"
+                  class="mt-5 w-full"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Contact Phone')">{{ errors.first('Contact Phone') }}</span>
       </div>
     </VuePerfectScrollbar>
     <div class="flex flex-wrap items-center justify-center p-6" slot="footer">
@@ -42,6 +58,7 @@
 <script>
     import VuePerfectScrollbar from 'vue-perfect-scrollbar'
     import {getClient} from '../../../../stitch/app'
+    import {mapState} from 'vuex'
 
     export default {
         name: "AddVendor",
@@ -65,7 +82,6 @@
             },
             model: {
                 vendor: {
-                    name: '',
                     created_on: Date(),
                     created_by: ''
                 }
@@ -80,11 +96,11 @@
                             container: '#button-with-loading',
                             scale: 0.45
                         })
-                        let data = [this.model.category];
+                        let data = [this.model.vendor];
                         if (result) {
-                            getClient().callFunction('createCategory', data).then(
+                            getClient().callFunction('VendorCreate', data).then(
                                 res => {
-                                    this.$emit('newCategory');
+                                    this.$emit('newVendor');
                                     this.notify({
                                         text: 'Successfully Added New Vendor!',
                                         title: '',
@@ -97,6 +113,8 @@
                                 }
                             ).catch(
                                 err => {
+                                    this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+
                                     this.notify({text: err.message, title: 'Error', color: 'danger'})
                                 }
                             )
@@ -117,15 +135,19 @@
                     if (!val) {
                         this.$emit('closeSidebar');
                     }
-                }
-            }
-            ,
+                },
+
+
+            },
+            ...mapState(['AppActiveUser'])
+
         },
         mounted() {
-            // this.model.category.created_by = this.$store.state.auth.activeUser
+            this.model.vendor.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
 
         }
     }
+
 </script>
 
 <style lang="scss">

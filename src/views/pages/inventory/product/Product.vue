@@ -147,7 +147,7 @@
 </template>
 
 <script>
-    import {getProducts} from '../../../../stitch/api/products';
+    import {getProducts} from '../../../../stitch/api/inventory';
     import VuePerfectScrollbar from 'vue-perfect-scrollbar';
     import add from './ProductAdd'
 
