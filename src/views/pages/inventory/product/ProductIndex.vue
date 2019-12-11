@@ -1,5 +1,8 @@
 <template>
   <component :is="activeComponent"
+             :activeProduct="activeProduct"
+             @backToTable="backToTable"
+             @viewProductDetails="viewProductDetails"
              @openAddMultiplePage='openAddMultiplePage'/>
 </template>
 
@@ -15,12 +18,20 @@
             Table, Detail, Edit, AddMultiple
         },
         data: () => ({
-            activeComponent: 'Table'
+            activeComponent: 'Table',
+            activeProduct: null
         }),
         methods: {
             openAddMultiplePage() {
-                console.log('openAddMultiplePage');
                 this.activeComponent = 'AddMultiple';
+            },
+            viewProductDetails(p){
+                this.activeProduct = p;
+                this.activeComponent = "Detail"
+            },
+            backToTable() {
+                this.activeComponent = "Table"
+
             }
         }
     }

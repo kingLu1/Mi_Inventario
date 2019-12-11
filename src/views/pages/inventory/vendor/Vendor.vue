@@ -1,9 +1,8 @@
 <template>
   <component :is="activeComponent"
-
              @view="viewDetail"
              @backToTable="viewTable"
-             :activeVendor = activeVendor
+             :activeVendor=activeVendor
   />
 </template>
 
@@ -24,10 +23,10 @@
         methods: {
             viewDetail(tr) {
                 this.activeVendor = tr;
-                this.activeComponent = Details
+                this.activeComponent = "Details"
             },
             viewTable() {
-                this.activeComponent = Table
+                this.activeComponent = "Table"
             }
         }
     }

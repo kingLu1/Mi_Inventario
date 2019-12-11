@@ -28,6 +28,7 @@ Vue.component(VxInputGroup.name, VxInputGroup)
 import vSelect from 'vue-select'
 
 // Set the components prop default to return our fresh components
+
 vSelect.props.components.default = () => ({
   Deselect: {
     render: createElement => createElement('feather-icon', {
@@ -48,3 +49,4 @@ vSelect.props.components.default = () => ({
 });
 
 Vue.component(vSelect)
+

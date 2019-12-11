@@ -61,3 +61,12 @@
     }
 
 </script>
+<style>
+  *,body{
+    font-family: Verdana ;
+  }
+  .money {
+    color: #4cbb17;
+    font-weight: bold;
+  }
+</style>

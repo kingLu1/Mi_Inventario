@@ -2,9 +2,12 @@
   <vs-row vs-w="12">
     <vs-row>
       <vs-col vs-lg="4" vs-sm="6" vs-xs="12">
-        <add :isSidebarActive="showAddProductComponent" @closeSidebar="showAddProductComponent= false"
+        <add :isSidebarActive="showAddProductComponent"
+             @closeSidebar="showAddProductComponent= false"
+             @newProduct="newProduct"
+             :categories="categories"
+             :vendors="vendors"
              class=" sidebarX"/>
-        <!--        @newCategory="newProduct"-->
       </vs-col>
 
     </vs-row>
@@ -48,20 +51,14 @@
           <li class="px-2 py-2">
             <vs-radio v-model="category" vs-value="all">All</vs-radio>
           </li>
-          <li class="px-2">
-            <vs-radio v-model="category" vs-value="carols">Soft Drinks</vs-radio>
+          <li class="px-2 py-2" v-for="c in categories">
+            <vs-radio v-model="category" :vs-value="c.name">{{c.name}}</vs-radio>
           </li>
         </ul>
         <h6 class="font-bold mb-2">Vendor</h6>
         <ul class="centerx mb-2 pl-4">
-          <li class="px-2 py-2">
-            <vs-checkbox v-model="vendor" vs-value="luis">Market</vs-checkbox>
-          </li>
-          <li class="px-2 py-2">
-            <vs-checkbox v-model="vendor" vs-value="carols">NG Breweries</vs-checkbox>
-          </li>
-          <li class="px-2 py-2">
-            <vs-checkbox v-model="vendor" vs-value="summer">Guiness</vs-checkbox>
+          <li class="px-2 py-2" v-for="v in vendors">
+            <vs-checkbox v-model="vendor" :vs-value="v.name">{{v.name}}</vs-checkbox>
           </li>
         </ul>
         <vs-button class="w-full">CLEAR ALL FILTERS</vs-button>
@@ -101,26 +98,27 @@
                   <div class="my-4">
                     <!--                                    name-->
                     <h6 class="truncate font-semibold mb-1">
-                      Big Stout
+                      {{product.name}}
                     </h6>
                     <!--                                    category-->
                     <p class="item-description truncate text-sm">
-                      L0ng story short
+                      {{product.vendor}}
                     </p>
                   </div>
                   <div class="flex justify-between items-center">
-                    <div class="bg-primary flex text-white py-1 px-2 rounded">
+                    <div class="bg-primary flex text-white py-1 px-2 rounded" :class="getHealth(product)">
                       <feather-icon icon="BarChart2Icon" svgClasses="h-4 w-4"/>
                     </div>
                     <!--                                    selling price-->
                     <h6 class="font-bold">
-                      $400.00
+                      {{ product.selling_price | currency}}
                     </h6>
                   </div>
                 </div>
 
                 <div class="flex mt-3">
                   <div
+                    @click="viewProduct(product)"
                     class="item-view-secondary-action-btn p-3 flex flex-grow items-center justify-center text-primary cursor-pointer actions">
                     <feather-icon icon="EyeIcon" svgClasses="h-4 w-4"/>
                     <span class="text-sm font-semibold ml-2">VIEW</span>
@@ -138,8 +136,6 @@
             <p class="font-semibold ml-2">No Product Found</p>
 
           </div>
-
-
         </div>
       </VuePerfectScrollbar>
     </vs-col>
@@ -147,7 +143,7 @@
 </template>
 
 <script>
-    import {getProducts} from '../../../../stitch/api/inventory';
+    import {getProducts, getVendors, getCategory} from '../../../../stitch/api/inventory';
     import VuePerfectScrollbar from 'vue-perfect-scrollbar';
     import add from './ProductAdd'
 
@@ -175,9 +171,11 @@
                 //order
                 order: 'ascending',
                 //vendor
+                vendors: [],
                 vendor: [],
                 //category
                 category: 'all',
+                categories: [],
                 //search by
                 search: 'name'
             };
@@ -210,6 +208,30 @@
 
                 });
             },
+            newProduct() {
+                this.axios.get(getProducts).then((res) => {
+                    this.products = res.data;
+                }).catch((err) => {
+                    this.notify({
+                        title: 'Error',
+                        text: err.message,
+                        color: 'danger'
+                    })
+                });
+            },
+            getHealth(p) {
+                let q = (p.qty_in_stock.$numberInt / p.qty_per_crate);
+                if (q === 0) {
+                    return 'bg-dark'
+                } else if (q <= p.worst_qty) {
+                    return 'bg-danger'
+                } else if (q >= p.optimum_qty) {
+                    return 'bg-success'
+                } else if (q > p.worst_qty) {
+                    return 'bg-warning'
+                }
+
+            },
             searchDb() {
 
             },
@@ -222,7 +244,37 @@
             },
             goToAddMultiplePage() {
                 this.$emit('openAddMultiplePage');
+            },
+
+            viewProduct(p) {
+                this.$emit('viewProductDetails', p)
+            },
+
+
+            getVendors() {
+                this.axios.get(getVendors).then((res) => {
+                    this.vendors = res.data;
+                }).catch((err) => {
+                    this.notify({
+                        title: 'Error',
+                        text: err.message,
+                        color: 'danger'
+                    });
+                });
             }
+            ,
+            getCategories() {
+                this.axios.get(getCategory).then((res) => {
+                    this.categories = res.data;
+                }).catch((err) => {
+                    this.notify({
+                        title: 'Error',
+                        text: err.message,
+                        color: 'danger'
+                    });
+                });
+            }
+            ,
 
         },
         created() {
@@ -231,12 +283,15 @@
         },
         mounted() {
             this.getProducts();
+            this.getCategories();
+            this.getVendors();
 
-        }
+        },
+        computed: {}
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .loading_height {
     height: 50vh;
   }

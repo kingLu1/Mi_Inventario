@@ -34,7 +34,7 @@
         <span class="text-danger text-sm"
               v-show="errors.has('Contact Name')">{{ errors.first('Contact Name') }}</span>
         <vs-input label="Phone"
-                  name="Contact Phone" v-validate="'required'"
+                  name="Contact Phone" v-validate="'required|numeric|min:11|max:11'"
                   placeholder="Contact Phone"
                   data-vv-validate-on="blur"
                   v-model="selected.phone"

@@ -98,6 +98,7 @@
                                         color: 'success'
                                     });
                                     this.model.category.name = '';
+                                    this.model.category.desc = '';
                                     this.isSidebarActiveLocal = false;
 
                                     this.$vs.loading.close('#button-with-loading > .con-vs-loading');

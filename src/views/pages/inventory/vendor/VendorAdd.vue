@@ -34,7 +34,7 @@
         <span class="text-danger text-sm"
               v-show="errors.has('Contact Name')">{{ errors.first('Contact Name') }}</span>
         <vs-input label="Phone"
-                  name="Contact Phone" v-validate="'required'"
+                  name="Contact Phone" v-validate="'required|numeric|min:11|max:11'"
                   placeholder="Contact Phone"
                   data-vv-validate-on="blur"
                   v-model="model.vendor.phone"
@@ -43,6 +43,7 @@
               v-show="errors.has('Contact Phone')">{{ errors.first('Contact Phone') }}</span>
       </div>
     </VuePerfectScrollbar>
+
     <div class="flex flex-wrap items-center justify-center p-6" slot="footer">
       <vs-button @click="addVendor()" ref="loadableButton" id="button-with-loading"
                  class="mr-6 vs-con-loading__container"
@@ -151,6 +152,7 @@
 </script>
 
 <style lang="scss">
+
   .add-new-data-sidebar {
     position: absolute;
     z-index: 60000;
@@ -161,7 +163,7 @@
 
     .vs-sidebar {
       z-index: 52010;
-      width: 400px !important;
+      width: 900px !important;
       max-width: 90vw !important;
 
       .img-upload {
