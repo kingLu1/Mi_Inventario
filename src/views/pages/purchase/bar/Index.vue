@@ -148,7 +148,7 @@
                 alert("Form submitted!");
             },
             addVendor() {
-                // TODO: validate vendor(no the same vendor)
+
                 let vendor = this.selectedVendor;
                 this.chips.push(vendor.countryName);
                 this.selectedVendor = ''

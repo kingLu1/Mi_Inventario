@@ -1,5 +1,4 @@
 <template class="vs-con-loading__container" id="div-with-loading">
-  <!--  TODO: Add Content and finalize design-->
   <div>
     <div class="vx-row mb-base">
       <div class="vx-col w-full ">

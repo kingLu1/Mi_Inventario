@@ -1,5 +1,4 @@
 <template>
-  <!--    TODO Design and implementation-->
   <div id="table-loader" class="vs-con-loading__container">
     <div class="vx-row">
       <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
