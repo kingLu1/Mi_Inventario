@@ -29,42 +29,42 @@
 }
 
 // For application pages
-.no-scroll {
+.app-page {
   .router-view {
     padding-bottom: 0;
   }
 
   &.navbar-floating {
-    .no-scroll-content {
+    .app-fixed-height {
       height: calc(100vh - 11.5rem);
     }
 
     &.footer-hidden {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 9.3rem);
       }
     }
 
     &.footer-sticky {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 13.1rem);
       }
     }
   }
 
   &.navbar-sticky {
-    .no-scroll-content {
+    .app-fixed-height {
       height: calc(100vh - 10.5rem);
     }
 
     &.footer-hidden {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 8.3rem);
       }
     }
 
     &.footer-sticky {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 12.1rem);
       }
     }
@@ -72,37 +72,37 @@
 
   &.navbar-static {
     &.footer-static {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 9.25rem);
       }
     }
 
     &.footer-sticky {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 10.9rem);
       }
     }
 
     &.footer-hidden {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 7rem);
       }
     }
   }
 
   &.navbar-hidden {
-    .no-scroll-content {
+    .app-fixed-height {
       height: calc(100vh - 6rem);
     }
 
     &.footer-hidden {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 3.8rem);
       }
     }
 
     &.footer-sticky {
-      .no-scroll-content {
+      .app-fixed-height {
         height: calc(100vh - 7.6rem);
       }
     }

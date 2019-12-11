@@ -26,8 +26,8 @@ export default {
       type: 'gradient',
       gradient: {
         shadeIntensity: 0.9,
-        opacityFrom: 0.5,
-        opacityTo: 0.2,
+        opacityFrom: 0.7,
+        opacityTo: 0.5,
         stops: [0, 80, 100]
       }
     },

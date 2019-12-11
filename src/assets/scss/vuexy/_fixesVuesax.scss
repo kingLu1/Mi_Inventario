@@ -440,14 +440,6 @@
   }
 }
 
-.vs-pagination--li {
-  &:hover {
-    &:not(.is-current) {
-      color: var(--vs-color-pagination) !important;
-    }
-  }
-}
-
 .vs-pagination--ul {
   padding: 0;
 }

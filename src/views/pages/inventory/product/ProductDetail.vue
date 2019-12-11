@@ -262,12 +262,12 @@
                 });
                 getClient().callFunction('ProductDelete', data).then(() => {
                         this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-                        this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                        // this.$vs.loading.close('#button-with-loading > .con-vs-loading');
                         this.backToTable()
                     }
                 ).catch(
                     (err) => {
-                        this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                        // this.$vs.loading.close('#button-with-loading > .con-vs-loading');
                         this.notify({text: err.message, title: 'Error', color: 'danger'});
                     }
                 )
