@@ -129,42 +129,42 @@
 
   // For application pages]
   @media (min-width: 1200px) {
-    &.app-page {
+    &.no-scroll {
       .router-view {
         padding-bottom: 0;
       }
 
       &.navbar-floating {
-        .app-fixed-height {
+        .no-scroll-content {
           height: calc(100vh - 16rem);
         }
 
         &.footer-hidden {
-          .app-fixed-height {
+          .no-scroll-content {
             height: calc(100vh - 13.4rem);
           }
         }
 
         &.footer-sticky {
-          .app-fixed-height {
+          .no-scroll-content {
             height: calc(100vh - 16.7rem);
           }
         }
       }
 
       &.navbar-sticky {
-        .app-fixed-height {
+        .no-scroll-content {
           height: calc(100vh - 14.7rem);
         }
 
         &.footer-hidden {
-          .app-fixed-height {
+          .no-scroll-content {
             height: calc(100vh - 12.7rem);
           }
         }
 
         &.footer-sticky {
-          .app-fixed-height {
+          .no-scroll-content {
             height: calc(100vh - 16.2rem);
           }
         }
@@ -172,19 +172,19 @@
 
       &.navbar-static {
         &.footer-static {
-          .app-fixed-height {
+          .no-scroll-content {
             height: calc(100vh - 14.75rem);
           }
         }
 
         &.footer-sticky {
-          .app-fixed-height {
+          .no-scroll-content {
             height: calc(100vh - 16.7rem);
           }
         }
 
         &.footer-hidden {
-          .app-fixed-height {
+          .no-scroll-content {
             height: calc(100vh - 13rem);
           }
         }

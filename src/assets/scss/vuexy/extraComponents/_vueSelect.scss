@@ -1,15 +1,18 @@
+/*=========================================================================================
+    File Name: _vueSelect.scss
+    Description: vue-select component style.
+    ----------------------------------------------------------------------------------------
+    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+      Author: Pixinvent
+    Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
+
 
 @import "../_variables.scss";
 
 .v-select {
-  &:not(.vs--single) {
-    .vs__selected {
-      font-size: .9rem;
-    }
-  }
-
   .vs__dropdown-toggle {
-    padding: .59px 0 4px 0;
+    // padding: 5px 0 5px;
 
     .vs__search {
       color: $content-color;
@@ -19,7 +22,6 @@
       svg {
         stroke: $content-color;
         opacity: 0.5;
-        margin-top: 0 !important;
       }
     }
 
@@ -30,9 +32,10 @@
     }
 
     .vs__actions {
+      // padding: 0px 6px 0 0px;
 
       .vs__clear {
-        color: $content-color;
+        // display: flex;
       }
     }
   }
@@ -56,36 +59,36 @@
 
 .theme-dark {
   .v-select{
-    .vs__dropdown-toggle{
-      background: $content-dark-bg;
+      .vs__dropdown-toggle{
+          background: $content-dark-bg;
 
-      .vs__clear svg{
-        stroke: $grey;
+          .vs__clear svg{
+              stroke: $grey;
+          }
+          .vs__deselect svg{
+              stroke: $grey;
+              opacity: 0.7;
+          }
       }
-      .vs__deselect svg{
-        stroke: $grey;
-        opacity: 0.7;
+      &:not(.vs--single) {
+        .vs__selected{
+            // color: $white;
+            background: $dark-card-color;
+            border: none;
+        }
       }
-    }
-    &:not(.vs--single) {
       .vs__selected{
-        // color: $white;
-        background: $dark-card-color;
-        border: none;
+        color: $white;
       }
-    }
-    .vs__selected{
-      color: $white;
-    }
-    .vs__open-indicator{
-      fill: $grey;
-    }
-    .vs__dropdown-menu{
-      background: $content-dark-bg;
-      .vs__dropdown-option {
-        color: $theme-dark-text-color;
+      .vs__open-indicator{
+          fill: $grey;
       }
-    }
+      .vs__dropdown-menu{
+          background: $content-dark-bg;
+          .vs__dropdown-option {
+            color: $theme-dark-text-color;
+          }
+      }
   }
 }
 
@@ -100,4 +103,4 @@ $vs-state-active-bg: $primary !default;
 $vs-state-active-color: $white !default;
 
 
-@import "~vue-select/src/scss/vue-select.scss";
+@import "~vue-select/src/scss/vue-select.scss"

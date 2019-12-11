@@ -19,7 +19,7 @@
           <div>
             <div class="flex">
               <p class="mb-4 flex">Name :
-                <span v-if="!visibility.isEdit">{{activeProduct.name}} </span>
+                <span v-if="!visibility.isEdit">{{activeProduct.name | capitalize}} </span>
                 <span v-if="visibility.isEdit">
                   <vs-input
                     name="Product Name"
@@ -48,7 +48,18 @@
               </p>
             </div>
             <div class="flex">
-              <p class="mb-4">Vendor : {{activeProduct.vendor}} </p>
+              <p class="mb-4 flex">Vendor :
+                <span v-if="!visibility.isEdit">   {{activeProduct.vendor}}</span>
+                <span v-if="visibility.isEdit">
+                 <vs-select v-validate="'required'" v-model="activeProduct.vendor" name="Product Vendor"
+
+                            class="select-large ml-2 -mt-2 w-full">
+          <vs-select-item :value="v.name" :text="v.name" v-for="v in vendors"/>
+        </vs-select>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Product Vendor')">{{ errors.first('Product Vendor') }}</span>
+                </span>
+              </p>
 
             </div>
 
@@ -60,7 +71,20 @@
                       <feather-icon icon="BarChart2Icon" svgClasses="h-4 w-4"/>
           </span></p>
             <div class="flex">
-              <p class="mb-4">Selling Price : <span class="money">{{activeProduct.selling_price | currency}}</span></p>
+              <p class="mb-4 flex">Selling Price :
+                <span class="money" v-if="!visibility.isEdit">{{activeProduct.selling_price | currency}}</span>
+                <span v-if="visibility.isEdit">
+                  <vs-input
+                    name="Product Price"
+                    v-validate="'required|numeric'"
+                    placeholder="Selling Price"
+                    data-vv-validate-on="blur"
+                    v-model="activeProduct.selling_price"
+                    class="-mt-2 ml-2 w-full"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Product Price')">{{ errors.first('Product Price') }}</span>
+                </span>
+              </p>
             </div>
 
             <p class="mb-4">Cost Price : <span class="money">{{activeProduct.crate_price / activeProduct.qty_per_crate | currency}}</span>
@@ -68,26 +92,74 @@
             <p class="mb-4">Profit : <span class="money">{{activeProduct.selling_price - (activeProduct.crate_price / activeProduct.qty_per_crate)  | currency}}</span>
             </p><span></span>
             <div class="flex">
-              <p class="mb-4">Crate Price : <span class="money">{{activeProduct.crate_price  | currency}}</span></p>
-              svgClasses="stroke-current text-dark h-6 w-6"/></span>
+              <p class="mb-4 flex">Crate Price :
+                <span v-if="!visibility.isEdit" class="money">{{activeProduct.crate_price  | currency}}</span>
+                <span v-if="visibility.isEdit">
+                  <vs-input
+                    name="Product Crate Price"
+                    v-validate="'required|numeric'"
+                    placeholder="Crate Price"
+                    data-vv-validate-on="blur"
+                    v-model="activeProduct.crate_price"
+                    class="-mt-2 ml-2 w-full"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Product Crate Price')">{{ errors.first('Product Crate Price') }}</span>
+                </span>
+              </p>
             </div>
             <div class="flex">
-              <p class="mb-4">Quantity Per Crate : {{ activeProduct.qty_per_crate }}
+              <p class="mb-4 flex">Quantity Per Crate :
+                <span v-if="!visibility.isEdit">  {{ activeProduct.qty_per_crate }}</span>
+                <span v-if="visibility.isEdit">
+                  <vs-input
+                    name="Crate Quantity"
+                    v-validate="'required|numeric'"
+                    data-vv-validate-on="blur"
+                    placeholder="Quantity"
+                    v-model="activeProduct.qty_per_crate"
+                    class="ml-2 -mt-2 w-full"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Crate Quantity')">{{ errors.first('Crate Quantity') }}</span>
+                </span>
+
               </p>
             </div>
 
             <div class="flex">
-              <p class="mb-4"> Optimum Quantity in Stock : {{activeProduct.optimum_qty}} </p>
+              <p class="mb-4 flex"> Optimum Quantity in Stock :
+                <span v-if="!visibility.isEdit">{{activeProduct.optimum_qty}}</span>
+                <span v-if="visibility.isEdit">
+                  <vs-input
+                    name="Optimum Quantity" v-validate="'required|numeric'"
+                    placeholder="Crates"
+                    data-vv-validate-on="blur"
+                    v-model="activeProduct.optimum_qty"
+                    class="-mt-2 ml-2 w-full"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Optimum Quantity')">{{ errors.first('Optimum Quantity') }}</span>
+                </span>
+              </p>
 
             </div>
             <div class="flex">
-
-              <p class="mb-4"> Worst Quantity in Stock : {{activeProduct.worst_qty}} </p>
+              <p class="mb-4 flex"> Worst Quantity in Stock :
+                <span v-if="!visibility.isEdit">{{activeProduct.worst_qty}}</span>
+                <span v-if="visibility.isEdit">
+                  <vs-input
+                    name="Worst Quantity" v-validate="'required|numeric'"
+                    placeholder="Crates"
+                    data-vv-validate-on="blur"
+                    v-model="activeProduct.worst_qty"
+                    class="-mt-2 ml-2 w-full"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Worst Quantity')">{{ errors.first('Worst Quantity') }}</span>
+                </span>
+              </p>
             </div>
             <p class="mb-4"> Created By : {{activeProduct.created_by}} </p><span></span>
             <p class="mb-4"> Created On : {{activeProduct.created_on}} </p><span></span>
             <p class="mb-4"> Last Updated By: {{activeProduct.last_update}}</p><span></span>
-            <p class="mb-4"> Last Updated On: {{activeProduct.last_updated_on}}</p><span></span>
+            <p class="mb-4"> Last Updated On: {{activeProduct.last_update_on}}</p><span></span>
           </div>
           <div class="flex">
             <vs-button
@@ -99,13 +171,14 @@
             <vs-button
               v-if="visibility.isEdit"
               color="success"
-              class="mr-2 w-full" @click="editProduct">
+              ref="loadableButton" id="button-with-loading"
+              class="mr-2 w-full  vs-con-loading__container" @click="updateProduct">
               Update Product
             </vs-button>
             <vs-button
               v-if="visibility.isEdit"
               color="warning"
-              class="mr-2 w-full" @click="editProduct">
+              class="mr-2 w-full" @click="cancelProductEdit">
               Cancel
             </vs-button>
             <vs-button
@@ -123,6 +196,8 @@
 
 <script>
     import {getClient} from '../../../../stitch/app';
+    import {mapState} from 'vuex'
+    import {getVendors, getCategory} from '../../../../stitch/api/inventory';
 
     export default {
         name: "ProductDetail",
@@ -132,6 +207,10 @@
             }
         },
         data: () => ({
+            //Button Loading
+            backgroundLoadingSuccess: '#28C76F',
+            colorLoading: 'white',
+            //
             healthLow: false,
             healthHigh: false,
             healthMedium: false,
@@ -139,10 +218,13 @@
             visibility: {
                 isEdit: false,
                 activeEdit: false,
-
-            }
+            },
+            vendors: [],
+            categories: []
         }),
-        computed: {},
+        computed: {
+            ...mapState(['AppActiveUser'])
+        },
         mounted() {
             this.health()
         },
@@ -192,7 +274,77 @@
             },
             editProduct() {
                 this.visibility.isEdit = !this.visibility.isEdit
+            },
+            cancelProductEdit() {
+                this.backToTable()
+            },
+            updateProduct() {
+                this.$validator.validateAll().then(result => {
+                    let update = {
+                        last_update: this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name,
+                        last_update_on: Date()
+                    }
+
+                    let editedProduct = Object.assign(update, this.activeProduct);
+
+                    this.$vs.loading({
+                        background: this.backgroundLoadingSuccess,
+                        color: this.colorLoading,
+                        container: '#button-with-loading',
+                        scale: 0.45
+                    });
+                    let data = [editedProduct];
+                    if (result) {
+                        getClient().callFunction('ProductEdit', data).then(
+                            res => {
+                                this.editProduct()
+                                this.notify({
+                                    text: 'Successfully Edited Product!',
+                                    title: '',
+                                    color: 'success'
+                                });
+                                this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+
+                            }
+                        ).catch(
+                            err => {
+                                this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                                this.notify({text: err.message, title: 'Error', color: 'danger'})
+                            }
+                        )
+                    } else {
+                        // form have errors
+                    }
+                })
+            },
+
+            getVendors() {
+                this.axios.get(getVendors).then((res) => {
+                    this.vendors = res.data;
+                }).catch((err) => {
+                    this.notify({
+                        title: 'Error',
+                        text: err.message,
+                        color: 'danger'
+                    });
+                });
             }
+            ,
+            getCategories() {
+                this.axios.get(getCategory).then((res) => {
+                    this.categories = res.data;
+                }).catch((err) => {
+                    this.notify({
+                        title: 'Error',
+                        text: err.message,
+                        color: 'danger'
+                    });
+                });
+            }
+        },
+        created() {
+            this.getVendors();
+            this.getCategories();
         }
     }
 </script>

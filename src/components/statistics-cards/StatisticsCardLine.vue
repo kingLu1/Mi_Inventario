@@ -10,19 +10,15 @@
 <template>
     <vx-card class="overflow-hidden">
         <div slot="no-body">
-            <div class="p-6" :class="{
-              'flex justify-between flex-row-reverse items-center': iconRight,
-              'text-center': !iconRight && hideChart,
-              'pb-0': !hideChart
-            }">
+            <div class="p-6 pb-0" :class="{'flex justify-between flex-row-reverse items-center': iconRight}">
                 <feather-icon :icon="icon" class="p-3 inline-flex rounded-full" :class="[`text-${color}`, {'mb-4': !iconRight}]" :style="{background: `rgba(var(--vs-${color}),.15)`}"></feather-icon>
-                <div class="truncate">
+                <div>
                     <h2 class="mb-1 font-bold">{{ statistic }}</h2>
                     <span>{{ statisticTitle }}</span>
                 </div>
             </div>
 
-            <div class="line-area-chart" v-if="!hideChart">
+            <div class="line-area-chart">
                 <vue-apex-charts ref="apexChart" :type="type" height=100 width='100%' :options="chartOptions" :series="chartData" />
             </div>
         </div>
@@ -49,7 +45,7 @@ export default{
         },
         chartData: {
             // type: Array,
-            // required: true
+            required: true
         },
         color: {
             type: String,
@@ -69,10 +65,6 @@ export default{
         iconRight: {
             type: Boolean,
             default: false
-        },
-        hideChart: {
-          type: Boolean,
-          default: false,
         }
     },
     data() {
