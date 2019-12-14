@@ -6,7 +6,10 @@
           <div class="mb-2">
             <p>Select Products<span class="text-danger ml-1">*</span></p>
           </div>
-          <v-select label="name" v-model="product" :options="allProducts" class="w-full"/>
+          <v-select label="name" name="Product" v-model="product" v-validate="'required'" :options="allProducts"
+                    class="w-full"/>
+          <span class="text-danger text-sm"
+                v-show="errors.has('Product')">{{ errors.first(' Vendor') }}</span>
         </div>
         <div class="vx-col actions w-1/2 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/3">
           <vs-button @click="addProductToChips" color="success" type="filled" icon-pack="feather" icon="icon-plus"
@@ -49,7 +52,7 @@
       }
     },
     data: () => ({
-      product: {},
+      product: '',
       allProducts: [],
       trash: [],
     }),
@@ -59,24 +62,36 @@
     },
     methods: {
       addProductToChips() {
-        let product = this.product;
-        if (!this.checkInChips(product)) {
-          this.chips.unshift(product);
-          this.product = "";
-          this.removeFromAllProducts(product);
-        } else {
-          this.notify({
-            title: 'Warning',
-            text: 'Already in Cart',
-            color: 'warning'
-          });
-        }
-      },
+        this.$validator.validateAll().then(result => {
+            if (result) {
+              let product = this.product;
+              if (!this.checkInChips(product)) {
+                this.chips.unshift(product);
+                this.product = "";
+                this.removeFromAllProducts(product);
+              } else {
+                this.notify({
+                  title: 'Warning',
+                  text: 'Already in Cart',
+                  color: 'warning'
+                });
+              }
+            } else {
+              // form have errors
+            }
+          }
+        ).catch(err => {
+          console.log(err)
+        })
+      }
+
+      ,
       remove(item) {
         this.chips.splice(this.chips.indexOf(item), 1);
         this.recycle(item)
 
-      },
+      }
+      ,
       getProducts() {
         this.axios.get(getProducts).then((res) => {
           this.allProducts = res.data
@@ -88,20 +103,24 @@
             color: 'danger'
           });
         });
-      },
+      }
+      ,
       removeFromAllProducts(p) {
         let product = this.allProducts.find(item => item.name === p.name);
         this.allProducts.splice((this.allProducts.indexOf(product)), 1);
         this.sendToTrash(product)
 
-      },
+      }
+      ,
       sendToTrash(p) {
         this.trash.push(p)
-      },
+      }
+      ,
       recycle(p) {
         let product = this.trash.find(item => item.name === p.name);
         this.allProducts.push(product)
-      },
+      }
+      ,
       checkInChips(p) {
         let product = this.chips.find(item => item.name === p.name);
         return !!product;
