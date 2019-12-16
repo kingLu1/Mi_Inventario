@@ -49,7 +49,7 @@
                           </p>
                         </div>
                         <div class="flex justify-between items-center">
-                          <div class="bg-primary flex text-white py-1 px-2 rounded">
+                          <div class="flex text-white py-1 px-2 rounded" :class="getHealth(product)">
                             <feather-icon icon="BarChart2Icon" svgClasses="h-4 w-4"/>
                           </div>
                           <!--                                    selling price-->
@@ -63,14 +63,14 @@
                 </div>
 
               </div>
-<!--              <div class=" vs-con-loading__container loading_height bg-white flex justify-center items-center"-->
-<!--                   id="div-with-loading" v-if="!products.length">-->
-<!--                <div v-if="!notFound" class="flex items-center">-->
-<!--                  <feather-icon icon="MehIcon" svgClasses="h-8 w-8"/>-->
-<!--                  <p class="font-semibold ml-2">No Product Found</p>-->
+              <!--              <div class=" vs-con-loading__container loading_height bg-white flex justify-center items-center"-->
+              <!--                   id="div-with-loading" v-if="!products.length">-->
+              <!--                <div v-if="!notFound" class="flex items-center">-->
+              <!--                  <feather-icon icon="MehIcon" svgClasses="h-8 w-8"/>-->
+              <!--                  <p class="font-semibold ml-2">No Product Found</p>-->
 
-<!--                </div>-->
-<!--              </div>-->
+              <!--                </div>-->
+              <!--              </div>-->
             </VuePerfectScrollbar>
           </div>
           <div class="flex">
@@ -101,48 +101,60 @@
 </template>
 
 <script>
-    import {getClient} from '../../../../stitch/app';
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+  import {getClient} from '../../../../stitch/app';
+  import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
-    export default {
-        name: "DetailVendor",
-        data: () => ({
-            products: [],
-            showProducts: false,
-            settings: {
-                // perfectScrollbar settings
-                maxScrollbarLength: 10,
-                wheelSpeed: .60,
-            },
-        }),
-        props: {
-            activeVendor: {
-                required: true
-            }
-        },
-        components: {
-            VuePerfectScrollbar,
-        },
-        methods: {
-            backToTable() {
-                this.$emit("backToTable")
-            },
-            getProductTotal() {
-                let data = [{"vendor": this.activeVendor.name}];
-                console.log("data:", data)
-                getClient().callFunction('VendorGetProducts', data).then(res => {
-                    this.products = res;
-                }).catch(err => {
-                    console.log(err)
-                })
-            }
-
-        },
-        created() {
-            this.getProductTotal()
+  export default {
+    name: "DetailVendor",
+    data: () => ({
+      products: [],
+      showProducts: false,
+      settings: {
+        // perfectScrollbar settings
+        maxScrollbarLength: 10,
+        wheelSpeed: .60,
+      },
+    }),
+    props: {
+      activeVendor: {
+        required: true
+      }
+    },
+    components: {
+      VuePerfectScrollbar,
+    },
+    methods: {
+      backToTable() {
+        this.$emit("backToTable")
+      },
+      getProductTotal() {
+        let data = [{"vendor": this.activeVendor.name}];
+        console.log("data:", data)
+        getClient().callFunction('VendorGetProducts', data).then(res => {
+          this.products = res;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getHealth(p) {
+        let q = (p.qty_in_stock / p.qty_per_crate);
+        if (q === 0) {
+          return 'bg-dark'
+        } else if (q <= p.worst_qty) {
+          return 'bg-danger'
+        } else if (q >= p.optimum_qty) {
+          return 'bg-success'
+        } else if (q > p.worst_qty) {
+          return 'bg-warning'
         }
+      },
 
+    },
+    created() {
+      this.getProductTotal()
     }
+
+  }
 </script>
 
 <style scoped>

@@ -33,7 +33,7 @@
       <div class="vx-col  w-1/5">
         <p class="flex">
           <span class="centerx">
-            <vs-input-number v-model="p.purchasing" :label="totalQuantity(p)"/>
+            <vs-input-number v-model="p.purchasing" color="dark" :label="totalQuantity(p)"/>
           </span>
         </p>
       </div>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+  import eventBus from "../../../../eventBus";
+
   export default {
     name: "SelectQuantity",
     props: {
@@ -59,17 +61,20 @@
     }),
     methods: {
       trimChipsValue() {
+        //trim selected products for computation in this component
         this.purchase = this.chips.map(item => {
             return {
-              id: item.id,
+              id: item._id,
               name: item.name,
               vendor: item.vendor,
               qty_per_crate: item.qty_per_crate,
-              crate_price: item.crate_price,
+              crate_price: parseInt(item.crate_price, 10),
               purchasing: 0
             }
           }
-        )
+        );
+        // sent to submit Component
+        eventBus.$emit('trimProducts', this.purchase)
       },
       totalQuantity(p) {
         return `Crate:(${p.qty_per_crate * p.purchasing})`
@@ -78,6 +83,11 @@
     watch: {
       chips() {
         this.trimChipsValue()
+      },
+      purchase() {
+        // sent to submit Component
+        eventBus.$emit('changeTrimProducts', this.purchase)
+
       }
     }
   }

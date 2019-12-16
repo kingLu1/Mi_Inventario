@@ -67,6 +67,6 @@
   }
   .money {
     color: #4cbb17;
-    font-weight: bold;
+    font-weight: normal;
   }
 </style>

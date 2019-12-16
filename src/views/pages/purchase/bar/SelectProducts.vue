@@ -30,6 +30,7 @@
           @click="remove(chip)"
           v-for="chip in chips"
           closable
+          color="dark"
           close-icon="cancel">
           {{ chip.name | capitalize }}
         </vs-chip>
@@ -95,7 +96,7 @@
       getProducts() {
         this.axios.get(getProducts).then((res) => {
           this.allProducts = res.data
-          console.log(res.data)
+          // console.log(res.data)
         }).catch((err) => {
           this.notify({
             title: 'Error',
