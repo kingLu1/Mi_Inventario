@@ -120,16 +120,20 @@
             }
           }
         );
-        getClient().callFunction('PurchaseBar', [sorted]).then(
-          res => {
-            console.log(res)
-            this.notify({text: 'Successfully', title: '', color: 'success'});
-          }
-        ).catch(
-          err => {
-            this.notify({text: err.message, title: 'Error', color: 'danger'})
-          }
-        )
+        if( this.total === 0){
+          getClient().callFunction('PurchaseBar', [sorted]).then(
+            res => {
+              // console.log(res)
+              eventBus.$emit("formSubmitted");
+              this.notify({text: 'Successfully', title: '', color: 'success'});
+            }
+          ).catch(
+            err => {
+              this.notify({text: err.message, title: 'Error', color: 'danger'})
+            }
+          )
+        }
+
       }
 
     },

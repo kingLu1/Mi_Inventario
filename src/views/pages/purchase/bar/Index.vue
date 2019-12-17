@@ -10,7 +10,8 @@
           </vs-button>
         </vx-tooltip>
       </div>
-      <form-wizard color="rgba(var(--vs-warning), 1)" :title="null" :subtitle="null" finishButtonText="Submit"
+      <form-wizard v-if="!isSubmit" color="rgba(var(--vs-warning), 1)" :title="null" :subtitle="null"
+                   finishButtonText="Submit"
                    @on-complete="formSubmitted">
         <tab-content title="Select Products" class="mb-5" icon="feather icon-plus">
           <!-- tab 1 content -->
@@ -28,6 +29,8 @@
           <submit/>
         </tab-content>
       </form-wizard>
+      <finish v-if="isSubmit"/>
+
     </div>
   </vx-card>
 
@@ -41,22 +44,29 @@
   import SelectProducts from "./SelectProducts";
   import SelectQuantity from "./SelectQuantity";
   import Submit from "./Submit";
+  import Finish from "./Finish";
 
   import eventBus from "../../../../eventBus";
 
   export default {
     data() {
       return {
-        chips: []
+        chips: [],
+        isSubmit: false,
       }
     },
     methods: {
       formSubmitted() {
         eventBus.$emit('submit');
+
       },
       backToPurchasingMenu() {
         eventBus.$emit('back')
+      },
+      listener(){
+        eventBus.$on('formSubmitted', ()=> this.isSubmit = true)
       }
+
 
 
     },
@@ -65,9 +75,12 @@
       TabContent,
       SelectProducts,
       SelectQuantity,
-      Submit
+      Submit, Finish
 
 
+    },
+    created() {
+      this.listener()
     }
   }
 </script>
