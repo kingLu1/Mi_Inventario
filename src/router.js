@@ -113,9 +113,9 @@ const router = new Router({
         // Sales
 
         {
-          path: '/sales/bar',
+          path: '/sales',
           name: 'sales_bar',
-          component: () => import('./views/pages/sale/bar/Bar.vue'),
+          component: () => import('./views/pages/sale/Index'),
           meta: {
             breadcrumb: [
               {title: 'Dashboard', url: '/'},
@@ -127,51 +127,51 @@ const router = new Router({
 
           }
         },
-        {
-          path: '/sales/barbeque',
-          name: 'sales_barbecue',
-          component: () => import('./views/pages/sale/barbeque/Barbeque.vue'),
-          meta: {
-            breadcrumb: [
-              {title: 'Dashboard', url: '/'},
-              {title: 'Barbeque', active: true},
-            ],
-            pageTitle: 'Sales',
-            requiresAuth: true,
-            rule: 'admin',
-
-          }
-        },
-        {
-          path: '/sales/kitchen',
-          name: 'sales_kitchen',
-          component: () => import('./views/pages/sale/kitchen/Kitchen.vue'),
-          meta: {
-            breadcrumb: [
-              {title: 'Dashboard', url: '/'},
-              {title: 'Kitchen', active: true},
-            ],
-            pageTitle: 'Sales',
-            requiresAuth: true,
-            rule: 'admin'
-
-          }
-        },
-        {
-          path: '/sales/pool',
-          name: 'sales_pool',
-          component: () => import('./views/pages/sale/pool/Pool.vue'),
-          meta: {
-            breadcrumb: [
-              {title: 'Dashboard', url: '/'},
-              {title: 'Pool', active: true},
-            ],
-            pageTitle: 'Sales',
-            requiresAuth: true,
-            rule: 'admin'
-
-          }
-        },
+        // {
+        //   path: '/sales/barbeque',
+        //   name: 'sales_barbecue',
+        //   component: () => import('./views/pages/sale/barbeque/Barbeque.vue'),
+        //   meta: {
+        //     breadcrumb: [
+        //       {title: 'Dashboard', url: '/'},
+        //       {title: 'Barbeque', active: true},
+        //     ],
+        //     pageTitle: 'Sales',
+        //     requiresAuth: true,
+        //     rule: 'admin',
+        //
+        //   }
+        // },
+        // {
+        //   path: '/sales/kitchen',
+        //   name: 'sales_kitchen',
+        //   component: () => import('./views/pages/sale/kitchen/Kitchen.vue'),
+        //   meta: {
+        //     breadcrumb: [
+        //       {title: 'Dashboard', url: '/'},
+        //       {title: 'Kitchen', active: true},
+        //     ],
+        //     pageTitle: 'Sales',
+        //     requiresAuth: true,
+        //     rule: 'admin'
+        //
+        //   }
+        // },
+        // {
+        //   path: '/sales/pool',
+        //   name: 'sales_pool',
+        //   component: () => import('./views/pages/sale/pool/Pool.vue'),
+        //   meta: {
+        //     breadcrumb: [
+        //       {title: 'Dashboard', url: '/'},
+        //       {title: 'Pool', active: true},
+        //     ],
+        //     pageTitle: 'Sales',
+        //     requiresAuth: true,
+        //     rule: 'admin'
+        //
+        //   }
+        // },
 
         // Report
         {
