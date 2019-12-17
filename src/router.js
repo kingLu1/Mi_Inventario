@@ -210,9 +210,9 @@ const router = new Router({
         //purchases
 
         {
-          path: '/purchase/bar',
-          name: 'purchase_bar',
-          component: () => import('./views/pages/purchase/bar/Index.vue'),
+          path: '/purchase',
+          name: 'purchase',
+          component: () => import('./views/pages/purchase/Index.vue'),
           meta: {
             breadcrumb: [
               {title: 'Dashboard', url: '/'},
@@ -222,33 +222,34 @@ const router = new Router({
             requiresAuth: true,
             rule: 'admin'
           }
-        }, {
-          path: '/purchase/barbeque',
-          name: 'purchase_barbeque',
-          component: () => import('./views/pages/purchase/barbeque/Index.vue'),
-          meta: {
-            breadcrumb: [
-              {title: 'Dashboard', url: '/'},
-              {title: 'Barbeque', active: true},
-            ],
-            pageTitle: 'Purchase',
-            requiresAuth: true,
-            rule: 'admin'
-          }
-        }, {
-          path: '/purchase/kitchen',
-          name: 'purchase_kitchen',
-          component: () => import('./views/pages/purchase/kitchen/Index.vue'),
-          meta: {
-            breadcrumb: [
-              {title: 'Dashboard', url: '/'},
-              {title: 'Kitchen', active: true},
-            ],
-            pageTitle: 'Purchase',
-            requiresAuth: true,
-            rule: 'admin'
-          }
         },
+        // {
+        //   path: '/purchase/barbeque',
+        //   name: 'purchase_barbeque',
+        //   component: () => import('./views/pages/purchase/barbeque/Index.vue'),
+        //   meta: {
+        //     breadcrumb: [
+        //       {title: 'Dashboard', url: '/'},
+        //       {title: 'Barbeque', active: true},
+        //     ],
+        //     pageTitle: 'Purchase',
+        //     requiresAuth: true,
+        //     rule: 'admin'
+        //   }
+        // }, {
+        //   path: '/purchase/kitchen',
+        //   name: 'purchase_kitchen',
+        //   component: () => import('./views/pages/purchase/kitchen/Index.vue'),
+        //   meta: {
+        //     breadcrumb: [
+        //       {title: 'Dashboard', url: '/'},
+        //       {title: 'Kitchen', active: true},
+        //     ],
+        //     pageTitle: 'Purchase',
+        //     requiresAuth: true,
+        //     rule: 'admin'
+        //   }
+        // },
         {
           path: '/users',
           name: 'users',

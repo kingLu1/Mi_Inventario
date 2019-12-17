@@ -1,7 +1,16 @@
 <template>
   <vx-card>
     <div slot="no-body">
-      <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Submit"
+      <div class="flex justify-end p-2">
+        <vx-tooltip text="Go Back" position="top">
+          <vs-button icon-pack="feather" icon="icon-corner-up-left"
+                     color="primary"
+                     class="mr-2" @click="backToPurchasingMenu()">
+            Back
+          </vs-button>
+        </vx-tooltip>
+      </div>
+      <form-wizard color="rgba(var(--vs-warning), 1)" :title="null" :subtitle="null" finishButtonText="Submit"
                    @on-complete="formSubmitted">
         <tab-content title="Select Products" class="mb-5" icon="feather icon-plus">
           <!-- tab 1 content -->
@@ -45,6 +54,10 @@
       formSubmitted() {
         eventBus.$emit('submit');
       },
+      backToPurchasingMenu() {
+        eventBus.$emit('back')
+      }
+
 
     },
     components: {

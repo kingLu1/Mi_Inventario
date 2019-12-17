@@ -12,9 +12,8 @@
                 v-show="errors.has('Product')">{{ errors.first(' Vendor') }}</span>
         </div>
         <div class="vx-col actions w-1/2 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/3">
-          <vs-button @click="addProductToChips" color="success" type="filled" icon-pack="feather" icon="icon-plus"
-                     class="mr-2">
-            Add
+          <vs-button @click="addProductToChips" color="warning" type="filled" icon-pack="feather" icon="icon-plus"
+                     class="mr-2 round">
           </vs-button>
         </div>
       </div>

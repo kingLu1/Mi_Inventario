@@ -62,32 +62,32 @@ export default [
     ]
   },
   {
-    url: "null",
+    url: "/purchase",
     name: "Purchasing",
     slug: "purchase",
     icon: "TruckIcon",
-    submenu: [
-      {
-        url: '/purchase/bar',
-        name: "Bar",
-        slug: "purchase_bar",
-      },
-      // {
-      //   url: '/purchase/barbeque',
-      //   name: "Barbeque",
-      //   slug: "purchase_barbeque",
-      // },
-      // {
-      //   url: '/purchase/kitchen',
-      //   name: "Kitchen",
-      //   slug: "purchase_kitchen",
-      // },
-      // {
-      //   url: '/purchase/pool',
-      //   name: "Pool",
-      //   slug: "purchase_pool",
-      // },
-    ]
+    // submenu: [
+    //   {
+    //     url: '/purchase/bar',
+    //     name: "Bar",
+    //     slug: "purchase_bar",
+    //   },
+    //   // {
+    //   //   url: '/purchase/barbeque',
+    //   //   name: "Barbeque",
+    //   //   slug: "purchase_barbeque",
+    //   // },
+    //   // {
+    //   //   url: '/purchase/kitchen',
+    //   //   name: "Kitchen",
+    //   //   slug: "purchase_kitchen",
+    //   // },
+    //   // {
+    //   //   url: '/purchase/pool',
+    //   //   name: "Pool",
+    //   //   slug: "purchase_pool",
+    //   // },
+    // ]
   },
   {
     url: "/report",
