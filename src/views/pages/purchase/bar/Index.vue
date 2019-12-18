@@ -1,7 +1,7 @@
 <template>
   <vx-card>
     <div slot="no-body">
-      <div class="flex justify-between p-2">
+      <div class="flex justify-between p-2" v-if="showAction">
         <vx-tooltip text="Go Back" position="top">
           <vs-button icon-pack="feather" icon="icon-corner-up-left"
                      color="primary" type="border"
@@ -13,32 +13,14 @@
           <vs-button icon-pack="feather" icon="icon-file-text"
                      color="warning"
                      type="border"
-                     class="mr-2" @click="backToPurchasingMenu()">
+                     class="mr-2" @click="showHistory()">
             Show History
           </vs-button>
         </vx-tooltip>
       </div>
-      <form-wizard v-if="!isSubmit" color="rgba(var(--vs-warning), 1)" :title="null" :subtitle="null"
-                   finishButtonText="Submit"
-                   @on-complete="formSubmitted">
-        <tab-content title="Select Products" class="mb-5" icon="feather icon-plus">
-          <!-- tab 1 content -->
-          <select-products :chips="chips"/>
-        </tab-content>
-
-        <!-- tab 2 content -->
-        <tab-content title="Select Quantity" class="mb-5" icon="feather icon-briefcase">
-          <select-quantity :chips="chips"/>
-        </tab-content>
-
-        <!-- tab 3 content -->
-
-        <tab-content title="Check" class="mb-5" icon="feather icon-image">
-          <submit/>
-        </tab-content>
-      </form-wizard>
-      <finish v-if="isSubmit"/>
-
+      <transition name="slide-fade">
+        <component :is="activeComponent"/>
+      </transition>
     </div>
   </vx-card>
 
@@ -46,45 +28,40 @@
 
 <script>
 
-  import {FormWizard, TabContent} from 'vue-form-wizard'
-  import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+  import BarForm from "./Form";
+  import History from "./history/Index"
 
-  import SelectProducts from "./SelectProducts";
-  import SelectQuantity from "./SelectQuantity";
-  import Submit from "./Submit";
-  import Finish from "./Finish";
 
   import eventBus from "../../../../eventBus";
 
   export default {
     data() {
       return {
-        chips: [],
-        isSubmit: false,
+        activeComponent: 'BarForm',
+        showAction: true
       }
     },
     methods: {
-      formSubmitted() {
-        eventBus.$emit('submit');
-
-      },
       backToPurchasingMenu() {
         eventBus.$emit('back')
       },
+      showHistory() {
+        this.activeComponent = 'History'
+      },
       listener() {
-        eventBus.$on('formSubmitted', () => this.isSubmit = true)
+        eventBus.$on(
+          "showActions",
+          (payload) => this.showAction = payload
+        ),
+          eventBus.$on(
+            "backToPurchasing",
+            () => this.activeComponent = 'BarForm'
+          )
       }
-
-
     },
     components: {
-      FormWizard,
-      TabContent,
-      SelectProducts,
-      SelectQuantity,
-      Submit, Finish
-
-
+      BarForm,
+      History
     },
     created() {
       this.listener()
@@ -92,8 +69,18 @@
   }
 </script>
 <style lang="scss" scoped>
-  .actions {
-    align-self: flex-end;
+  .slide-fade-enter-active {
+    transition: all .5s ease-in;
   }
 
+  .slide-fade-leave-active {
+    transition: all .3s ease-out;
+  }
+
+  .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */
+  {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
 </style>

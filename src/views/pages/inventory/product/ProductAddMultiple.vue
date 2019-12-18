@@ -107,6 +107,7 @@
             <vx-tooltip text="Go Back" position="top" style="margin-top:-5px;">
               <vs-button icon-pack="feather" icon="icon-corner-up-left"
                          color="primary"
+                         type="border"
                          class="mr-2" @click="backToTable">
                 Back
               </vs-button>
@@ -117,47 +118,52 @@
               <VuePerfectScrollbar class="scroll-area pr-2" :settings="settings">
                 <div class="item-details rounded flex items-center justify-between mb-2" v-for="(c,index) in cart">
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Name</p>
-                    <h6>{{c.name}}</h6>
+                    <p class="font-bold">Name</p>
+                    <p>{{c.name | capitalize}}</p>
                   </div>
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Category</p>
-                    <h6>{{c.category}}</h6>
+                    <p class="font-bold">Category</p>
+                    <p>{{c.category | capitalize}}</p>
                   </div>
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Vendor</p>
-                    <h6>{{c.vendor}}</h6>
+                    <p class="font-bold">Vendor</p>
+                    <p>{{c.vendor | capitalize}}</p>
                   </div>
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Selling Price</p>
-                    <h6 class="money">{{c.selling_price | currency}}</h6>
+                    <p class="font-bold">Selling Price</p>
+                    <p class="money">{{c.selling_price | currency}}</p>
                   </div>
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Crate Price</p>
-                    <h6 class="money">{{c.crate_price | currency}}</h6>
+                    <p class="font-bold">Crate Price</p>
+                    <p class="money">{{c.crate_price | currency}}</p>
                   </div>
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Crate Qty</p>
-                    <h6>{{c.qty_per_crate}}</h6>
+                    <p class="font-bold">Crate Qty</p>
+                    <p>{{c.qty_per_crate}}</p>
                   </div>
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Optimum Qty</p>
-                    <h6>{{c.optimum_qty}}</h6>
+                    <p class="font-bold">Optimum Qty</p>
+                    <p>{{c.optimum_qty}}</p>
                   </div>
                   <div class="pl-2 flex flex-col items-center justify-center">
-                    <p>Worst Qty</p>
-                    <h6>{{c.worst_qty}}</h6>
+                    <p class="font-bold">Worst Qty</p>
+                    <p>{{c.worst_qty}}</p>
                   </div>
                   <div class="flex items-center justify-center ">
-                    <feather-icon icon="EditIcon" class=" cursor-pointer mr-2"
-                                  svgClasses="stroke-current text-dark h-10 w-10"/>
-                    <feather-icon icon="XSquareIcon" class=" cursor-pointer mr-2"
-                                  svgClasses="stroke-current text-danger h-10 w-10" @click="removeProduct(index)"/>
+
+                    <feather-icon icon="XIcon" class=" cursor-pointer mr-2"
+                                  svgClasses="stroke-current text-danger h-7 w-7" @click="removeProduct(index)"/>
                   </div>
                 </div>
               </VuePerfectScrollbar>
               <div class="flex mt-4">
-                <vs-button icon-pack="feather" icon="icon-plus"
+                <vs-button icon-pack="feather" icon="icon-x"
+                           color="danger"
+                           ref="loadableButton" id="button-with-loading2"
+                           class="w-full mr-2 vs-con-loading__container" @click="emptyCart">
+                  Cancel
+                </vs-button>
+                <vs-button icon-pack="feather" icon="icon-check"
                            color="success"
                            ref="loadableButton" id="button-with-loading"
                            class="w-full vs-con-loading__container" @click="submitCart">
@@ -183,141 +189,143 @@
 </template>
 
 <script>
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-    import {getClient} from '../../../../stitch/app'
-    import {mapState} from 'vuex'
-    import {getVendors, getCategory} from '../../../../stitch/api/inventory';
+  import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+  import {getClient} from '../../../../stitch/app'
+  import {mapState} from 'vuex'
+  import {getVendors, getCategory} from '../../../../stitch/api/inventory';
 
 
-    export default {
-        name: "ProductAddMultiple",
-        props: {},
-        components: {
-            VuePerfectScrollbar
-        },
-        data: () => ({
-            //Button Loading
-            backgroundLoading: '#7367F0',
-            colorLoading: 'white',
-            //
+  export default {
+    name: "ProductAddMultiple",
+    props: {},
+    components: {
+      VuePerfectScrollbar
+    },
+    data: () => ({
+      //Button Loading
+      backgroundLoading: '#7367F0',
+      colorLoading: 'white',
+      //
 
-            settings:
-                {
-                    maxScrollbarLength: 60,
-                    wheelSpeed: .60,
-                }
-            ,
-            model: {
-                product: {},
-                allProduct: {
-                    created_on: Date(),
-                    created_by: '',
-                    qty_in_stock: 0
-                }
-            },
-            vendors: [],
-            categories: [],
-            cart: []
-        }),
-        methods: {
-
-            backToTable() {
-                this.$emit("backToTable")
-            },
-            clearFields() {
-                this.model.product = {}
-            },
-            addToCart() {
-                this.$validator.validateAll().then(result => {
-                        if (result) {
-                            let product = Object.assign(this.model.product, this.model.allProduct);
-                            if (!this.checkInCart(product)) {
-                                this.cart.unshift(product);
-                                this.clearFields()
-                            } else {
-                                this.notify({
-                                    title: 'Warning',
-                                    text: 'Already in Cart',
-                                    color: 'warning'
-                                });
-                            }
-
-
-                        } else {
-                            // form have errors
-                        }
-                    }
-                ).catch(err => {
-                    console.log(err)
-                })
-            },
-            removeProduct(p) {
-                this.cart.splice(p, 1);
-            },
-            checkInCart(p) {
-                let product = this.cart.find(item => item.name === p.name);
-                return !!product;
-
-            },
-            submitCart() {
-                this.$vs.loading({
-                    background: this.backgroundLoading,
-                    color: this.colorLoading,
-                    container: '#button-with-loading',
-                    scale: 0.45
-                })
-                getClient().callFunction('ProductCreateMany', [this.cart]).then(
-                    res => {
-                        this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-                        this.$emit('backToTable');
-                        this.notify({text: 'Successfully Added New Products!', title: '', color: 'success'})
-                    }
-                ).catch(
-                    err => {
-                        this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-                        this.notify({text: err.message, title: 'Error', color: 'danger'})
-                    }
-                )
-            },
-
-            getVendors() {
-                this.axios.get(getVendors).then((res) => {
-                    this.vendors = res.data;
-                }).catch((err) => {
-                    this.notify({
-                        title: 'Error',
-                        text: err.message,
-                        color: 'danger'
-                    });
-                });
-            }
-            ,
-            getCategories() {
-                this.axios.get(getCategory).then((res) => {
-                    this.categories = res.data;
-                }).catch((err) => {
-                    this.notify({
-                        title: 'Error',
-                        text: err.message,
-                        color: 'danger'
-                    });
-                });
-            }
-        },
-        computed: {
-            ...mapState(['AppActiveUser'])
-
-        },
-        watch: {},
-        mounted() {
-            this.model.allProduct.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
-
-        },
-        created() {
-            this.getCategories();
-            this.getVendors();
+      settings:
+        {
+          maxScrollbarLength: 60,
+          wheelSpeed: .60,
         }
+      ,
+      model: {
+        product: {},
+        allProduct: {
+          created_on: Date(),
+          created_by: '',
+          qty_in_stock: 0
+        }
+      },
+      vendors: [],
+      categories: [],
+      cart: []
+    }),
+    methods: {
+
+      backToTable() {
+        this.$emit("backToTable")
+      },
+      clearFields() {
+        this.model.product = {}
+      },
+      addToCart() {
+        this.$validator.validateAll().then(result => {
+            if (result) {
+              let product = Object.assign(this.model.product, this.model.allProduct);
+              if (!this.checkInCart(product)) {
+                this.cart.unshift(product);
+                this.clearFields()
+              } else {
+                this.notify({
+                  title: 'Warning',
+                  text: 'Already in Cart',
+                  color: 'warning'
+                });
+              }
+
+
+            } else {
+              // form have errors
+            }
+          }
+        ).catch(err => {
+          console.log(err)
+        })
+      },
+      removeProduct(p) {
+        this.cart.splice(p, 1);
+      },
+      checkInCart(p) {
+        let product = this.cart.find(item => item.name === p.name);
+        return !!product;
+
+      },
+      submitCart() {
+        this.$vs.loading({
+          background: this.backgroundLoading,
+          color: this.colorLoading,
+          container: '#button-with-loading',
+          scale: 0.45
+        })
+        getClient().callFunction('ProductCreateMany', [this.cart]).then(
+          res => {
+            this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+            this.$emit('backToTable');
+            this.notify({text: 'Successfully Added New Products!', title: '', color: 'success'})
+          }
+        ).catch(
+          err => {
+            this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+            this.notify({text: err.message, title: 'Error', color: 'danger'})
+          }
+        )
+      },
+      emptyCart() {
+        this.cart = []
+      },
+      getVendors() {
+        this.axios.get(getVendors).then((res) => {
+          this.vendors = res.data;
+        }).catch((err) => {
+          this.notify({
+            title: 'Error',
+            text: err.message,
+            color: 'danger'
+          });
+        });
+      }
+      ,
+      getCategories() {
+        this.axios.get(getCategory).then((res) => {
+          this.categories = res.data;
+        }).catch((err) => {
+          this.notify({
+            title: 'Error',
+            text: err.message,
+            color: 'danger'
+          });
+        });
+      }
+    },
+    computed: {
+      ...mapState(['AppActiveUser'])
+
+    },
+    watch: {},
+    mounted() {
+      this.model.allProduct.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
+
+    },
+    created() {
+      this.getCategories();
+      this.getVendors();
     }
+  }
 </script>
 
 <style scoped>
