@@ -120,9 +120,10 @@
             }
           }
         );
-        if( this.total !== 0){
+        if( this.total === 0){
           getClient().callFunction('PurchaseBar', [sorted]).then(
             res => {
+              // console.log(res)
               eventBus.$emit("formSubmitted");
               this.notify({text: 'Successfully', title: '', color: 'success'});
             }

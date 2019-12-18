@@ -7,6 +7,7 @@
             <vx-tooltip text="Go Back" position="top">
               <vs-button icon-pack="feather" icon="icon-corner-up-left"
                          color="primary"
+                         type="border"
                          class="mr-2" @click="backToTable">
                 Back
               </vs-button>
@@ -33,7 +34,7 @@
             </div>
 
             <div class="flex">
-              <p class="mb-4 flex">Category : <span class="pl-2"  v-if="!visibility.isEdit"> {{activeProduct.category | capitalize}}</span>
+              <p class="mb-4 flex">Category : <span class="pl-2" v-if="!visibility.isEdit"> {{activeProduct.category | capitalize}}</span>
                 <span v-if="visibility.isEdit">
                   <vs-select v-validate="'required'" v-model="activeProduct.category" name="Product Category"
                              class="select-large ml-2 -mt-2  w-full">
@@ -46,7 +47,7 @@
               </p>
             </div>
             <div class="flex">
-              <p class="mb-4 flex">Vendor : <span class="pl-2"  v-if="!visibility.isEdit">   {{activeProduct.vendor| capitalize}}</span>
+              <p class="mb-4 flex">Vendor : <span class="pl-2" v-if="!visibility.isEdit">   {{activeProduct.vendor| capitalize}}</span>
                 <span v-if="visibility.isEdit">
                  <vs-select v-validate="'required'" v-model="activeProduct.vendor" name="Product Vendor"
 
@@ -102,8 +103,10 @@
                 </span>
               </p>
             </div>
-            <p class="mb-4">In Stock Quantity: <span class="text-primary">{{activeProduct.qty_in_stock.$numberInt}} item(s) </span> </p>
-            <p class="mb-4">In Stock Crate(s): <span class="text-primary">{{activeProduct.qty_in_stock.$numberInt/activeProduct.qty_per_crate}} crate(s)</span> </p>
+            <p class="mb-4">In Stock Quantity: <span class="text-primary">{{activeProduct.qty_in_stock.$numberInt}} item(s) </span>
+            </p>
+            <p class="mb-4">In Stock Crate(s): <span class="text-primary">{{activeProduct.qty_in_stock.$numberInt/activeProduct.qty_per_crate}} crate(s)</span>
+            </p>
             <div class="flex">
               <p class="mb-4 flex">Quantity Per Crate :
                 <span v-if="!visibility.isEdit" class="pl-1">  {{ activeProduct.qty_per_crate }} item(s)</span>
@@ -158,6 +161,7 @@
           </div>
           <div class="flex">
             <vs-button
+              type="border"
               v-if="!visibility.isEdit"
               color="warning"
               class="mr-2 w-full" @click="editProduct">
@@ -271,7 +275,7 @@
         this.visibility.isEdit = !this.visibility.isEdit
       },
       cancelProductEdit() {
-        this.backToTable()
+        this.visibility.isEdit = !this.visibility.isEdit
       },
       updateProduct() {
         this.$validator.validateAll().then(result => {

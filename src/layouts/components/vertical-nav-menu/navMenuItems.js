@@ -63,7 +63,7 @@ export default [
   },
   {
     url: "/purchase",
-    name: "Purchasing",
+    name: "Purchase",
     slug: "purchase",
     icon: "TruckIcon",
     // submenu: [
@@ -96,16 +96,16 @@ export default [
     icon: "ArchiveIcon",
   },
   {
-    url: "null",
-    name: "Sales",
+    url: "/sales",
+    name: "Sale",
     slug: "report",
     icon: "TrendingUpIcon",
-    submenu: [
-      {
-        url: '/sales/bar',
-        name: "Bar",
-        slug: "sales_bar",
-      },
+    // submenu: [
+    //   {
+    //     url: '/sales/bar',
+    //     name: "Bar",
+    //     slug: "sales_bar",
+    //   },
       // {
       //   url: '/sales/barbeque',
       //   name: "Barbeque",
@@ -119,7 +119,7 @@ export default [
       //   name: "Pool",
       //   slug: "sales_pool",
       // },
-    ]
+    // ]
   },
   {
     url: "/users",

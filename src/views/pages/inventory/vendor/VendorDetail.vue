@@ -7,6 +7,7 @@
             <vx-tooltip text="Go Back" position="top">
               <vs-button icon-pack="feather" icon="icon-corner-up-left"
                          color="primary"
+                         type="border"
                          class="mr-2" @click="backToTable">
                 Back
               </vs-button>
@@ -77,17 +78,20 @@
             <vs-button
               v-if="!showProducts"
               color="success"
+              type="border"
               class="mr-2 w-full" @click="showProducts=!showProducts">
               Show All Products
             </vs-button>
             <vs-button
               v-if="showProducts"
               color="danger"
+              type="border"
               class="mr-2 w-full" @click="showProducts=!showProducts">
               Hide Products
             </vs-button>
             <vs-button
               color="dark"
+              type="border"
               class="mr-2 w-full" @click="backToTable">
               Show Last Purchasing
             </vs-button>

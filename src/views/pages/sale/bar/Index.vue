@@ -1,42 +1,34 @@
 <template>
   <vx-card>
     <div slot="no-body">
-      <div class="flex justify-between p-2">
+      <div class="flex justify-end p-2">
         <vx-tooltip text="Go Back" position="top">
           <vs-button icon-pack="feather" icon="icon-corner-up-left"
-                     color="primary" type="border"
-                     class="ml-2  border" @click="backToPurchasingMenu()">
+                     color="primary"
+                     class="mr-2" @click="backToPurchasingMenu()">
             Back
           </vs-button>
         </vx-tooltip>
-        <vx-tooltip text="Go Back" position="top">
-          <vs-button icon-pack="feather" icon="icon-file-text"
-                     color="warning"
-                     type="border"
-                     class="mr-2" @click="backToPurchasingMenu()">
-            Show History
-          </vs-button>
-        </vx-tooltip>
       </div>
-      <form-wizard v-if="!isSubmit" color="rgba(var(--vs-warning), 1)" :title="null" :subtitle="null"
-                   finishButtonText="Submit"
-                   @on-complete="formSubmitted">
-        <tab-content title="Select Products" class="mb-5" icon="feather icon-plus">
-          <!-- tab 1 content -->
-          <select-products :chips="chips"/>
-        </tab-content>
+<!--      <form-wizard v-if="!isSubmit" color="rgba(var(&#45;&#45;vs-warning), 1)" :title="null" :subtitle="null"-->
+<!--                   finishButtonText="Submit"-->
+<!--                   @on-complete="formSubmitted">-->
+<!--        <tab-content title="Select Products" class="mb-5" icon="feather icon-plus">-->
+<!--          &lt;!&ndash; tab 1 content &ndash;&gt;-->
+<!--          <select-products :chips="chips"/>-->
+<!--        </tab-content>-->
 
-        <!-- tab 2 content -->
-        <tab-content title="Select Quantity" class="mb-5" icon="feather icon-briefcase">
-          <select-quantity :chips="chips"/>
-        </tab-content>
+<!--        &lt;!&ndash; tab 2 content &ndash;&gt;-->
+<!--        <tab-content title="Select Quantity" class="mb-5" icon="feather icon-briefcase">-->
+<!--          <select-quantity :chips="chips"/>-->
+<!--        </tab-content>-->
 
-        <!-- tab 3 content -->
+<!--        &lt;!&ndash; tab 3 content &ndash;&gt;-->
 
-        <tab-content title="Check" class="mb-5" icon="feather icon-image">
-          <submit/>
-        </tab-content>
-      </form-wizard>
+<!--        <tab-content title="Check" class="mb-5" icon="feather icon-image">-->
+<!--          <submit/>-->
+<!--        </tab-content>-->
+<!--      </form-wizard>-->
       <finish v-if="isSubmit"/>
 
     </div>
