@@ -7,8 +7,6 @@
         <div class="p-4 pb-0 " :class="{'flex justify-center items-center': iconRight}">
           <feather-icon :icon="o.icon" class="p-3 bg-white inline-flex rounded-full"
                         :class="[`text-${o.color}`, {'mb-4': !iconRight}]"/>
-          <div>
-          </div>
         </div>
       </div>
     </div>
@@ -63,31 +61,8 @@
     },
     methods: {
       chooseOutlet(o) {
-        if (o === "bar") {
-          this.goToBar();
-          this.showOutlet = true
-        } else if (o === "barbeque") {
-          this.goToBarbeque();
-          this.showOutlet = true
-        } else if (o === "kitchen") {
-          this.goToKitchen();
-          this.showOutlet = true
-        }else if (o === "pool") {
-          this.goToPool();
-          this.showOutlet = true
-        }
-      },
-      goToBar() {
-        this.activeComponent = "bar"
-      },
-      goToBarbeque() {
-        this.activeComponent = "barbeque"
-      },
-      goToPool() {
-        this.activeComponent = "pool"
-      },
-      goToKitchen() {
-        this.activeComponent = "kitchen"
+        this.activeComponent = o;
+        this.showOutlet = true
       },
       listener() {
         eventBus.$on(

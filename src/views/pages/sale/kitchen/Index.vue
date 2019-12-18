@@ -8,7 +8,7 @@
         <p class="mb-16 d-theme-text-inverse">paraphonic unassessable foramination Caulopteris worral Spirophyton
           encrimson esparcet aggerate chondrule restate whistler shallopy biosystematy area bertram plotting unstarting
           quarterstaff.</p>
-        <vs-button size="large" @click="backToPurchasingMenu()">Back to Home</vs-button>
+        <vs-button size="large" @click="backToSalesMenu()">Back to Home</vs-button>
       </div>
     </div>
   </vx-card>
@@ -29,7 +29,7 @@
       }
     },
     methods: {
-      backToPurchasingMenu() {
+      backToSalesMenu() {
         eventBus.$emit('back')
       }
     },

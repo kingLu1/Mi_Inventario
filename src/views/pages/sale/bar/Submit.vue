@@ -1,19 +1,20 @@
 <template>
   <vs-list>
-    <div v-for="p in products" v-if="p.purchasing.length">
+
+    <div v-for="p in products" v-if="p.sold.length">
       <vs-list-header :title="p.vendor | capitalize" color="dark"/>
-      <div v-for="ps in p.purchasing">
+      <div v-for="ps in p.sold">
+
         <vs-list-item icon-pack="feather" icon="icon-check" :title="ps.name | capitalize"
-                      :subtitle="returnSubtitle(ps)"/>
+                      :subtitle="returnSubtitle(ps)"
+        />
       </div>
-      <!--      <div class="flex justify-center mt-2">-->
-      <!--        <h5>{{p.vendor | capitalize}} Total : {{getVendorTotal(p.purchasing ) | currency}} </h5>-->
-      <!--      </div>-->
+
 
     </div>
     <div class="mt-2">
-      <div class="flex justify-end mb-2" v-for="p in products" v-if="p.purchasing.length">
-        <h6>{{p.vendor | capitalize}} Total : {{getVendorTotal(p.purchasing ) | currency}} </h6>
+      <div class="flex justify-end mb-2" v-for="p in products" v-if="p.sold.length">
+        <h6>{{p.vendor | capitalize}} Total : {{getVendorTotal(p.sold ) | currency}} </h6>
       </div>
       <div class="flex justify-end">
         <h5>
@@ -35,28 +36,27 @@
 
   export default {
     name: "Submit",
+    props: {
+      soldProducts: {
+        required: true
+      }
+    },
     data: () => ({
       vendors: [],
       products: [],
-      trimProducts: [],
       total: 0
     }),
     methods: {
       listeners() {
-        // receive from selectQuantity Component
-        eventBus.$on('trimProducts', (payload) => {
-          this.trimProducts = payload
-        });
         eventBus.$on('submit', () => {
           this.purchaseToDB()
         });
-        eventBus.$on('changeTrimProducts', (payload) => {
-          this.trimProducts = payload;
+        eventBus.$on('re-evaluate', () => {
           this.products = this.vendors.map(item => {
               return {
                 id: item._id,
                 vendor: item.name,
-                purchasing: []
+                sold: []
               }
             }
           );
@@ -74,7 +74,7 @@
         });
       },
       sortVendorProducts() {
-        this.trimProducts.forEach(items => {
+        this.soldProducts.forEach(items => {
           let ind;
           let product = this.products.find((item, index) => {
               if (item.vendor === items.vendor) {
@@ -85,33 +85,34 @@
           );
           if (product) {
             if (!this.checkInChips(items, ind)) {
-              this.products[ind].purchasing.push(items);
+              this.products[ind].sold.push(items);
             }
 
           }
         })
       },
       checkInChips(p, ind) {
-        let product = this.products[ind].purchasing.find(item => item.name === p.name);
+        let product = this.products[ind].sold.find(item => item.name === p.name);
         return !!product;
       },
       returnSubtitle(ps) {
-        return `${ps.purchasing} Crate(s)(${ps.qty_per_crate * ps.purchasing} items) cost ‎₦${ps.purchasing * ps.crate_price}`
+        return `Sold ‎₦${ps.selling_price * ps.sold} at price ‎₦${ps.selling_price} for ${ps.sold} item(s)`
       },
       getVendorTotal(p) {
         let sortedArray = p.map(item =>
-          item.crate_price * item.purchasing
+          item.selling_price * item.sold
         )
         this.getTotal()
         return sortedArray.reduce((x, y) => x + y)
 
       },
       getTotal() {
-        let sorted = this.trimProducts.map(item =>
-          item.crate_price * item.purchasing
-        )
+        let sorted = this.soldProducts.map(item =>
+          item.selling_price * item.sold
+        );
         this.total = sorted.reduce((x, y) => x + y)
       },
+
       purchaseToDB() {
         let sorted = this.trimProducts.map(item => {
             return {
@@ -120,10 +121,9 @@
             }
           }
         );
-        if( this.total === 0){
-          getClient().callFunction('PurchaseBar', [sorted]).then(
+        if (this.total !== 0) {
+          getClient().callFunction('SalesBar', [sorted]).then(
             res => {
-              // console.log(res)
               eventBus.$emit("formSubmitted");
               this.notify({text: 'Successfully', title: '', color: 'success'});
             }
@@ -139,7 +139,9 @@
     },
     created() {
       this.listeners();
-      this.getVendors()
+      this.getVendors();
+
+
     },
     watch: {
       vendors() {
@@ -147,12 +149,12 @@
             return {
               id: item._id,
               vendor: item.name,
-              purchasing: []
+              sold: []
             }
           }
         );
       },
-      trimProducts() {
+      soldProducts() {
         this.sortVendorProducts()
       }
     }
@@ -160,7 +162,5 @@
 </script>
 
 <style scoped>
-  .vs-list--item .list-titles .vs-list--subtitle {
-    font-size: 0.95rem !important;
-  }
+
 </style>
