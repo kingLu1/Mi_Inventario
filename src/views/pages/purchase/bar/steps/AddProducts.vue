@@ -1,10 +1,10 @@
 <template>
   <div class="p-base px-4 pt-2">
     <vs-divider  position="left-center">
-      <h4 class="font-semibold">Add Sold Products</h4>
+      <h4 class="font-semibold">Buy Products</h4>
     </vs-divider>
     <div class="vx-row">
-      <div class="vx-col w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-2/5">
+      <div class="vx-col w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
         <div class="vx-row flex">
           <div class="vx-col w-1/2 sm:w-1/2 md:w-2/3 lg:w-3/4 xl:w-2/3">
             <div class="mb-2">
@@ -16,26 +16,30 @@
                   v-show="errors.has('Product')">{{ errors.first(' Product') }}</span>
           </div>
           <div class="vx-col actions w-1/2 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/3">
-            <vs-button @click="addSelectedProductToSold" color="warning" type="filled" icon-pack="feather"
+            <vs-button @click="addSelectedProductToPurchased" color="warning" type="filled" icon-pack="feather"
                        icon="icon-plus"
                        class="mr-2 round">
             </vs-button>
           </div>
         </div>
       </div>
-      <div class="vx-col w-full sm:w-1/2 md:w-2/3 lg:w-3/4 xl:w-3/5">
+      <div class="vx-col w-full sm:w-1/2 md:w-2/3 lg:w-2/3 xl:w-2/3">
         <div class="mb-2">
-          <p>Cart({{sortedSoldProducts.length}})</p>
+          <p>Cart({{sortedPurchasedProducts.length}})</p>
         </div>
-        <div class="vx-row" v-if="sortedSoldProducts.length">
+        <div class="vx-row" v-if="sortedPurchasedProducts.length">
           <div class="vx-col  w-1/5">
             <p class="font-bold ">Name</p>
           </div>
           <div class="vx-col  w-1/5">
-            <p class="font-bold text-center">Price</p>
+            <p class="font-bold text-center">Crate Price</p>
           </div>
+<!--          <div class="vx-col  w-1/6">-->
+<!--            <p class="font-bold text-center">Quantity Per Crate</p>-->
+<!--          </div>-->
+
           <div class="vx-col  w-1/5">
-            <p class="font-bold text-center">Sold</p>
+            <p class="font-bold text-center">Purchasing</p>
           </div>
           <div class="vx-col  w-1/5">
             <p class="font-bold text-center">Amount</p>
@@ -44,26 +48,28 @@
             <p class="font-bold text-center">Action</p>
           </div>
         </div>
-        <VuePerfectScrollbar class="scroll-area pr-2" :settings="settings" v-if="sortedSoldProducts.length">
-          <div class="vx-row flex items-center" v-for="p in sortedSoldProducts">
+        <VuePerfectScrollbar class="scroll-area pr-2" :settings="settings" v-if="sortedPurchasedProducts.length">
+          <div class="vx-row flex items-center" v-for="p in sortedPurchasedProducts">
 
             <div class="vx-col   w-1/5">
               <p>{{p.name | capitalize}}</p>
             </div>
 
             <div class="vx-col flex justify-center w-1/5">
-              <p>{{p.selling_price | currency}}</p>
+              <p>{{p.crate_price | currency}}</p>
             </div>
-            <div class="vx-col flex justify-center w-1/5">
+<!--            <div class="vx-col flex justify-center w-1/6">-->
+<!--              <p>{{p.qty_per_crate}}</p>-->
+<!--            </div>-->
+            <div class="vx-col  w-1/5">
               <p class="flex">
           <span class="centerx">
-<!--            :label="totalQuantity(p)-->
-            <vs-input-number v-model="p.sold" min="1" :max="p.inStock.$numberInt" color="dark "/>
+            <vs-input-number v-model="p.purchasing" color="dark" :label="totalQuantity(p)"/>
           </span>
               </p>
             </div>
             <div class="vx-col  flex justify-center w-1/5">
-              <p class="money">{{p.selling_price * p.sold | currency}}</p>
+              <p class="money">{{p.crate_price * p.purchasing | currency}}</p>
             </div>
             <div class="vx-col  flex justify-center w-1/5">
               <vs-button @click="remove(p)" size="small" color="danger" type="border" icon-pack="feather" icon="icon-x"
@@ -74,7 +80,7 @@
         </VuePerfectScrollbar>
       </div>
     </div>
-    <div class="flex justify-end" v-if="sortedSoldProducts.length">
+    <div class="flex justify-end" v-if="sortedPurchasedProducts.length">
       <vs-button
         color="warning" type="filled"
         class="ml-2 " @click="next()">
@@ -95,8 +101,8 @@
     data: () => ({
       products: [],
       selectedProduct: '',
-      selectedSoldProducts: [],
-      sortedSoldProducts: [],
+      selectedPurchasedProducts: [],
+      sortedPurchasedProducts: [],
       trash: [],
 
       settings: {maxScrollbarLength: 60, wheelSpeed: .60},
@@ -106,7 +112,7 @@
     },
     methods: {
       next() {
-        eventBus.$emit('goToSummary', this.sortedSoldProducts)
+        eventBus.$emit('goToSummary', this.sortedPurchasedProducts)
       },
       getProducts() {
         this.axios.get(getProducts).then((res) => {
@@ -119,12 +125,12 @@
           });
         });
       },
-      addSelectedProductToSold() {
+      addSelectedProductToPurchased() {
         this.$validator.validateAll().then(result => {
             if (result) {
               let product = this.selectedProduct;
-              if (!this.checkIfInSelectedSoldProducts(product)) {
-                this.selectedSoldProducts.unshift(product);
+              if (!this.checkIfInSelectedPurchasedProducts(product)) {
+                this.selectedPurchasedProducts.unshift(product);
                 this.selectedProduct = '';
                 this.sortSoldProduct(product);
                 this.removeFromProducts(product);
@@ -143,19 +149,19 @@
           console.log(err)
         })
       },
-      checkIfInSelectedSoldProducts(selectedProduct) {
-        // returns false if selected products is already in selectedSoldProducts Array
-        let product = this.selectedSoldProducts.find(product => product.name === selectedProduct.name);
+      checkIfInSelectedPurchasedProducts(selectedProduct) {
+        // returns false if selected products is already in selectedPurchasedProducts Array
+        let product = this.selectedPurchasedProducts.find(product => product.name === selectedProduct.name);
         return !!product;
       },
-      sortSoldProduct(p) {
-        this.sortedSoldProducts.push({
-          id: p._id,
-          name: p.name,
-          selling_price: parseInt(p.selling_price, 10),
-          sold: 0,
-          vendor: p.vendor,
-          inStock: p.qty_in_stock
+      sortSoldProduct(item) {
+        this.sortedPurchasedProducts.push({
+          id: item._id,
+          name: item.name,
+          vendor: item.vendor,
+          qty_per_crate: item.qty_per_crate,
+          crate_price: parseInt(item.crate_price, 10),
+          purchasing: 0
         })
       },
       removeFromProducts(selectedProduct) {
@@ -165,8 +171,8 @@
         this.sendToTrash(product)
       },
       remove(item) {
-        this.selectedSoldProducts.splice(this.selectedSoldProducts.indexOf(item), 1);
-        this.sortedSoldProducts.splice(this.sortedSoldProducts.indexOf(item), 1);
+        this.selectedPurchasedProducts.splice(this.selectedPurchasedProducts.indexOf(item), 1);
+        this.sortedPurchasedProducts.splice(this.sortedPurchasedProducts.indexOf(item), 1);
         this.recycle(item)
         // eventBus.$emit('re-evaluate')
       },
@@ -177,6 +183,9 @@
         let product = this.trash.find(item => item.name === p.name);
         this.products.push(product)
       },
+      totalQuantity(p) {
+        return `Crate:(${p.qty_per_crate * p.purchasing})`
+      }
     },
     components: {
       vSelect, VuePerfectScrollbar

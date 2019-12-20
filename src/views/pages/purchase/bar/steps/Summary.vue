@@ -1,13 +1,13 @@
 <template>
   <div class="p-base px-4 pt-2">
-    <vs-divider  position="left-center">
-      <h4 class="font-semibold">Sales Summary</h4>
+    <vs-divider position="left-center">
+      <h4 class="font-semibold">Purchase Summary</h4>
     </vs-divider>
-    <vs-list >
-      <div v-for="p in products" v-if="p.sold.length">
+    <vs-list>
+      <div v-for="p in products" v-if="p.purchasing.length">
         <vs-list-header :title="p.vendor | capitalize"
                         color="dark"/>
-        <div v-for="ps in p.sold">
+        <div v-for="ps in p.purchasing">
           <vs-list-item icon-pack="feather"
                         icon="icon-check"
                         :title="ps.name | capitalize"
@@ -15,8 +15,8 @@
         </div>
       </div>
       <div class="mt-2 mb-5">
-        <div class="flex justify-end mb-2" v-for="p in products" v-if="p.sold.length">
-          <h6>{{p.vendor | capitalize}} Total : {{getVendorTotal(p.sold ) | currency}} </h6>
+        <div class="flex justify-end mb-2" v-for="p in products" v-if="p.purchasing.length">
+          <h6>{{p.vendor | capitalize}} Total : {{getVendorTotal(p.purchasing ) | currency}} </h6>
         </div>
         <div class="flex justify-end">
           <h5>
@@ -36,7 +36,7 @@
       </vs-button>
       <vs-button
         color="warning" type="filled"
-        class="ml-2 " @click="sendToMongo">
+        class="ml-2 " @click="sendPurchaseToMongo">
         Submit
       </vs-button>
     </div>
@@ -54,7 +54,7 @@
   export default {
     name: "Summary",
     props: {
-      soldProducts: {
+      purchasedProducts: {
         required: true
       }
     },
@@ -82,7 +82,7 @@
         });
       },
       sortVendorProducts() {
-        this.soldProducts.forEach(items => {
+        this.purchasedProducts.forEach(items => {
           let ind;
           let product = this.products.find((item, index) => {
               if (item.vendor === items.vendor) {
@@ -93,37 +93,39 @@
           );
           // if (product) {
           // if (!this.checkInChips(items, ind)) {
-          this.products[ind].sold.push(items);
+          this.products[ind].purchasing.push(items);
           // }
 
           // }
         })
       },
       returnSubtitle(ps) {
-        return `Sold ‎₦${ps.selling_price * ps.sold} at price ‎₦${ps.selling_price} for ${ps.sold} item(s)`
+        return `${ps.purchasing} Crate(s)(${ps.qty_per_crate * ps.purchasing} items) cost ‎₦${ps.purchasing * ps.crate_price}`
       },
       getVendorTotal(p) {
         let sortedArray = p.map(item =>
-          item.selling_price * item.sold
+          item.crate_price * item.purchasing
         )
         this.getTotal()
         return sortedArray.reduce((x, y) => x + y)
 
       },
       getTotal() {
-        let sorted = this.soldProducts.map(item =>
-          item.selling_price * item.sold
+        let sorted = this.purchasedProducts.map(item =>
+          item.crate_price * item.purchasing
         );
         this.total = sorted.reduce((x, y) => x + y)
       },
-      sendToMongo() {
-        let sold = this.soldProducts.map(item => {
-            return {id: item.id, sold: 0 - item.sold}
+      sendPurchaseToMongo() {
+        let purchase = this.purchasedProducts.map(item => {
+            return {
+              id: item.id,
+              purchase: item.qty_per_crate * item.purchasing
+          }
           }
         );
-        console.log('sold:', sold)
         if (this.total !== 0) {
-          getClient().callFunction('SalesBar', [sold]).then(
+          getClient().callFunction('PurchaseBar', [purchase]).then(
             res => {
               // eventBus.$emit("soldSubmitted");
               // console.log(res);
@@ -147,7 +149,7 @@
             return {
               id: item._id,
               vendor: item.name,
-              sold: []
+              purchasing: []
             }
           }
         );

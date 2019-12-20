@@ -1,7 +1,7 @@
 <template>
   <vx-card>
     <div slot="no-body">
-      <div class="flex justify-between p-2" v-if="showAction">
+      <div class="flex justify-between p-2 pb-4" v-if="showAction">
         <vx-tooltip text="Go Back" position="top">
           <vs-button icon-pack="feather" icon="icon-corner-up-left"
                      color="primary" type="border"
@@ -28,16 +28,15 @@
 
 <script>
 
-  import BarForm from "./Form";
-  import History from "./history/Index"
-
+  import BarPurchase from "./steps/Index";
+  import History from "./history/Index";
 
   import eventBus from "../../../../eventBus";
 
   export default {
     data() {
       return {
-        activeComponent: 'BarForm',
+        activeComponent: 'BarPurchase',
         showAction: true
       }
     },
@@ -52,15 +51,15 @@
         eventBus.$on(
           "showActions",
           (payload) => this.showAction = payload
-        ),
-          eventBus.$on(
-            "backToPurchasing",
-            () => this.activeComponent = 'BarForm'
-          )
+        );
+        eventBus.$on(
+          "backToPurchases",
+          () => this.activeComponent = 'BarPurchase'
+        )
       }
     },
     components: {
-      BarForm,
+      BarPurchase,
       History
     },
     created() {
