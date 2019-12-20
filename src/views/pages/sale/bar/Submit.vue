@@ -48,7 +48,7 @@
     }),
     methods: {
       listeners() {
-        eventBus.$on('submit', () => {
+        eventBus.$on('submitSold', () => {
           this.purchaseToDB()
         });
         eventBus.$on('re-evaluate', () => {
@@ -114,17 +114,19 @@
       },
 
       purchaseToDB() {
-        let sorted = this.trimProducts.map(item => {
+        let sold = this.soldProducts.map(item => {
             return {
               id: item.id,
-              purchase: item.qty_per_crate * item.purchasing
+              sold: 0 - item.sold
             }
           }
         );
         if (this.total !== 0) {
-          getClient().callFunction('SalesBar', [sorted]).then(
+          console.log(sold)
+          getClient().callFunction('SalesBar', [sold]).then(
             res => {
-              eventBus.$emit("formSubmitted");
+              eventBus.$emit("soldSubmitted");
+              console.log(res)
               this.notify({text: 'Successfully', title: '', color: 'success'});
             }
           ).catch(

@@ -105,107 +105,108 @@
 </template>
 
 <script>
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-    import {getClient} from '../../../../stitch/app'
-    import {mapState} from 'vuex'
+  import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+  import {getClient} from '../../../../stitch/app'
+  import {mapState} from 'vuex'
 
-    export default {
-        name: "ProductAdd",
-        props: {
-            isSidebarActive: {
-                type: Boolean,
-                required: true
-            },
-            vendors: {
-                required: true
-            },
-            categories: {
-                required: true
-            }
-        },
-        components: {
-            VuePerfectScrollbar
-        },
-        data: () => ({
-            //Button Loading
-            backgroundLoading: '#7367F0',
-            colorLoading: 'white',
-            //
+  export default {
+    name: "ProductAdd",
+    props: {
+      isSidebarActive: {
+        type: Boolean,
+        required: true
+      },
+      vendors: {
+        required: true
+      },
+      categories: {
+        required: true
+      }
+    },
+    components: {
+      VuePerfectScrollbar
+    },
+    data: () => ({
+      //Button Loading
+      backgroundLoading: '#7367F0',
+      colorLoading: 'white',
+      //
 
-            settings:
-                {
-                    maxScrollbarLength: 60,
-                    wheelSpeed: .60,
-                }
-            ,
-            model: {
-                product: {
+      settings:
+        {
+          maxScrollbarLength: 60,
+          wheelSpeed: .60,
+        }
+      ,
+      model: {
+        product: {
+          created_on: Date(),
+          created_by: '',
+          qty_in_stock: 0
+        }
+      }
+      ,
+    }),
+    methods: {
+      addProduct() {
+        this.$validator.validateAll().then(result => {
+            if (result) {
+              this.$vs.loading({
+                background: this.backgroundLoading,
+                color: this.colorLoading,
+                container: '#button-with-loading',
+                scale: 0.45
+              })
+              let data = [this.model.product];
+              getClient().callFunction('ProductCreate', data).then(
+                res => {
+                  this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                  this.$emit('newProduct');
+                  this.notify({text: 'Successfully Added New Product!', title: '', color: 'success'})
+                  this.model.product = {
                     created_on: Date(),
-                    created_by: '',
+                    created_by: this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name,
                     qty_in_stock: 0
+                  };
+                  this.isSidebarActiveLocal = false;
+
+
                 }
+              ).catch(
+                err => {
+                  this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                  this.notify({text: err.message, title: 'Error', color: 'danger'})
+                }
+              )
+            } else {
+              // form have errors
             }
-            ,
-        }),
-        methods: {
-            addProduct() {
-                this.$validator.validateAll().then(result => {
-                        if (result) {
-                            this.$vs.loading({
-                                background: this.backgroundLoading,
-                                color: this.colorLoading,
-                                container: '#button-with-loading',
-                                scale: 0.45
-                            })
-                            let data = [this.model.product];
-                            getClient().callFunction('ProductCreate', data).then(
-                                res => {
-                                    this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-                                    this.$emit('newProduct');
-                                    this.notify({text: 'Successfully Added New Product!', title: '', color: 'success'})
-                                    this.model.product = {
-                                        created_on: Date(),
-                                        created_by: ''
-                                    };
-                                    this.isSidebarActiveLocal = false;
-
-
-                                }
-                            ).catch(
-                                err => {
-                                    this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-                                    this.notify({text: err.message, title: 'Error', color: 'danger'})
-                                }
-                            )
-                        } else {
-                            // form have errors
-                        }
-                    }
-                )
-            }
+          }
+        )
+      }
+    }
+    ,
+    computed: {
+      isSidebarActiveLocal: {
+        get() {
+          return this.isSidebarActive
         }
         ,
-        computed: {
-            isSidebarActiveLocal: {
-                get() {
-                    return this.isSidebarActive
-                }
-                ,
-                set(val) {
-                    if (!val) {
-                        this.$emit('closeSidebar');
-                    }
-                }
-            },
-            ...mapState(['AppActiveUser'])
-
-        },
-        watch: {},
-        mounted() {
-            this.model.product.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
-
+        set(val) {
+          if (!val) {
+            this.$emit('closeSidebar');
+          }
         }
+      },
+      ...mapState(['AppActiveUser'])
+
+    },
+    watch: {},
+    mounted() {
+      this.model.product.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
+
     }
+  }
 </script>
 
 <style lang="scss">

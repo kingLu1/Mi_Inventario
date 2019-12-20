@@ -5,7 +5,7 @@
                  @on-complete="formSubmitted">
       <tab-content title="Select Products and Add Quantity Sold" class="mb-5" icon="feather icon-plus">
         <!-- tab 1 content -->
-        <select-products :chips="chips" :soldProducts="soldProducts"/>
+        <select-products :chips="soldChips" :soldProducts="soldProducts"/>
       </tab-content>
 
       <tab-content title="Check" class="mb-5" icon="feather icon-image">
@@ -29,18 +29,18 @@
     name: "Form",
     data() {
       return {
-        chips: [],
+        soldChips: [],
         soldProducts: [],
         isSubmit: false,
       }
     },
     methods: {
       formSubmitted() {
-        eventBus.$emit('submit');
+        eventBus.$emit('submitSold');
 
       },
       listener() {
-        eventBus.$on('formSubmitted', () => this.isSubmit = true)
+        eventBus.$on('soldSubmitted', () => this.isSubmit = true)
       }
 
 
@@ -55,6 +55,11 @@
     },
     created() {
       this.listener()
+    },
+    destroyed() {
+      this.soldChips = [];
+      this.soldProducts = []
+      alert('destroyed')
     }
   }
 </script>

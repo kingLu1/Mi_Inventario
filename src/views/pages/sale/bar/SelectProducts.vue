@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="vx-col w-full sm:w-full md:w-2/3 lg:w-2/3 xl:w-2/3">
-      <div class="mb-1">
+      <div class="mb-2">
         <p>Cart({{chips.length}})</p>
       </div>
       <!--      <vs-chips color="rgb(145, 32, 159)" placeholder="No Products" v-model="chips"-->
@@ -65,7 +65,7 @@
             <p class="flex">
           <span class="centerx">
 <!--            :label="totalQuantity(p)-->
-            <vs-input-number v-model="p.sold" color="dark "/>
+            <vs-input-number v-model="p.sold" min="1" :max="p.inStock.$numberInt" color="dark "/>
           </span>
             </p>
           </div>
@@ -178,17 +178,22 @@
       sortSoldProducts(p) {
         this.soldProducts.push(
           {
+            id: p._id,
             name: p.name,
             selling_price: parseInt(p.selling_price, 10),
             sold: 0,
-            vendor: p.vendor
+            vendor: p.vendor,
+            inStock: p.qty_in_stock
           }
+
         )
+        console.log(this.soldProducts)
       }
     },
     created() {
       this.getProducts()
     }
+
 
   }
 </script>

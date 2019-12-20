@@ -105,7 +105,7 @@
             </div>
             <p class="mb-4">In Stock Quantity: <span class="text-primary">{{activeProduct.qty_in_stock.$numberInt}} item(s) </span>
             </p>
-            <p class="mb-4">In Stock Crate(s): <span class="text-primary">{{activeProduct.qty_in_stock.$numberInt/activeProduct.qty_per_crate}} crate(s)</span>
+            <p class="mb-4">In Stock Crate(s): <span class="text-primary">{{parseFloat((activeProduct.qty_in_stock.$numberInt/activeProduct.qty_per_crate).toFixed(1) )}} crate(s)</span>
             </p>
             <div class="flex">
               <p class="mb-4 flex">Quantity Per Crate :

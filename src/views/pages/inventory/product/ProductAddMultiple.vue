@@ -150,9 +150,12 @@
                     <p>{{c.worst_qty}}</p>
                   </div>
                   <div class="flex items-center justify-center ">
+                    <vs-button @click="removeProduct(index)" size="small" color="danger" type="border" icon-pack="feather" icon="icon-x"
+                               class="mr-2 round">
+                    </vs-button>
 
-                    <feather-icon icon="XIcon" class=" cursor-pointer mr-2"
-                                  svgClasses="stroke-current text-danger h-7 w-7" @click="removeProduct(index)"/>
+<!--                    <feather-icon icon="XIcon" class=" cursor-pointer mr-2"-->
+<!--                                  svgClasses="stroke-current text-danger h-7 w-7" @click="removeProduct(index)"/>-->
                   </div>
                 </div>
               </VuePerfectScrollbar>
