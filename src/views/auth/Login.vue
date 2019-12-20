@@ -92,7 +92,7 @@
                         });
                         this.$store.dispatch('loginAttempt', payload);
                     } else {
-                        // form have errors
+                        // steps have errors
                     }
                 })
             },

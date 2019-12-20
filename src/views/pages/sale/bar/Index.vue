@@ -28,7 +28,7 @@
 
 <script>
 
-  import BarForm from "./Form";
+  import BarSales from "./steps/Index";
   import History from "./history/Index";
 
   import eventBus from "../../../../eventBus";
@@ -36,7 +36,7 @@
   export default {
     data() {
       return {
-        activeComponent: 'BarForm',
+        activeComponent: 'BarSales',
         showAction: true
       }
     },
@@ -54,12 +54,12 @@
         );
         eventBus.$on(
           "backToSales",
-          () => this.activeComponent = 'BarForm'
+          () => this.activeComponent = 'BarSales'
         )
       }
     },
     components: {
-      BarForm,
+      BarSales,
       History
     },
     created() {

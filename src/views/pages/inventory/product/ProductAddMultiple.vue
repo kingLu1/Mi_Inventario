@@ -253,7 +253,7 @@
 
 
             } else {
-              // form have errors
+              // steps have errors
             }
           }
         ).catch(err => {

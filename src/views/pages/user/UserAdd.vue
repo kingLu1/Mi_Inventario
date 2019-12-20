@@ -157,7 +157,7 @@
                         };
                         this.$store.dispatch('createUser', payload);
                     } else {
-                        // form have errors
+                        // steps have errors
                     }
                 })
             },

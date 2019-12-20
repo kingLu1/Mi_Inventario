@@ -1,6 +1,6 @@
 /*=========================================================================================
   File Name: _formWizard.scss
-  Description: Styles for form wizard externsion.
+  Description: Styles for steps wizard externsion.
   ----------------------------------------------------------------------------------------
   Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
     Author: Pixinvent
@@ -34,7 +34,7 @@
   }
 }
 
-// Change form-wizard-container font style
+// Change steps-wizard-container font style
 i.wizard-icon {
   font-style: inherit;
 }
@@ -43,7 +43,7 @@ i.wizard-icon {
   margin-top: .5rem;
 }
 
-// same height as input in form wizard
+// same height as input in steps wizard
 .select-large input.vs-select--input {
   padding: 11px;
 }

@@ -112,7 +112,7 @@
                                 }
                             )
                         } else {
-                            // form have errors
+                            // steps have errors
                         }
                     }
                 )
