@@ -1,6 +1,6 @@
 <template>
   <div class="p-base px-4 pt-2">
-    <vs-divider  position="left-center">
+    <vs-divider position="left-center">
       <h4 class="font-semibold">Buy Products</h4>
     </vs-divider>
     <div class="vx-row">
@@ -34,9 +34,9 @@
           <div class="vx-col  w-1/5">
             <p class="font-bold text-center">Crate Price</p>
           </div>
-<!--          <div class="vx-col  w-1/6">-->
-<!--            <p class="font-bold text-center">Quantity Per Crate</p>-->
-<!--          </div>-->
+          <!--          <div class="vx-col  w-1/6">-->
+          <!--            <p class="font-bold text-center">Quantity Per Crate</p>-->
+          <!--          </div>-->
 
           <div class="vx-col  w-1/5">
             <p class="font-bold text-center">Purchasing</p>
@@ -58,9 +58,9 @@
             <div class="vx-col flex justify-center w-1/5">
               <p>{{p.crate_price | currency}}</p>
             </div>
-<!--            <div class="vx-col flex justify-center w-1/6">-->
-<!--              <p>{{p.qty_per_crate}}</p>-->
-<!--            </div>-->
+            <!--            <div class="vx-col flex justify-center w-1/6">-->
+            <!--              <p>{{p.qty_per_crate}}</p>-->
+            <!--            </div>-->
             <div class="vx-col  w-1/5">
               <p class="flex">
           <span class="centerx">
@@ -93,7 +93,7 @@
 <script>
   import {getProducts} from "../../../../../stitch/api/inventory";
   import vSelect from "vue-select";
-  import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+  import VuePerfectScrollbar from 'vue-perfect-scrollbar';
   import eventBus from "../../../../../eventBus";
 
   export default {
@@ -112,7 +112,22 @@
     },
     methods: {
       next() {
-        eventBus.$emit('goToSummary', this.sortedPurchasedProducts)
+
+
+        let sortedArray = this.sortedPurchasedProducts.map(item =>
+          item.purchasing
+        );
+        let condition = sortedArray.reduce((x, y) => x + y);
+        console.log(condition);
+        if (condition !== 0) {
+          eventBus.$emit('goToSummary', this.sortedPurchasedProducts)
+        } else {
+          this.notify({
+            title: 'Warning',
+            text: "Purchasing is Zero",
+            color: 'warning'
+          })
+        }
       },
       getProducts() {
         this.axios.get(getProducts).then((res) => {

@@ -1,14 +1,7 @@
 <template>
-  <vx-card>
-    <div slot="no-body">
-      <div class="flex justify-between p-2 pb-0" v-if="showAction">
-        <vx-tooltip text="Go Back" position="top">
-          <vs-button icon-pack="feather" icon="icon-corner-up-left"
-                     color="primary" type="border"
-                     class="ml-2  border" @click="backToSalesMenu()">
-            Back
-          </vs-button>
-        </vx-tooltip>
+  <div class="vx-row w-full pl-6">
+    <div class="vx-col w-full p-0">
+      <div class="flex justify-between p-0 pb-4" v-if="showAction">
         <vx-tooltip text="Go Back" position="top">
           <vs-button icon-pack="feather" icon="icon-file-text"
                      color="warning"
@@ -17,12 +10,27 @@
             Show History
           </vs-button>
         </vx-tooltip>
+        <vx-tooltip text="Go Back" position="top">
+          <vs-button icon-pack="feather" icon="icon-corner-up-left"
+                     color="primary" type="border"
+                     class="ml-2  border" @click="backToSalesMenu()">
+            Back
+          </vs-button>
+        </vx-tooltip>
+
       </div>
-      <transition name="slide-fade">
-        <component :is="activeComponent"/>
-      </transition>
     </div>
-  </vx-card>
+    <div class="vx-col w-full p-0 pl-0">
+      <vx-card>
+        <div slot="no-body">
+          <transition name="slide-fade">
+            <component :is="activeComponent"/>
+          </transition>
+        </div>
+      </vx-card>
+    </div>
+  </div>
+
 
 </template>
 

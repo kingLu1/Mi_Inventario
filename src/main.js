@@ -94,10 +94,12 @@ import './filters/filters'
 // import 'vue-select/dist/vue-select.css';
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // ACL
 import acl from './acl/acl'
+
+const BSON = require('bson')
 
 new Vue({
   router,

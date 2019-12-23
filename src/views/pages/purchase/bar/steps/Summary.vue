@@ -36,8 +36,8 @@
       </vs-button>
       <vs-button
         color="warning" type="filled"
-        class="ml-2 " @click="sendPurchaseToMongo">
-        Submit
+        class="ml-2 " @click="next">
+        Next
       </vs-button>
     </div>
   </div>
@@ -48,7 +48,6 @@
 
   import eventBus from "../../../../../eventBus";
   import {getVendors} from "../../../../../stitch/api/inventory";
-  import {getClient} from '../../../../../stitch/app'
 
 
   export default {
@@ -68,6 +67,19 @@
     methods: {
       back() {
         eventBus.$emit('goToAddProducts')
+      },
+      next() {
+        eventBus.$emit('goToSubmit',
+          {
+            purchasing: this.purchasedProducts.map(item => {
+              return {
+                id: item.id,
+                purchase: item.qty_per_crate * item.purchasing
+              }
+            }),
+            total: this.total,
+            purchasedProducts: this.products
+          })
       },
       getVendors() {
         this.axios.get(getVendors).then((res) => {
@@ -115,31 +127,6 @@
           item.crate_price * item.purchasing
         );
         this.total = sorted.reduce((x, y) => x + y)
-      },
-      sendPurchaseToMongo() {
-        let purchase = this.purchasedProducts.map(item => {
-            return {
-              id: item.id,
-              purchase: item.qty_per_crate * item.purchasing
-          }
-          }
-        );
-        if (this.total !== 0) {
-          getClient().callFunction('PurchaseBar', [purchase]).then(
-            res => {
-              // eventBus.$emit("soldSubmitted");
-              // console.log(res);
-              // this.products = '';
-              this.notify({text: 'Successfully', title: '', color: 'success'});
-            }
-          ).catch(
-            err => {
-              this.notify({text: err.message, title: 'Error', color: 'danger'})
-            }
-          )
-        }
-        // console.log('here-----')
-
       },
 
     },

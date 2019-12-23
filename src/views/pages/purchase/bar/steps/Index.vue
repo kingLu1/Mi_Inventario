@@ -1,10 +1,12 @@
 <template>
-  <component :is="activeComponent" :purchasedProducts="purchasedProducts"/>
+  <component :is="activeComponent" :purchasedProducts="purchasedProducts" :summarizedData="summarizedData"/>
 </template>
 
 <script>
   import AddProducts from "./AddProducts";
   import Summary from "./Summary";
+  import Submit from "./Submit";
+  import Finish from "./Finish";
 
   import eventBus from "../../../../../eventBus";
 
@@ -14,6 +16,7 @@
         activeComponent: 'AddProducts',
         showAction: true,
         purchasedProducts: [],
+        summarizedData: ''
       }
     },
     methods: {
@@ -22,11 +25,20 @@
           this.activeComponent = "Summary";
           this.purchasedProducts = payload
         });
-        eventBus.$on('goToAddProducts', () => this.activeComponent = "AddProducts")
+        eventBus.$on('backToSummary', (payload) => {
+          this.activeComponent = "Summary";
+          this.purchasedProducts = payload
+        });
+        eventBus.$on('goToSubmit', (payload) => {
+          this.activeComponent = "Submit";
+          this.summarizedData = payload
+        });
+        eventBus.$on('goToAddProducts', () => this.activeComponent = "AddProducts");
+        eventBus.$on('goToFinish', () => this.activeComponent = "Finish")
       }
     },
     components: {
-      AddProducts, Summary
+      AddProducts, Summary, Submit, Finish
     },
     created() {
       this.listener()

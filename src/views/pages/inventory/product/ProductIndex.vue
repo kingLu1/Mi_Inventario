@@ -9,13 +9,12 @@
 <script>
     import Table from './Product';
     import Detail from './ProductDetail';
-    import Edit from './ProductEdit';
     import AddMultiple from './ProductAddMultiple';
 
     export default {
         name: "ProductIndex",
         components: {
-            Table, Detail, Edit, AddMultiple
+            Table, Detail, AddMultiple
         },
         data: () => ({
             activeComponent: 'Table',

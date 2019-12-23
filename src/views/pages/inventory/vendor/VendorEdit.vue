@@ -11,9 +11,9 @@
       <feather-icon icon="XIcon"
                     @click.stop="isSidebarActiveLocal = false"
                     class="cursor-pointer"
-      ></feather-icon>
+      />
     </div>
-    <vs-divider class="mb-0"></vs-divider>
+    <vs-divider class="mb-0"/>
     <VuePerfectScrollbar class="scroll-area--data-list-add-new pt-4 pb-6" :settings="settings">
 
       <div class="p-6">
