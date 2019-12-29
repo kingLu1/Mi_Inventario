@@ -2,14 +2,25 @@
   <div class="vx-row w-full pl-6">
     <div class="vx-col w-full p-0">
       <div class="flex justify-between p-0 pb-4" v-if="showAction">
-        <vx-tooltip text="Go Back" position="top">
-          <vs-button icon-pack="feather" icon="icon-file-text"
-                     color="warning"
-                     type="border"
-                     class="mr-2" @click="showHistory()">
-            Show History
-          </vs-button>
-        </vx-tooltip>
+        <div class="flex">
+          <vx-tooltip text="Sales History" position="top">
+            <vs-button icon-pack="feather" icon="icon-file-text"
+                       color="warning"
+                       type="border"
+                       class="mr-2" @click="showHistory()">
+              Show History
+            </vs-button>
+          </vx-tooltip>
+          <vx-tooltip text="See Debtors" position="top" v-if="showDebtButton">
+            <vs-button icon-pack="feather" icon="icon-clipboard"
+                       color="danger"
+                       type="border"
+                       class="mr-2" @click="showDebt()">
+              Show Debtors
+            </vs-button>
+          </vx-tooltip>
+        </div>
+
         <vx-tooltip text="Go Back" position="top">
           <vs-button icon-pack="feather" icon="icon-corner-up-left"
                      color="primary" type="border"
@@ -38,6 +49,7 @@
 
   import BarSales from "./steps/Index";
   import History from "./history/Index";
+  import Debt from "./debts/Index"
 
   import eventBus from "../../../../eventBus";
 
@@ -45,7 +57,8 @@
     data() {
       return {
         activeComponent: 'BarSales',
-        showAction: true
+        showAction: true,
+        showDebtButton: true
       }
     },
     methods: {
@@ -55,10 +68,17 @@
       showHistory() {
         this.activeComponent = 'History'
       },
+      showDebt(){
+        this.activeComponent = 'Debt'
+      },
       listener() {
         eventBus.$on(
           "showActions",
           (payload) => this.showAction = payload
+        );
+        eventBus.$on(
+          "showDebtButton",
+          (payload) => this.showDebtButton = payload
         );
         eventBus.$on(
           "backToSales",
@@ -68,7 +88,8 @@
     },
     components: {
       BarSales,
-      History
+      History,
+      Debt
     },
     created() {
       this.listener()

@@ -15,6 +15,11 @@ import VxList  from './components/vx-list/VxList.vue'
 import VxBreadcrumb  from './layouts/components/VxBreadcrumb.vue'
 import FeatherIcon  from './components/FeatherIcon.vue'
 import VxInputGroup  from './components/vx-input-group/VxInputGroup.vue'
+import Multiselect from 'vue-multiselect'
+
+// register globally
+Vue.component('multiselect', Multiselect)
+
 
 Vue.component(VxTooltip.name, VxTooltip)
 Vue.component(VxCard.name, VxCard)

@@ -25,7 +25,6 @@
   import bar from './bar/Index';
   import kitchen from './kitchen/Index';
   import barbeque from './barbeque/Index';
-  import pool from './pool/Index';
   import eventBus from "../../../eventBus";
 
   export default {
@@ -49,21 +48,16 @@
         color: "danger",
         icon: "DatabaseIcon"
 
-      }, {
-        name: "pool",
-        color: "primary",
-        icon: "LifeBuoyIcon"
-
       }],
       showOutlet: false,
       activeComponent: null
     }),
     components: {
-      bar, kitchen, barbeque, pool
+      bar, kitchen, barbeque
     },
     methods: {
       chooseOutlet(o) {
-        this.activeComponent = o
+        this.activeComponent = o;
         this.showOutlet = true
       },
       listener() {

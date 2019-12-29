@@ -1,9 +1,9 @@
 <template>
   <div class="p-base px-4 pt-2">
-    <vs-divider  position="left-center">
+    <vs-divider position="left-center">
       <h4 class="font-semibold">Sales Summary</h4>
     </vs-divider>
-    <vs-list >
+    <vs-list>
       <div v-for="p in products" v-if="p.sold.length">
         <vs-list-header :title="p.vendor | capitalize"
                         color="dark"/>
@@ -36,8 +36,8 @@
       </vs-button>
       <vs-button
         color="warning" type="filled"
-        class="ml-2 " @click="sendToMongo">
-        Submit
+        class="ml-2 " @click="next()">
+        next
       </vs-button>
     </div>
   </div>
@@ -68,6 +68,18 @@
     methods: {
       back() {
         eventBus.$emit('goToAddProducts')
+      },
+      next() {
+        eventBus.$emit('goToSubmit',
+          {
+            sales: this.soldProducts.map(item => {
+              return {
+                id: item.id, sold: 0 - item.sold
+              }
+            }),
+            total: this.total,
+            soldProducts: this.products
+          })
       },
       getVendors() {
         this.axios.get(getVendors).then((res) => {

@@ -99,7 +99,7 @@ Vue.config.productionTip = false;
 // ACL
 import acl from './acl/acl'
 
-const BSON = require('bson')
+
 
 new Vue({
   router,

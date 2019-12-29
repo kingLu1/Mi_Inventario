@@ -1,10 +1,11 @@
 <template>
-  <component :is="activeComponent" :soldProducts="soldProducts"/>
+  <component :is="activeComponent" :soldProducts="soldProducts" :summarizedData="summarizedData"/>
 </template>
 
 <script>
   import AddProducts from "./AddProducts";
   import Summary from "./Summary";
+  import Submit from "./Submit";
 
   import eventBus from "../../../../../eventBus";
 
@@ -12,8 +13,10 @@
     data() {
       return {
         activeComponent: 'AddProducts',
+        // activeComponent: 'Submit',
         showAction: true,
         soldProducts: [],
+        summarizedData: []
       }
     },
     methods: {
@@ -22,11 +25,16 @@
           this.activeComponent = "Summary";
           this.soldProducts = payload
         });
-        eventBus.$on('goToAddProducts', () => this.activeComponent = "AddProducts")
-      }
+        eventBus.$on('goToAddProducts', () => this.activeComponent = "AddProducts");
+        eventBus.$on('goToSubmit', (payload) => {
+          this.activeComponent = "Submit";
+          this.summarizedData = payload
+        });
+      },
+
     },
     components: {
-      AddProducts, Summary
+      AddProducts, Summary, Submit
     },
     created() {
       this.listener()
