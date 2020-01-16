@@ -9,15 +9,24 @@
         </vs-button>
       </vx-tooltip>
     </div>
+    <div>
+      <component :is="activeComponent" :activeSales="activeSales"/>
+    </div>
   </div>
 </template>
 
 <script>
   import eventBus from "../../../../../eventBus";
+  import HistoryDetails from "./HistoryDetails";
+  import HistoryTable from "./HistoryTable";
 
   export default {
     name: "History",
+    components: {
+      HistoryTable, HistoryDetails
+    },
     created() {
+      this.listener();
       eventBus.$emit('showActions', false)
     },
     beforeDestroy() {
@@ -26,8 +35,29 @@
     methods: {
       backToSales() {
         eventBus.$emit('backToSales')
+      },
+      goToTable(){
+        this.activeComponent = "HistoryTable"
+      },
+      listener() {
+        eventBus.$on('goToDetails', (payload) => {
+          this.activeSales = payload;
+          this.activeComponent = 'HistoryDetails'
+        });
+        eventBus.$on('backToHistoryTable', () => {
+          this.activeComponent = 'HistoryTable'
+        });
+        eventBus.$on(
+          "showInnerActions",
+          (payload) => this.showInnerAction = payload
+        );
       }
-    }
+    },
+    data: () => ({
+      activeComponent: 'HistoryTable',
+      activeSales: '',
+      showInnerAction: false
+    })
   }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="vx-row w-full pl-6">
-    <div class="vx-col w-full p-0">
+    <div class="vx-col w-full p-0" v-if="showDebtButton">
       <div class="flex justify-between p-0 pb-4" v-if="showAction">
         <div class="flex">
           <vx-tooltip text="Sales History" position="top">
