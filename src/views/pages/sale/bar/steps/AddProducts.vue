@@ -1,6 +1,6 @@
 <template>
   <div class="p-base px-4 pt-2">
-    <vs-divider  position="left-center">
+    <vs-divider position="left-center">
       <h4 class="font-semibold">Add Sold Products</h4>
     </vs-divider>
     <div class="vx-row">
@@ -106,7 +106,20 @@
     },
     methods: {
       next() {
-        eventBus.$emit('goToSummary', this.sortedSoldProducts)
+        let sortedArray = this.sortedSoldProducts.map(item =>
+          item.sold
+        );
+        let condition = sortedArray.reduce((x, y) => x + y);
+        if (condition !== 0) {
+          eventBus.$emit('goToSummary', this.sortedSoldProducts)
+        } else {
+          this.notify({
+            title: 'Warning',
+            text: "Sold Item is Zero",
+            color: 'warning'
+          })
+        }
+
       },
       getProducts() {
         this.axios.get(getProducts).then((res) => {

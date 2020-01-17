@@ -9,67 +9,47 @@
             <vs-th sort-key="purchased_date">Debtor Name</vs-th>
             <vs-th sort-key="paid">Surety Name</vs-th>
             <vs-th sort-key="">Amount</vs-th>
-            <vs-th sort-key="">Status</vs-th>
             <vs-th sort-key="expense">Date</vs-th>
             <vs-th>Action</vs-th>
           </template>
-          <!--          <template slot-scope="{data}">-->
-          <!--            <vs-tr :key="indextr" v-for="(tr, indextr) in data">-->
-          <!--              <vs-td :data="data[indextr]">-->
-          <!--                {{ indextr + 1 }}-->
-          <!--              </vs-td>-->
-          <!--              <vs-td :data="data[indextr].sales_date">-->
-          <!--                {{ data[indextr].sales_date }}-->
-          <!--              </vs-td>-->
-          <!--              <vs-td :data="data[indextr].total">-->
-          <!--                <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>-->
-          <!--              </vs-td>-->
-          <!--              <vs-td :data="data[indextr].paid">-->
-          <!--                <div class="money">{{ data[indextr].remit_cash | currency }}</div>-->
-          <!--              </vs-td>-->
-          <!--              <vs-td :data="data[indextr].expense">-->
-          <!--                <div class="money">{{ data[indextr].remit_credit | currency }}</div>-->
-          <!--              </vs-td>-->
-          <!--              <vs-td :data="data[indextr].created_on">-->
-          <!--                <vs-button size="small" color="danger" v-if="!data[indextr].debts" type="border"-->
-          <!--                           class="mr-2 round">-->
-          <!--                  {{ data[indextr].debts}}-->
-          <!--                </vs-button>-->
-          <!--                <vs-button size="small" color="success" v-else type="border"-->
-          <!--                           class="mr-2 round">-->
-          <!--                  {{ data[indextr].debts}}-->
-          <!--                </vs-button>-->
+          <template slot-scope="{data}">
+            <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+              <vs-td :data="data[indextr]">
+                {{ indextr + 1 }}
+              </vs-td>
+              <vs-td :data="data[indextr].sales_date">
+                {{ data[indextr].name }}
+              </vs-td>
+              <vs-td :data="data[indextr].total">
+                <div>{{ data[indextr].surety }}</div>
+              </vs-td>
+              <vs-td :data="data[indextr].paid">
 
-          <!--              </vs-td>-->
-          <!--              <vs-td :data="data[indextr].created_on">-->
-          <!--                <vs-button size="small" color="danger" type="border"-->
-          <!--                           class="mr-2 round">-->
-          <!--                  {{ data[indextr].bad_products.length}}-->
-          <!--                </vs-button>-->
+                <div class="text-danger">{{ totalAmount(tr) | currency }}</div>
+              </vs-td>
 
-          <!--              </vs-td>-->
-          <!--              <vs-td :data="data[indextr].created_on">-->
-          <!--                {{ data[indextr].created_by}}-->
-          <!--              </vs-td>-->
-          <!--              <vs-td>-->
-          <!--                <div class="flex">-->
-          <!--                  <vx-tooltip text="See Details" position="top">-->
-          <!--                    <vs-button type="border" icon-pack="feather" icon="icon-eye"-->
-          <!--                               color="primary"-->
-          <!--                               class="mr-2"-->
-          <!--                               @click="viewDetails(tr)">-->
-          <!--                    </vs-button>-->
-          <!--                  </vx-tooltip>-->
-          <!--                  <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">-->
-          <!--                    <vs-button s icon-pack="feather" icon="icon-trash"-->
-          <!--                               color="danger"-->
-          <!--                    >-->
-          <!--                    </vs-button>-->
-          <!--                  </vx-tooltip>-->
-          <!--                </div>-->
-          <!--              </vs-td>-->
-          <!--            </vs-tr>-->
-          <!--          </template>-->
+              <vs-td :data="data[indextr].created_on">
+                {{ data[indextr].date}}
+              </vs-td>
+              <vs-td>
+                <div class="flex">
+                  <vx-tooltip text="See Details" position="top">
+                    <vs-button type="border" icon-pack="feather" icon="icon-eye"
+                               color="primary"
+                               class="mr-2"
+                               @click="viewDetails(tr)">
+                    </vs-button>
+                  </vx-tooltip>
+                  <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
+                    <vs-button s icon-pack="feather" icon="icon-trash"
+                               color="danger"
+                    >
+                    </vs-button>
+                  </vx-tooltip>
+                </div>
+              </vs-td>
+            </vs-tr>
+          </template>
         </vs-table>
       </vx-card>
     </div>
@@ -77,6 +57,9 @@
 </template>
 
 <script>
+  import {getBarDebts} from "../../../../../stitch/api/debts";
+  import eventBus from "../../../../../eventBus";
+
   export default {
     name: "DebtsTable",
     data: () => (
@@ -86,6 +69,39 @@
     ),
     created() {
 
+    },
+    mounted() {
+      this.getDebts()
+    },
+    methods: {
+      getDebts() {
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        this.axios.get(getBarDebts).then((res) => {
+          this.debts = res.data;
+          console.log(res.data)
+          this.$vs.loading.close('#table-loader > .con-vs-loading');
+        }).catch((err) => {
+          this.notify({
+            title: 'Error',
+            text: err.message,
+            color: 'danger'
+          });
+          this.$vs.loading.close('#table-loader  > .con-vs-loading')
+        });
+      },
+      viewDetails(p) {
+        eventBus.$emit('goToDetails', p)
+      },
+      totalAmount(tr) {
+        let sorted = tr.products.map(item =>
+          item.price * item.holding.$numberInt
+        );
+        return sorted.reduce((x, y) => x + y);
+      }
     }
   }
 </script>
