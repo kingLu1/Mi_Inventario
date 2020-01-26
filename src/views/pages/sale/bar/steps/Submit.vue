@@ -231,6 +231,87 @@
         </div>
         <div class="mt-4">
           <vs-checkbox v-model="debtPaid">Debt Paid</vs-checkbox>
+          <vx-card no-shadow card-border class="mt-4" v-if="debtPaid">
+            <div slot="no-body">
+              <div class="p-2 vx-row">
+                <div class="vx-col w-1/2 mt-4 pr-4">
+                  <div class="mb-1">
+                    <p style="font-size: .85rem;">Debtors(s)<span class="text-danger ml-1">*</span></p>
+                  </div>
+
+                  <multiselect v-model="activeDebtPaidSelected" :options="holdingDebts"
+                               :multiple="true" :close-on-select="true"
+                               deselect-label="remove"
+                               :custom-label="debtorsWithSuretyAndDate"
+                               :clear-on-select="false" :preserve-search="true"
+                               placeholder="Select Debtor" selectLabel='Paid'
+                               label="name" track-by="name"
+                  />
+
+                  <br>
+
+                </div>
+                <div class="vx-col w-1/2 p-2 flex items-center">
+                  <vs-button color="primary" type="filled"
+                             icon-pack="feather" icon="icon-plus"
+                             class="mr-2 round"
+                             @click="addBadProduct">
+                  </vs-button>
+                </div>
+                <div class="vx-col w-full" v-if="badProducts.length">
+                  <vs-divider color="primary" class="m-0 pb-2"/>
+                  <div class="flex justify-between items-center">
+                    <h6>
+                      Selected Bad Products
+                    </h6>
+
+                  </div>
+                  <div class="vx-row flex items-center" v-for="bad in badProducts">
+                    <div class="vx-col w-1/5">
+                      <p>{{bad.product}}</p>
+                    </div>
+                    <div class="vx-col w-1/5">
+                      <p>{{bad.price | currency}}</p>
+                    </div>
+                    <div class="vx-col w-1/5">
+                      <vs-input-number v-model="bad.bad" color="dark"/>
+                    </div>
+                    <div class="vx-col w-1/5 flex justify-center">
+                      <p class="money">{{bad.price * bad.bad | currency}}</p>
+                    </div>
+                    <div class="vx-col w-1/5">
+                      <vs-button size="small" color="danger" type="border" icon-pack="feather" icon="icon-x"
+                                 class="mr-2 round" @click="removeBadProduct(bad)">
+                      </vs-button>
+                    </div>
+                  </div>
+                  <div class="vx-row flex items-center">
+                    <div class="vx-col w-1/4">
+
+                    </div>
+                    <div class="vx-col w-1/4">
+                    </div>
+                    <div class="vx-col w-1/4">
+                    </div>
+                    <div class="vx-col w-1/4">
+                      <!--                      <p class="money font-bold">{{getTotalDebt(product) | currency}}</p>-->
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="vx-row py-5" v-if="badProducts.length">
+                <div class="vx-col w-full flex justify-end">
+                  <!--                      <vs-divider color="primary" class="m-0 pb-2"/>-->
+                  <vs-button size="small" color="danger" icon-pack="feather" icon="icon-check" type="filled"
+                             class="mr-2 round" @click="badProduct = false">
+                    Confirm All
+                  </vs-button>
+                </div>
+
+              </div>
+            </div>
+          </vx-card>
         </div>
       </div>
 
@@ -279,6 +360,7 @@
 </template>
 
 <script>
+  import {getBarDebts} from "../../../../../stitch/api/debts";
   import {mapState} from "vuex";
   import eventBus from "../../../../../eventBus";
   import {getClient} from "../../../../../stitch/app";
@@ -313,7 +395,10 @@
       badProduct: false,
       activeBadSelected: [],
       badProducts: [],
-      debtPaid: false
+      debtPaid: false,
+      debtsPaid: [],
+      holdingDebts: [],
+      activeDebtPaidSelected: []
     }),
     computed: {
       ...mapState(['AppActiveUser'])
@@ -324,7 +409,8 @@
     },
     mounted() {
       this.sales.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name;
-      this.getProducts()
+      this.getProducts();
+      this.getDebts()
     },
     methods: {
       removeBadProduct(item) {
@@ -441,7 +527,31 @@
           }
         )
       },
+      debtorsWithSuretyAndDate({name,surety,products,date}){
+        let sorted = products.map(item =>
+          item.price * item.holding.$numberInt
+        );
+        let amount = sorted.reduce((x, y) => x + y);
+        return `${name}[${surety}] - ‎₦${amount} on ${date}`
+      },
+      getDebts() {
+        this.axios.get(getBarDebts).then((res) => {
+          this.holdingDebts = res.data;
+          console.log(res.data)
+          this.$vs.loading.close('#table-loader > .con-vs-loading');
+        }).catch((err) => {
+          this.notify({
+            title: 'Error',
+            text: err.message,
+            color: 'danger'
+          });
+          this.$vs.loading.close('#table-loader  > .con-vs-loading')
+        });
+      },
+
     },
+
+
 
 
   }

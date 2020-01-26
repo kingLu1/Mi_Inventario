@@ -1,15 +1,22 @@
 <template>
   <div>
-    <div class="flex justify-between p-2">
-      <vx-tooltip text="Go Back" position="top">
+    <div class="flex justify-between p-2" >
+      <vx-tooltip text="Go Back" position="top" v-if="!showInnerAction">
         <vs-button icon-pack="feather" icon="icon-corner-up-left"
                    color="primary" type="border"
                    class="ml-2  border" @click="backToSales()">
           Back
         </vs-button>
       </vx-tooltip>
+      <vx-tooltip text="Go Back" position="top" v-if="showInnerAction">
+        <vs-button icon-pack="feather" icon="icon-corner-up-left"
+                   color="primary" type="border"
+                   class="ml-2  border" @click="goToTable()">
+          Back to Table
+        </vs-button>
+      </vx-tooltip>
     </div>
-    <component :is="activeComponent"/>
+    <component :is="activeComponent" :activeDebt="activeDebt"/>
   </div>
 </template>
 
@@ -21,6 +28,7 @@
   export default {
     name: "Index",
     created() {
+      this.listener();
       eventBus.$emit('showDebtButton', false)
     },
     destroyed() {
@@ -31,22 +39,23 @@
     },
     data: () => ({
       activeComponent: 'DebtsTable',
-      activeDebt: ''
+      activeDebt: '',
+      showInnerAction: false
     }),
     methods: {
       backToSales() {
         eventBus.$emit('backToSales')
       },
-      goToTable(){
-        this.activeComponent = "HistoryTable"
+      goToTable() {
+        this.activeComponent = "DebtsTable"
       },
       listener() {
         eventBus.$on('goToDetails', (payload) => {
-          this.activeSales = payload;
-          this.activeComponent = 'HistoryDetails'
+          this.activeDebt = payload;
+          this.activeComponent = 'DebtsDetails';
         });
-        eventBus.$on('backToHistoryTable', () => {
-          this.activeComponent = 'HistoryTable'
+        eventBus.$on('backToDebtsTable', () => {
+          this.activeComponent = 'DebtsTable'
         });
         eventBus.$on(
           "showInnerActions",

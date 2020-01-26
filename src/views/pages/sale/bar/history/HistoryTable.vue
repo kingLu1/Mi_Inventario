@@ -3,15 +3,15 @@
     <div id="data-list-list-view " class="data-list-container ">
       <vx-card title="Sales History">
         <vs-table max-items="10" pagination stripe hoverFlat noDataText="No Purchases Available"
-                  :data="purchases" search>
+                  :data="sales" search>
           <template slot="thead">
             <vs-th>#</vs-th>
-            <vs-th sort-key="purchased_date">Sales Date</vs-th>
+            <vs-th sort-key="sales_date">Sales Date</vs-th>
             <vs-th sort-key="paid">Sales Total</vs-th>
             <vs-th sort-key="">Cash Remitted</vs-th>
             <vs-th sort-key="expense">Credit Remit</vs-th>
 
-            <vs-th sort-key="created_by">Debts</vs-th>
+            <vs-th sort-key="debts">Debts</vs-th>
             <vs-th sort-key="created_by">Bad Products</vs-th>
             <vs-th sort-key="created_by">Recorded By</vs-th>
             <!--            <vs-th sort-key="created_on">Recorded On</vs-th>-->
@@ -34,22 +34,19 @@
               <vs-td :data="data[indextr].expense">
                 <div class="money">{{ data[indextr].remit_credit | currency }}</div>
               </vs-td>
-              <vs-td :data="data[indextr].created_on">
-                <vs-button size="small" color="danger" v-if="!data[indextr].debts" type="border"
-                           class="mr-2 round">
-                  {{ data[indextr].debts}}
-                </vs-button>
-                <vs-button size="small" color="success" v-else type="border"
-                           class="mr-2 round">
-                  {{ data[indextr].debts}}
-                </vs-button>
+              <vs-td :data="data[indextr].debts">
+                <p  class="text-success text-center text-sm" v-if="!data[indextr].debts">
+                  No
+                </p>
+                <p  class="text-danger  text-center text-sm" v-else>
+                  Yes
+                </p>
 
               </vs-td>
               <vs-td :data="data[indextr].created_on">
-                <vs-button size="small" color="danger" type="border"
-                           class="mr-2 round">
+                <p class="text-sm text-center">
                   {{ data[indextr].bad_products.length}}
-                </vs-button>
+                </p>
 
               </vs-td>
               <vs-td :data="data[indextr].created_on">
@@ -88,20 +85,20 @@
   export default {
     name: "HistoryTable",
     data: () => ({
-      purchases: []
+      sales: []
     }),
     mounted() {
-      this.getPurchases()
+      this.getSales()
     },
     methods: {
-      getPurchases() {
+      getSales() {
         this.$vs.loading({
           container: '#table-loader',
           type: 'sound',
           scale: 1
         });
         this.axios.get(getSales).then((res) => {
-          this.purchases = res.data;
+          this.sales = res.data;
           this.$vs.loading.close('#table-loader > .con-vs-loading');
         }).catch((err) => {
           this.notify({

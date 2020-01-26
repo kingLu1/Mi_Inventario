@@ -139,7 +139,7 @@
                     this.salute = "How is your day going? I hope you crushing it !!!";
                     this.greet = "Good Afternoon";
                 } else if (this.timeOfDay >= 18) {
-                    this.salute = "How was day? I hope it was as amazing as you !!!";
+                    this.salute = "How was your day? I hope it was as amazing as you !!!";
                     this.greet = "Good Evening";
                 }
             },

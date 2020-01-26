@@ -1,11 +1,18 @@
 <template>
   <div>
     <div class="flex justify-between p-2">
-      <vx-tooltip text="Go Back" position="top">
+      <vx-tooltip text="Go Back" position="top" v-if="!showInnerAction">
         <vs-button icon-pack="feather" icon="icon-corner-up-left"
                    color="primary" type="border"
                    class="ml-2  border" @click="backToSales()">
           Back
+        </vs-button>
+      </vx-tooltip>
+      <vx-tooltip text="Go Back" position="top" v-if="showInnerAction">
+        <vs-button icon-pack="feather" icon="icon-corner-up-left"
+                   color="primary" type="border"
+                   class="ml-2  border" @click="goToTable()">
+          Back to Table
         </vs-button>
       </vx-tooltip>
     </div>
@@ -36,7 +43,7 @@
       backToSales() {
         eventBus.$emit('backToSales')
       },
-      goToTable(){
+      goToTable() {
         this.activeComponent = "HistoryTable"
       },
       listener() {
