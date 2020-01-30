@@ -35,10 +35,10 @@
                 <div class="money">{{ data[indextr].remit_credit | currency }}</div>
               </vs-td>
               <vs-td :data="data[indextr].debts">
-                <p  class="text-success text-center text-sm" v-if="!data[indextr].debts">
+                <p class="text-success text-center text-sm" v-if="!data[indextr].debts">
                   No
                 </p>
-                <p  class="text-danger  text-center text-sm" v-else>
+                <p class="text-danger  text-center text-sm" v-else>
                   Yes
                 </p>
 
@@ -64,6 +64,7 @@
                   <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
                     <vs-button s icon-pack="feather" icon="icon-trash"
                                color="danger"
+                               @click="deleteSales(tr)"
                     >
                     </vs-button>
                   </vx-tooltip>
@@ -111,6 +112,9 @@
       },
       viewDetails(p) {
         eventBus.$emit('goToDetails', p)
+      },
+      deleteSales(p) {
+
       }
     }
 

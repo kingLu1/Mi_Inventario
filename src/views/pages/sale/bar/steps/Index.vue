@@ -6,6 +6,7 @@
   import AddProducts from "./AddProducts";
   import Summary from "./Summary";
   import Submit from "./Submit";
+  import Finish from "./Finish";
 
   import eventBus from "../../../../../eventBus";
 
@@ -30,11 +31,12 @@
           this.activeComponent = "Submit";
           this.summarizedData = payload
         });
+        eventBus.$on('goToFinish', () => this.activeComponent = "Finish")
       },
 
     },
     components: {
-      AddProducts, Summary, Submit
+      AddProducts, Summary, Submit, Finish
     },
     created() {
       this.listener()

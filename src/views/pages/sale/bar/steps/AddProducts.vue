@@ -98,7 +98,6 @@
       selectedSoldProducts: [],
       sortedSoldProducts: [],
       trash: [],
-
       settings: {maxScrollbarLength: 60, wheelSpeed: .60},
     }),
     created() {

@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="mt-4 mb-5 ml-10">
-            <div class="flex justify-start mb-2" v-for="p in activeSales.products" v-if="p.sold.length">
+            <div class="flex justify-end mb-2" v-for="p in activeSales.products" v-if="p.sold.length">
               <h6>{{p.vendor | capitalize}} : {{getVendorTotal(p.sold ) | currency}} </h6>
             </div>
           </div>
@@ -89,7 +89,7 @@
     }),
     methods: {
       returnSubtitle(ps) {
-        return `${ps.sold.$numberInt} items(s) cost ‎₦${ps.sold * ps.selling_price.$numberInt}`
+        return `${ps.sold.$numberInt} items(s) cost ‎₦${ps.sold.$numberInt * ps.selling_price.$numberInt}`
 
       },
       returnSubtitleForBadProducts(ps) {
@@ -98,7 +98,7 @@
       },
       getVendorTotal(p) {
         let sortedArray = p.map(item =>
-          item.selling_price.$numberInt * item.sold
+          item.selling_price.$numberInt * item.sold.$numberInt
         );
         return sortedArray.reduce((x, y) => x + y)
       },

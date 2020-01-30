@@ -381,7 +381,6 @@
     },
     data: () => ({
       allProducts: [],
-      // productsName: [],
       activeSelected: [],
       sales: {
         date: '',
@@ -491,13 +490,13 @@
                     badProducts: this.badProducts,
                     paidDebt: this.debtPaid,
                     debts: !!(this.debtors.length),
-                    // debtsPaid: !!(this.debtsPaids.length),
+                    // debtsPaid: !!(this.debtsPaid.length),
                   };
-                  console.log(data)
+                  console.log(data);
                   getClient().callFunction('SalesBar', [data]).then(
                     res => {
                       this.$vs.loading.close('#table-loader > .con-vs-loading');
-                      // eventBus.$emit("goToFinish");
+                      eventBus.$emit("goToFinish");
                       this.notify({text: 'Successful', title: '', color: 'success'});
                     }
                   ).catch(
@@ -537,7 +536,7 @@
       getDebts() {
         this.axios.get(getBarDebts).then((res) => {
           this.holdingDebts = res.data;
-          console.log(res.data)
+          console.log(res.data);
           this.$vs.loading.close('#table-loader > .con-vs-loading');
         }).catch((err) => {
           this.notify({

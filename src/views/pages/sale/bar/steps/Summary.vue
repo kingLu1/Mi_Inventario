@@ -117,8 +117,8 @@
       getVendorTotal(p) {
         let sortedArray = p.map(item =>
           item.selling_price * item.sold
-        )
-        this.getTotal()
+        );
+        this.getTotal();
         return sortedArray.reduce((x, y) => x + y)
 
       },
@@ -128,29 +128,29 @@
         );
         this.total = sorted.reduce((x, y) => x + y)
       },
-      sendToMongo() {
-        let sold = this.soldProducts.map(item => {
-            return {id: item.id, sold: 0 - item.sold}
-          }
-        );
-        console.log('sold:', sold)
-        if (this.total !== 0) {
-          getClient().callFunction('SalesBar', [sold]).then(
-            res => {
-              // eventBus.$emit("soldSubmitted");
-              // console.log(res);
-              // this.products = '';
-              this.notify({text: 'Successfully', title: '', color: 'success'});
-            }
-          ).catch(
-            err => {
-              this.notify({text: err.message, title: 'Error', color: 'danger'})
-            }
-          )
-        }
-        // console.log('here-----')
-
-      },
+      // sendToMongo() {
+      //   let sold = this.soldProducts.map(item => {
+      //       return {id: item.id, sold: 0 - item.sold}
+      //     }
+      //   );
+      //   console.log('sold:', sold)
+      //   if (this.total !== 0) {
+      //     getClient().callFunction('SalesBar', [sold]).then(
+      //       res => {
+      //         // eventBus.$emit("soldSubmitted");
+      //         // console.log(res);
+      //         // this.products = '';
+      //         this.notify({text: 'Successfully', title: '', color: 'success'});
+      //       }
+      //     ).catch(
+      //       err => {
+      //         this.notify({text: err.message, title: 'Error', color: 'danger'})
+      //       }
+      //     )
+      //   }
+      //   // console.log('here-----')
+      //
+      // },
 
     },
     watch: {

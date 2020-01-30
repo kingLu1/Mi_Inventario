@@ -2,54 +2,39 @@
   <div class="vx-row p-base pt-4">
     <div class="vx-col w-full">
       <div>
-<!--        <p class="mb-4">Purchased Date : {{activeSales.purchased_date}} </p>-->
-<!--        <p class="mb-4">Purchased Total : <span class="money">{{activeSales.total.$numberInt | currency}}</span></p>-->
-<!--        &lt;!&ndash;        <p class="mb-4">Paid Amount : <span class="money">{{activePurchase.paid | currency}}</span></p>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <p class="mb-4" v-if="activeSales.paid_remark">Remark : {{activePurchase.paid_remark}} </p>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <p class="mb-4" v-if="activeSales.expense">Expense : <span class="text-danger"> {{activePurchase.expense | currency}}</span>&ndash;&gt;-->
-<!--        &lt;!&ndash;        </p>&ndash;&gt;-->
-<!--        &lt;!&ndash;        <p class="mb-4" v-if="activeSales.expense_remark"> Expense Remark : {{activePurchase.expense_remark}} </p>&ndash;&gt;-->
-<!--        <p class="mb-4"> Recorded On : {{activeSales.created_on}} </p>-->
-<!--        <p class="mb-4"> Recorded By: {{activeSales.created_by}}</p>-->
+        <p class="mb-4">Debt Date : {{activeDebt.date}} </p>
+        <p class="mb-4">Customer : {{activeDebt.name}} </p>
+        <p class="mb-4">Surety : {{activeDebt.surety}} </p>
+        <p class="mb-4">Amount : <span class="text-danger">{{getDebtTotal() | currency}}</span></p>
+        <div v-if="showDetails" class="mb-4 pr-2">
+          <vs-divider position="left-center">Details</vs-divider>
+          <vx-card card-border>
+
+            <div slot="no-body">
+              <vs-list class="pt-0" v-for="s in activeDebt.products">
+
+                <vs-list-item :subtitle="returnSubtitleForProducts(s)"
+                />
+              </vs-list>
+            </div>
+          </vx-card>
+        </div>
       </div>
 
-      <div v-if="showProducts">
-        <vs-divider color="primary" position="left-center"><span class="text-primary">Products</span></vs-divider>
-        <!--        <vs-list class="pt-0">-->
-        <!--          <div v-for="p in activeSales.products" v-if="p.purchasing.length">-->
-        <!--            <vs-list-header :title="p.vendor | capitalize"-->
-        <!--                            color="dark" style="font-size:.85rem"/>-->
-        <!--            <div v-for="ps in p.purchasing">-->
-        <!--              <vs-list-item icon-pack="feather"-->
-        <!--                            icon="icon-check"-->
-        <!--                            :subtitle="returnSubtitle(ps)"-->
-        <!--                            :title="ps.name | capitalize"-->
-        <!--              />-->
 
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--          <div class="mt-4 mb-5 ml-10">-->
-        <!--            <div class="flex justify-start mb-2" v-for="p in activeSales.products" v-if="p.purchasing.length">-->
-        <!--              <h6>{{p.vendor | capitalize}} : {{getVendorTotal(p.purchasing ) | currency}} </h6>-->
-        <!--            </div>-->
-        <!--          </div>-->
-
-        <!--        </vs-list>-->
-      </div>
     </div>
     <div class="flex vx-col w-full">
       <vs-button
-        v-if="!showProducts"
-        color="success"
-        type="border"
-        class="mr-2 w-full" @click="showProducts=!showProducts">
+        v-if="!showDetails"
+        color="primary"
+        class="mr-2 w-full" @click="showDetails=!showDetails">
         Show More Details
       </vs-button>
       <vs-button
-        v-if="showProducts"
+        v-if="showDetails"
         color="danger"
         type="border"
-        class="mr-2 w-full" @click="showProducts=!showProducts">
+        class="mr-2 w-full" @click="showDetails=!showDetails">
         Hide Details
       </vs-button>
     </div>
@@ -68,21 +53,23 @@
       }
     },
     data: () => ({
-      showProducts: false
+      showDetails: false
     }),
     methods: {
-      // returnSubtitle(ps) {
-      //   return `${ps.purchasing.$numberInt} Crate(s)(${ps.qty_per_crate * ps.purchasing.$numberInt} items) cost ‎₦${ps.purchasing.$numberInt * ps.crate_price.$numberInt}`
-      // },
-      // getVendorTotal(p) {
-      //   let sortedArray = p.map(item =>
-      //     item.crate_price.$numberInt * item.purchasing.$numberInt
-      //   );
-      //   return sortedArray.reduce((x, y) => x + y)
-      // },
+      returnSubtitleForProducts(ps) {
+        return `${ps.product} - Holding ${ps.holding.$numberInt} item(s) cost ‎₦${ps.price * ps.holding.$numberInt} (${ps.price}/item)`
+
+      },
+      getDebtTotal() {
+        let sorted = this.activeDebt.products.map(item =>
+          item.price * item.holding.$numberInt
+        );
+        return sorted.reduce((x, y) => x + y);
+      }
     },
     created() {
-      eventBus.$emit('showInnerActions', true)
+      eventBus.$emit('showInnerActions', true);
+      console.log(this.activeDebt)
     },
     beforeDestroy() {
       eventBus.$emit('showInnerActions', false)
