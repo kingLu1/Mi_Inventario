@@ -255,33 +255,30 @@
                   <vs-button color="primary" type="filled"
                              icon-pack="feather" icon="icon-plus"
                              class="mr-2 round"
-                             @click="addBadProduct">
+                             @click="addDebtPaid">
                   </vs-button>
                 </div>
-                <div class="vx-col w-full" v-if="badProducts.length">
+                <div class="vx-col w-full" v-if="debtsPaid.length">
                   <vs-divider color="primary" class="m-0 pb-2"/>
                   <div class="flex justify-between items-center">
                     <h6>
-                      Selected Bad Products
+                      Selected Paid Debts
                     </h6>
 
                   </div>
-                  <div class="vx-row flex items-center" v-for="bad in badProducts">
+                  <div class="vx-row flex items-center" v-for="debtP in debtsPaid">
                     <div class="vx-col w-1/5">
-                      <p>{{bad.product}}</p>
+                      <p>{{debtP.name}}[{{debtP.surety}}]</p>
                     </div>
                     <div class="vx-col w-1/5">
-                      <p>{{bad.price | currency}}</p>
+                      <p>{{debtorTotalDebts(debtP) | currency}}</p>
                     </div>
-                    <div class="vx-col w-1/5">
-                      <vs-input-number v-model="bad.bad" color="dark"/>
-                    </div>
-                    <div class="vx-col w-1/5 flex justify-center">
-                      <p class="money">{{bad.price * bad.bad | currency}}</p>
+                    <div class="vx-col w-2/5">
+                      <p>{{debtP.date}}</p>
                     </div>
                     <div class="vx-col w-1/5">
                       <vs-button size="small" color="danger" type="border" icon-pack="feather" icon="icon-x"
-                                 class="mr-2 round" @click="removeBadProduct(bad)">
+                                 class="mr-2 round" @click="removeDebtsPaid(debtP)">
                       </vs-button>
                     </div>
                   </div>
@@ -300,11 +297,11 @@
                   </div>
                 </div>
               </div>
-              <div class="vx-row py-5" v-if="badProducts.length">
+              <div class="vx-row py-5" v-if="debtsPaid.length">
                 <div class="vx-col w-full flex justify-end">
                   <!--                      <vs-divider color="primary" class="m-0 pb-2"/>-->
                   <vs-button size="small" color="danger" icon-pack="feather" icon="icon-check" type="filled"
-                             class="mr-2 round" @click="badProduct = false">
+                             class="mr-2 round" @click="debtPaid = false">
                     Confirm All
                   </vs-button>
                 </div>
@@ -337,6 +334,12 @@
               {{bad.product}} : <span class="text-danger">{{bad.bad * bad.price | currency}}</span>
             </h6>
           </div>
+          <div v-if="!debtPaid && debtsPaid.length">
+            <h5 class="pt-2">Debt(s) Paid</h5>
+            <h6 class="pt-1" v-for="debt in debtsPaid">
+              {{debt.name}}[{{debt.surety}}] : <span class="money">{{debtorTotalDebts(debt) | currency}}</span>
+            </h6>
+          </div>
         </div>
       </div>
 
@@ -360,7 +363,7 @@
 </template>
 
 <script>
-  import {getBarDebts} from "../../../../../stitch/api/debts";
+  import {getBarUnpaidDebts} from "../../../../../stitch/api/debts";
   import {mapState} from "vuex";
   import eventBus from "../../../../../eventBus";
   import {getClient} from "../../../../../stitch/app";
@@ -490,9 +493,9 @@
                     sale: sales,
                     debtors: this.debtors,
                     badProducts: this.badProducts,
-                    paidDebt: this.debtPaid,
                     debts: !!(this.debtors.length),
-                    // debtsPaid: !!(this.debtsPaid.length),
+                    debtPaid: !!(this.debtsPaid.length),
+                    debtorPaid: this.debtsPaid
                   };
                   console.log(data);
                   getClient().callFunction('SalesBar', [data]).then(
@@ -536,7 +539,7 @@
         return `${name}[${surety}] - ‎₦${amount} on ${date}`
       },
       getDebts() {
-        this.axios.get(getBarDebts).then((res) => {
+        this.axios.get(getBarUnpaidDebts).then((res) => {
           this.holdingDebts = res.data;
           console.log(res.data);
           this.$vs.loading.close('#table-loader > .con-vs-loading');
@@ -549,6 +552,31 @@
           this.$vs.loading.close('#table-loader  > .con-vs-loading')
         });
       },
+      addDebtPaid() {
+        this.debtsPaid = this.activeDebtPaidSelected.map(
+          (item) => {
+            return {
+              debt_id: item._id,
+              status: false,
+              name: item.name,
+              surety: item.surety,
+              products: item.products,
+              date_paid: Date(),
+              date: item.date
+            }
+          }
+        );
+        this.activeDebtPaidSelected = []
+      },
+      removeDebtsPaid(item) {
+        this.debtsPaid.splice(this.debtsPaid.indexOf(item), 1);
+      },
+      debtorTotalDebts(debt) {
+        let sorted = debt.products.map(item =>
+          item.price * item.holding.$numberInt
+        );
+        return sorted.reduce((x, y) => x + y);
+      }
 
     },
 
