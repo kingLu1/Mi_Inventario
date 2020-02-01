@@ -68,6 +68,20 @@
         class="mr-2 w-full" @click="showProducts=!showProducts">
         Hide Details
       </vs-button>
+        <vs-button
+          v-if="!showProducts"
+          color="primary"
+          class="mr-2 w-full" @click="showProducts=!showProducts">
+          Show Products
+        </vs-button>
+        <vs-button
+          v-if="showProducts"
+          color="danger"
+          type="border"
+          class="mr-2 w-full" @click="showProducts=!showProducts">
+          Hide Details
+        </vs-button>
+
     </div>
 
   </div>

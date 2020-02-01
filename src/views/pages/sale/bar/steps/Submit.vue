@@ -388,7 +388,9 @@
         credit_remitted: '',
         created_on: Date(),
       },
-      activeDebtor: {},
+      activeDebtor: {
+        status: true
+      },
       debtor: false,
       debtors: [],
       badProduct: false,
@@ -443,7 +445,7 @@
           )
         };
         this.debtors.push(debt);
-        this.activeDebtor = [];
+        this.activeDebtor = {status: true};
         this.activeSelected = []
       },
       back() {
@@ -526,7 +528,7 @@
           }
         )
       },
-      debtorsWithSuretyAndDate({name,surety,products,date}){
+      debtorsWithSuretyAndDate({name, surety, products, date}) {
         let sorted = products.map(item =>
           item.price * item.holding.$numberInt
         );
@@ -549,8 +551,6 @@
       },
 
     },
-
-
 
 
   }

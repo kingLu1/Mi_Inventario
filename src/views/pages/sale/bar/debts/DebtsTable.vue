@@ -9,6 +9,7 @@
             <vs-th sort-key="purchased_date">Debtor Name</vs-th>
             <vs-th sort-key="paid">Surety Name</vs-th>
             <vs-th sort-key="">Amount</vs-th>
+            <vs-th sort-key="status">Status</vs-th>
             <vs-th sort-key="expense">Date</vs-th>
             <vs-th>Action</vs-th>
           </template>
@@ -28,7 +29,14 @@
                 <div class="text-danger">{{ totalAmount(tr) | currency }}</div>
               </vs-td>
 
-              <vs-td :data="data[indextr].created_on">
+              <vs-td :data="data[indextr].status">
+                <p class="text-success text-center text-sm" v-if="!data[indextr].status">
+                  Paid
+                </p>
+                <p class="text-danger  text-center text-sm" v-else>
+                  Unpaid
+                </p>
+              </vs-td>    <vs-td :data="data[indextr].created_on">
                 {{ data[indextr].date}}
               </vs-td>
               <vs-td>

@@ -5,16 +5,18 @@
         <p class="mb-4">Debt Date : {{activeDebt.date}} </p>
         <p class="mb-4">Customer : {{activeDebt.name}} </p>
         <p class="mb-4">Surety : {{activeDebt.surety}} </p>
+        <p class="mb-4">Status : <span class="text-success text-center text-md"
+                                       v-if="!activeDebt.status">Paid </span>
+          <span class="text-danger  text-center text-md" v-else>
+          Unpaid
+        </span></p>
         <p class="mb-4">Amount : <span class="text-danger">{{getDebtTotal() | currency}}</span></p>
         <div v-if="showDetails" class="mb-4 pr-2">
           <vs-divider position="left-center">Details</vs-divider>
           <vx-card card-border>
-
             <div slot="no-body">
               <vs-list class="pt-0" v-for="s in activeDebt.products">
-
-                <vs-list-item :subtitle="returnSubtitleForProducts(s)"
-                />
+                <vs-list-item :subtitle="returnSubtitleForProducts(s)"/>
               </vs-list>
             </div>
           </vx-card>
