@@ -90,10 +90,9 @@
               Hide Products
             </vs-button>
             <vs-button
-              color="dark"
-              type="border"
-              class="mr-2 w-full" @click="backToTable">
-              Show Last Purchasing
+              color="danger"
+              class="mr-2 w-full" @click="openConfirm">
+              Delete
             </vs-button>
           </div>
 
@@ -151,6 +150,34 @@
         } else if (q > p.worst_qty) {
           return 'bg-warning'
         }
+      },
+      openConfirm() {
+        let tr = this.activeVendor;
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirm`,
+          text: `Are you sure  you want to delete ${tr.name} vendor? Deleting this vendor with all products under it`,
+          accept: this.acceptDelete
+        });
+      },
+      acceptDelete() {
+        let data = [{name: this.activeVendor.name}];
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        getClient().callFunction('VendorDelete', data).then(() => {
+            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+            this.backToTable()
+          }
+        ).catch(
+          (err) => {
+            this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
       },
 
     },
