@@ -40,12 +40,12 @@
                     <vs-button type="border" icon-pack="feather" icon="icon-eye"
                                color="primary"
                                class="mr-2"
-                    @click="viewDetails(tr)">
+                               @click="viewDetails(tr)">
                     </vs-button>
                   </vx-tooltip>
                   <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
                     <vs-button s icon-pack="feather" icon="icon-trash"
-                               color="danger"
+                               color="danger" @click="openConfirm(tr)"
                     >
                     </vs-button>
                   </vx-tooltip>
@@ -62,12 +62,14 @@
 <script>
   import {getPurchases} from '../../../../../stitch/api/purchases';
   import eventBus from "../../../../../eventBus";
+  import {getClient} from "../../../../../stitch/app";
 
 
   export default {
     name: "HistoryTable",
     data: () => ({
-      purchases: []
+      purchases: [],
+      selected: {}
     }),
     mounted() {
       this.getPurchases()
@@ -91,9 +93,37 @@
           this.$vs.loading.close('#table-loader  > .con-vs-loading')
         });
       },
-      viewDetails(p){
+      viewDetails(p) {
         eventBus.$emit('goToDetails', p)
-      }
+      },
+      openConfirm(tr) {
+        this.selected = tr;
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirm`,
+          text: `Are you sure  you want to delete ${tr.purchased_date} Purchase Record?`,
+          accept: this.acceptDelete
+        });
+      },
+      acceptDelete() {
+        let data = [{purchased_date: this.selected.purchased_date}];
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        getClient().callFunction('PurchaseDelete', data).then(() => {
+            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+            this.getPurchases()
+          }
+        ).catch(
+          (err) => {
+            this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
+      },
     }
 
   }

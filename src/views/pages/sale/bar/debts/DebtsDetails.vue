@@ -1,5 +1,5 @@
 <template>
-  <div class="vx-row p-base pt-4">
+  <div class="vx-row p-base pt-4" id="table-loader">
     <div class="vx-col w-full">
       <div>
         <p class="mb-4">Debt Date : {{activeDebt.date}} </p>
@@ -43,6 +43,12 @@
         class="mr-2 w-full" @click="showDetails=!showDetails">
         Hide Details
       </vs-button>
+      <vs-button
+        color="danger"
+        v-if="$acl.check('superAdmin')"
+        class="mr-2 w-full" @click="openConfirm">
+        Delete
+      </vs-button>
     </div>
 
   </div>
@@ -50,6 +56,7 @@
 
 <script>
   import eventBus from "../../../../../eventBus";
+  import {getClient} from "../../../../../stitch/app";
 
   export default {
     name: "DebtsDetails",
@@ -59,7 +66,7 @@
       }
     },
     data: () => ({
-      showDetails: false
+      showDetails: false,
     }),
     methods: {
       returnSubtitleForProducts(ps) {
@@ -71,7 +78,35 @@
           item.price * item.holding.$numberInt
         );
         return sorted.reduce((x, y) => x + y);
-      }
+      },
+      openConfirm() {
+        let tr = this.activeDebt;
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirm`,
+          text: `Are you sure  you want to delete ${tr.name}[${tr.surety}] Debt?`,
+          accept: this.acceptDelete
+        });
+      },
+      acceptDelete() {
+        let data = [{_id: this.activeDebt._id}];
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        getClient().callFunction('DebtDelete', data).then(() => {
+            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+            eventBus.$emit('backToDebtsTable')
+          }
+        ).catch(
+          (err) => {
+            this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
+      },
     },
     created() {
       eventBus.$emit('showInnerActions', true);

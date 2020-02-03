@@ -1,5 +1,5 @@
 <template>
-  <div class="vx-row p-base pt-4">
+  <div class="vx-row p-base pt-4" id="table-loader">
     <div class="vx-col w-full">
       <div>
         <p class="mb-4">Purchased Date : {{activePurchase.purchased_date}} </p>
@@ -52,6 +52,12 @@
         class="mr-2 w-full" @click="showProducts=!showProducts">
         Hide Details
       </vs-button>
+      <vs-button
+        color="danger"
+        v-if="$acl.check('superAdmin')"
+        class="mr-2 w-full" @click="openConfirm">
+        Delete
+      </vs-button>
     </div>
 
   </div>
@@ -59,6 +65,7 @@
 
 <script>
   import eventBus from "../../../../../eventBus";
+  import {getClient} from "../../../../../stitch/app";
 
   export default {
     name: "HistoryDetails",
@@ -79,6 +86,34 @@
           item.crate_price.$numberInt * item.purchasing.$numberInt
         );
         return sortedArray.reduce((x, y) => x + y)
+      },
+      openConfirm() {
+        let tr = this.activePurchase;
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirm`,
+          text: `Are you sure  you want to delete ${tr.purchased_date} Purchase Record?`,
+          accept: this.acceptDelete
+        });
+      },
+      acceptDelete() {
+        let data = [{purchased_date: this.activePurchase.purchased_date}];
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        getClient().callFunction('PurchaseDelete', data).then(() => {
+            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+            eventBus.$emit('backToHistoryTable')
+          }
+        ).catch(
+          (err) => {
+            this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
       },
     },
     created() {

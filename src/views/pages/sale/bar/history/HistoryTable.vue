@@ -64,7 +64,7 @@
                   <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
                     <vs-button s icon-pack="feather" icon="icon-trash"
                                color="danger"
-                               @click="deleteSales(tr)"
+                               @click="openConfirm(tr)"
                     >
                     </vs-button>
                   </vx-tooltip>
@@ -81,12 +81,14 @@
 <script>
   import {getSales} from '../../../../../stitch/api/sales';
   import eventBus from "../../../../../eventBus";
+  import {getClient} from "../../../../../stitch/app";
 
 
   export default {
     name: "HistoryTable",
     data: () => ({
-      sales: []
+      sales: [],
+      selected: {},
     }),
     mounted() {
       this.getSales()
@@ -113,9 +115,34 @@
       viewDetails(p) {
         eventBus.$emit('goToDetails', p)
       },
-      deleteSales(p) {
-
-      }
+      openConfirm(tr) {
+        this.selected = tr;
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirm`,
+          text: `Are you sure  you want to delete ${tr.sales_date} Sales Record?`,
+          accept: this.acceptDelete
+        });
+      },
+      acceptDelete() {
+        let data = [{sales_date: this.selected.sales_date}];
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        getClient().callFunction('SaleDelete', data).then(() => {
+            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+            this.getSales()
+          }
+        ).catch(
+          (err) => {
+            this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
+      },
     }
 
   }

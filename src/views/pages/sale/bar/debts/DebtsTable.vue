@@ -51,6 +51,7 @@
                   <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
                     <vs-button s icon-pack="feather" icon="icon-trash"
                                color="danger"
+                               @click="openConfirm(tr)"
                     >
                     </vs-button>
                   </vx-tooltip>
@@ -67,12 +68,14 @@
 <script>
   import {getBarDebts} from "../../../../../stitch/api/debts";
   import eventBus from "../../../../../eventBus";
+  import {getClient} from "../../../../../stitch/app";
 
   export default {
     name: "DebtsTable",
     data: () => (
       {
         debts: [],
+        selected: {}
       }
     ),
     created() {
@@ -90,7 +93,7 @@
         });
         this.axios.get(getBarDebts).then((res) => {
           this.debts = res.data;
-          console.log(res.data)
+          console.log(res.data);
           this.$vs.loading.close('#table-loader > .con-vs-loading');
         }).catch((err) => {
           this.notify({
@@ -109,7 +112,36 @@
           item.price * item.holding.$numberInt
         );
         return sorted.reduce((x, y) => x + y);
-      }
+      },
+      openConfirm(tr) {
+        this.selected = tr;
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirm`,
+          text: `Are you sure  you want to delete ${tr.name}[${tr.surety}] Debt?`,
+          accept: this.acceptDelete
+        });
+      },
+      acceptDelete() {
+        let data = [{_id: this.selected._id}];
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        getClient().callFunction('DebtDelete', data).then((res) => {
+            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+            this.getDebts();
+          console.log(res)
+          }
+        ).catch(
+          (err) => {
+            this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
+      },
     }
   }
 </script>
