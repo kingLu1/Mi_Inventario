@@ -194,7 +194,7 @@
                     </div>
                     <div class="vx-col w-1/5">
                       <number-input v-model="bad.bad" :min="1" :max="bad.inStock" inline controls center size="small"/>
-<!--                      <vs-input-number v-model="bad.bad" color="dark"/>-->
+                      <!--                      <vs-input-number v-model="bad.bad" color="dark"/>-->
                     </div>
                     <div class="vx-col w-1/5 flex justify-center">
                       <p class="money">{{bad.price * bad.bad | currency}}</p>
@@ -497,11 +497,22 @@
                   let data = {
                     sale: sales,
                     debtors: this.debtors,
-                    badProducts: this.badProducts,
+                    badProduct: !!(this.badProducts.length),
+                    badProducts: this.badProducts.map((item) => {
+                      return {
+                        product_id: item.product_id,
+                        product: item.product,
+                        price: item.price,
+                        bad: item.bad,
+                        subBad: 0 - item.bad
+
+                      }
+                    }),
                     debts: !!(this.debtors.length),
                     debtPaid: !!(this.debtsPaid.length),
                     debtorPaid: this.debtsPaid
-                  };
+                }
+                  ;
                   console.log(data);
                   getClient().callFunction('SalesBar', [data]).then(
                     res => {
