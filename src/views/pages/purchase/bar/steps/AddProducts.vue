@@ -39,7 +39,9 @@
           <!--          </div>-->
 
           <div class="vx-col  w-1/5">
-            <p class="font-bold text-center">Purchasing</p>
+            <p class="font-bold text-center">Purchasing
+            </p>
+            <p class=" text-center">Crates(s)</p>
           </div>
           <div class="vx-col  w-1/5">
             <p class="font-bold text-center">Amount</p>
@@ -62,10 +64,11 @@
             <!--              <p>{{p.qty_per_crate}}</p>-->
             <!--            </div>-->
             <div class="vx-col  w-1/5">
-              <p class="flex">
-          <span class="centerx">
-            <vs-input-number v-model="p.purchasing" color="dark" :label="totalQuantity(p)"/>
-          </span>
+              <p class="flex justify-center">
+                <!--          <span class="centerx">-->
+                <!--            <vs-input-number v-model="p.purchasing" color="dark" :label="totalQuantity(p)"/>-->
+                <number-input v-model="p.purchasing" :min="0" inline controls center size="small"></number-input>
+                <!--          </span>-->
               </p>
             </div>
             <div class="vx-col  flex justify-center w-1/5">

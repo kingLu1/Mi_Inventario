@@ -58,7 +58,8 @@
               <p class="flex">
           <span class="centerx">
 <!--            :label="totalQuantity(p)-->
-            <vs-input-number v-model="p.sold" min="1" :max="p.inStock.$numberInt" color="dark "/>
+            <number-input v-model="p.sold" :min="1" :max="returnNumber(p.inStock.$numberInt)" inline controls center size="small"/>
+<!--            <vs-input-number v-model="p.sold" min="1" :max="p.inStock.$numberInt" color="dark "/>-->
           </span>
               </p>
             </div>
@@ -189,6 +190,9 @@
         let product = this.trash.find(item => item.name === p.name);
         this.products.push(product)
       },
+      returnNumber(r){
+        return parseInt(r,10)
+      }
     },
     components: {
       vSelect, VuePerfectScrollbar

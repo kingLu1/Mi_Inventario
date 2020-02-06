@@ -42,8 +42,6 @@ import router from './router'
 import store from './store/store'
 
 
-
-
 // Vuejs - Vue wrapper for hammerjs
 import {VueHammer} from 'vue2-hammer'
 
@@ -68,6 +66,10 @@ Vue.use(VueAxios, axios);
 import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
+
+import VueNumberInput from '@chenfengyuan/vue-number-input';
+
+Vue.use(VueNumberInput);
 
 // vue-currency
 import VueCurrencyFilter from 'vue-currency-filter'
@@ -98,7 +100,6 @@ Vue.config.productionTip = false;
 
 // ACL
 import acl from './acl/acl'
-
 
 
 new Vue({

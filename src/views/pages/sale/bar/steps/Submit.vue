@@ -77,7 +77,7 @@
                   </div>
 
                   <multiselect v-model="activeSelected" :options="allProducts"
-                               :multiple="true" :close-on-select="true"
+                               :multiple="true" :close-on-select="false"
                                deselect-label="remove"
                                :max="5"
                                :clear-on-select="false" :preserve-search="true"
@@ -111,7 +111,10 @@
                       <p>{{product.price | currency}}</p>
                     </div>
                     <div class="vx-col w-1/4">
-                      <vs-input-number v-model="product.holding" color="dark"/>
+                      <number-input v-model="product.holding" :min="0" :max="product.inStock" inline controls center
+                                    size="small"/>
+
+                      <!--                      <number-input v-model="product.holding" :min="1" inline controls center size="small"/>-->
                     </div>
                     <div class="vx-col w-1/4">
                       <p class="money">{{product.price * product.holding | currency}}</p>
@@ -190,7 +193,8 @@
                       <p>{{bad.price | currency}}</p>
                     </div>
                     <div class="vx-col w-1/5">
-                      <vs-input-number v-model="bad.bad" color="dark"/>
+                      <number-input v-model="bad.bad" :min="1" :max="bad.inStock" inline controls center size="small"/>
+<!--                      <vs-input-number v-model="bad.bad" color="dark"/>-->
                     </div>
                     <div class="vx-col w-1/5 flex justify-center">
                       <p class="money">{{bad.price * bad.bad | currency}}</p>
@@ -442,14 +446,15 @@
                 product_id: item._id,
                 product: item.name,
                 price: item.selling_price,
-                holding: 0
+                holding: 0,
+                inStock: item.inStock
               }
             }
           )
         };
         this.debtors.push(debt);
         this.activeDebtor = {status: true};
-        this.activeSelected = []
+        this.activeSelected = [];
       },
       back() {
         eventBus.$emit('goToSummary', this.summarizedData.soldProducts)
@@ -576,6 +581,9 @@
           item.price * item.holding.$numberInt
         );
         return sorted.reduce((x, y) => x + y);
+      },
+      removeMaxNumber() {
+
       }
 
     },
