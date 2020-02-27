@@ -9,7 +9,7 @@
           <div class="mb-1">
             <p style="font-size: .85rem;">Purchase Date<span class="text-danger ml-1">*</span></p>
           </div>
-          <flat-pickr name="Purchase Date" style="width: 100%" v-validate="'required'" v-model="purchase.date"
+          <flat-pickr name="Purchase Date" style="width: 100%" v-validate="'required'" v-model="date"
                       placeholder="Select Date"/>
           <span class="text-danger text-sm"
                 v-show="errors.has('Purchase Date')">{{ errors.first('Purchase Date') }}</span>
@@ -46,7 +46,7 @@
       </div>
       <div class="vx-col w-2/3 flex justify-center">
         <div class="mt-5 ">
-          <h4 class="pt-2" v-if="purchase.date">Purchased Date : <span>{{purchase.date}}</span></h4>
+          <h4 class="pt-2" v-if="date">Purchased Date : <span>{{date}}</span></h4>
           <h4 class="pt-2">Calculated Total : <span class="money">{{summarizedData.total | currency}}</span></h4>
           <h4 class="pt-2" v-if="purchase.paid">Paid Total : <span class="money">{{purchase.paid | currency}}</span>
           </h4>
@@ -95,8 +95,9 @@
       }
     },
     data: () => ({
+      date: '',
       purchase: {
-        date: '',
+
         paid: null,
         paidRemark: '',
         expense: '',
@@ -125,12 +126,15 @@
       submit() {
         this.$validator.validateAll().then(result => {
             if (result) {
+              let date = {
+                date : this.$moment(this.date, "YYYY-MM-DD").format()
+              }
               this.$vs.loading({
                 container: '#table-loader',
                 type: 'sound',
                 scale: 1
               });
-              let purchase = Object.assign(this.purchase, this.summarizedData);
+              let purchase = Object.assign(this.purchase, this.summarizedData, date);
               getClient().callFunction('PurchaseBar', [purchase]).then(
                 res => {
                   this.$vs.loading.close('#table-loader > .con-vs-loading');

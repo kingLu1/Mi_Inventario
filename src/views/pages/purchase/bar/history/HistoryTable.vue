@@ -20,7 +20,7 @@
                 {{ indextr + 1 }}
               </vs-td>
               <vs-td :data="data[indextr].urchased_date">
-                {{ data[indextr].purchased_date }}
+                {{ data[indextr].purchased_date | moment("dddd, MMMM Do YYYY") }}
               </vs-td>
               <vs-td :data="data[indextr].total">
                 <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>

@@ -101,6 +101,10 @@ Vue.config.productionTip = false;
 // ACL
 import acl from './acl/acl'
 
+import VueMoment from 'vue-moment'
+
+
+Vue.use(VueMoment)
 
 new Vue({
   router,

@@ -11,7 +11,7 @@
               <div class="mb-1">
                 <p style="font-size: .85rem;">Sales Date<span class="text-danger ml-1">*</span></p>
               </div>
-              <flat-pickr name="Sales Date" style="width: 100%" v-validate="'required'" v-model="sales.date"
+              <flat-pickr name="Sales Date" style="width: 100%" v-validate="'required'" v-model="date"
                           placeholder="Select Date"/>
               <span class="text-danger text-sm"
                     v-show="errors.has('Sales Date')">{{ errors.first('Sales Date') }}</span>
@@ -319,7 +319,7 @@
 
       <div class="vx-col w-1/3 flex justify-center">
         <div class="mt-5 ">
-          <h5 class="pt-2" v-if="sales.date">Sales Date : <span>{{sales.date}}</span></h5>
+          <h5 class="pt-2" v-if="date">Sales Date : <span>{{date}}</span></h5>
           <h5 class="pt-2">Sales Total : <span class="money">{{summarizedData.total | currency}}</span></h5>
           <h5 class="pt-2" v-if="sales.cash_remitted">Remitted Cash : <span class="money">{{sales.cash_remitted | currency}}</span>
           </h5>
@@ -389,8 +389,9 @@
     data: () => ({
       allProducts: [],
       activeSelected: [],
+      date: '',
       sales: {
-        date: '',
+
         cash_remitted: '',
         credit_remitted: '',
         created_on: Date(),
@@ -488,12 +489,15 @@
             if (result) {
               if (!this.debtor) {
                 if (!this.badProduct) {
+                  let date = {
+                    date : this.$moment(this.date, "YYYY-MM-DD").format()
+                  }
                   this.$vs.loading({
                     container: '#table-loader',
                     type: 'sound',
                     scale: 1
                   });
-                  let sales = Object.assign(this.sales, this.summarizedData);
+                  let sales = Object.assign(this.sales, this.summarizedData, date);
                   let data = {
                     sale: sales,
                     debtors: this.debtors,
