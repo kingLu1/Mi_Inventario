@@ -68,7 +68,7 @@ export default [
     icon: "TruckIcon",
     // submenu: [
     //   {
-    //     url: '/purchase/bar',
+    //     url: '/purchase/barPurchases',
     //     name: "Bar",
     //     slug: "purchase_bar",
     //   },
@@ -102,7 +102,7 @@ export default [
     icon: "TrendingUpIcon",
     // submenu: [
     //   {
-    //     url: '/sales/bar',
+    //     url: '/sales/barPurchases',
     //     name: "Bar",
     //     slug: "sales_bar",
     //   },

@@ -114,7 +114,7 @@ const actions = {
         // if (this.access === "SuperAdmin") {
         router.push({path: '/'});
         // } else if (this.access === "Admin") {
-        //   router.push({path: '/sales/bar'})
+        //   router.push({path: '/sales/barPurchases'})
         // } else {
         //   router.push({path: '/inventory/product'})
         // }

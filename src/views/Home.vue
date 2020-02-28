@@ -48,7 +48,7 @@
           </template>
           <p>
             Record Sales for
-            <span class="font-black cursor-pointer " @click="$router.push('sales/bar')">Bar</span>
+            <span class="font-black cursor-pointer " @click="$router.push('sales/barPurchases')">Bar</span>
             <!--            <span class="font-black" @click="$router.push('purchase/kitchen')">kitchen</span>-->
           </p>
         </vx-card>
@@ -62,7 +62,7 @@
           </template>
           <p>
             Keep Records of stock added to
-            <span class="font-black cursor-pointer" @click="$router.push('purchase/bar')">Bar</span>
+            <span class="font-black cursor-pointer" @click="$router.push('purchase/barPurchases')">Bar</span>
             <!--            <span class="font-bold underline">kitchen</span>-->
           </p>
         </vx-card>

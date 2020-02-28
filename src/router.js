@@ -226,7 +226,7 @@ const router = new Router({
         // {
         //   path: '/purchase/barbeque',
         //   name: 'purchase_barbeque',
-        //   component: () => import('./views/pages/purchase/barbeque/Index.vue'),
+        //   component: () => import('./views/pages/purchase/barbeque/BarPurchaseIndex.vue'),
         //   meta: {
         //     breadcrumb: [
         //       {title: 'Dashboard', url: '/'},
@@ -239,7 +239,7 @@ const router = new Router({
         // }, {
         //   path: '/purchase/kitchen',
         //   name: 'purchase_kitchen',
-        //   component: () => import('./views/pages/purchase/kitchen/Index.vue'),
+        //   component: () => import('./views/pages/purchase/kitchen/BarPurchaseIndex.vue'),
         //   meta: {
         //     breadcrumb: [
         //       {title: 'Dashboard', url: '/'},
