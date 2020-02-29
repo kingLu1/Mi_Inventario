@@ -4,9 +4,9 @@
       <vx-card>
         <div class="vx-row flex justify-between mb-base">
           <div class="vx-col">
-            <h3 class="mb-2">Bar Purchases</h3>
-            <p class="mb-1">Purchase Total : <span class="money">{{currency | currency}}</span></p>
-            <p>Paid Total : <span class="money">{{currency | currency}}</span></p>
+            <h3 class="mb-2">Bar Debts</h3>
+            <p class="mb-1">Active: <span class="text-danger">10</span></p>
+            <p class="mb-1">Cleared: <span class="text-success">10</span></p>
           </div>
           <div class="vx-col">
             <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">20/20/2000</span> to
@@ -14,15 +14,15 @@
 
           </div>
         </div>
-        <vs-table  stripe hoverFlat noDataText="No Record Found"
-                  :data="purchases">
+        <vs-table stripe hoverFlat noDataText="No Debts"
+                  :data="debts">
           <template slot="thead">
             <vs-th>#</vs-th>
-            <vs-th sort-key="purchased_date">Date</vs-th>
-            <vs-th sort-key="paid">Purchase Total</vs-th>
-            <vs-th sort-key="">Paid Total</vs-th>
-            <vs-th sort-key="expense">Expense</vs-th>
-            <!--            <vs-th sort-key="created_on">Recorded On</vs-th>-->
+            <vs-th sort-key="purchased_date">Debtor Name</vs-th>
+            <vs-th sort-key="paid">Surety Name</vs-th>
+            <vs-th sort-key="">Amount</vs-th>
+            <vs-th sort-key="status">Status</vs-th>
+            <vs-th sort-key="expense">Date</vs-th>
             <vs-th>Action</vs-th>
           </template>
           <template slot-scope="{data}">
@@ -30,17 +30,27 @@
               <vs-td :data="data[indextr]">
                 {{ indextr + 1 }}
               </vs-td>
-              <vs-td :data="data[indextr].purchased_date">
-                {{ data[indextr].purchased_date | moment("dddd, MMMM Do YYYY") }}
+              <vs-td :data="data[indextr].sales_date">
+                {{ data[indextr].name }}
               </vs-td>
               <vs-td :data="data[indextr].total">
-                <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>
+                <div>{{ data[indextr].surety }}</div>
               </vs-td>
               <vs-td :data="data[indextr].paid">
-                <div class="money">{{ data[indextr].paid | currency }}</div>
+
+                <div class="text-danger">{{ totalAmount(tr) | currency }}</div>
               </vs-td>
-              <vs-td :data="data[indextr].expense">
-                <div class="text-danger">{{ data[indextr].expense | currency }}</div>
+
+              <vs-td :data="data[indextr].status">
+                <p class="text-success text-center text-sm" v-if="!data[indextr].status">
+                  Paid
+                </p>
+                <p class="text-danger  text-center text-sm" v-else>
+                  Unpaid
+                </p>
+              </vs-td>
+              <vs-td :data="data[indextr].created_on">
+                {{ data[indextr].date}}
               </vs-td>
               <vs-td>
                 <div class="flex">
@@ -54,8 +64,9 @@
                   <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
                     <vs-button s icon-pack="feather" icon="icon-trash"
                                color="danger"
+
                     >
-                      <!--                      @click="openConfirm(tr)"-->
+<!--                      @click="openConfirm(tr)"-->
                     </vs-button>
                   </vx-tooltip>
                 </div>
@@ -69,50 +80,69 @@
 </template>
 
 <script>
-  // import {getPurchases} from '../../../../../stitch/api/purchases';
-  import eventBus from "../../../../eventBus";
-  // import {getClient} from "../../../../../stitch/app";
 
 
   export default {
-    name: "BarPurchaseTable",
-    data: () => ({
-      purchases: [],
-      selected: {},
-      currency: 10000,
-    }),
-    props: {
-      records: {
-        required: true
+    name: "DebtsTable",
+    data: () => (
+      {
+        debts: [],
+        selected: {}
       }
-    },
-    mounted() {
-      // this.getPurchases()
+    ),
+    created() {
+
     },
     methods: {
+      // getDebts() {
+      //   this.$vs.loading({
+      //     container: '#table-loader',
+      //     type: 'sound',
+      //     scale: 1
+      //   });
+      //   this.axios.get(getBarDebts).then((res) => {
+      //     this.debts = res.data;
+      //     console.log(res.data);
+      //     this.$vs.loading.close('#table-loader > .con-vs-loading');
+      //   }).catch((err) => {
+      //     this.notify({
+      //       title: 'Error',
+      //       text: err.message,
+      //       color: 'danger'
+      //     });
+      //     this.$vs.loading.close('#table-loader  > .con-vs-loading')
+      //   });
+      // },
       viewDetails(p) {
-        eventBus.$emit('goToDetails', p)
+        // eventBus.$emit('goToDetails', p)
       },
+      // totalAmount(tr) {
+      //   let sorted = tr.products.map(item =>
+      //     item.price * item.holding.$numberInt
+      //   );
+      //   return sorted.reduce((x, y) => x + y);
+      // },
       // openConfirm(tr) {
       //   this.selected = tr;
       //   this.$vs.dialog({
       //     type: 'confirm',
       //     color: 'danger',
       //     title: `Confirm`,
-      //     text: `Are you sure  you want to delete ${tr.purchased_date} Purchase Record?`,
+      //     text: `Are you sure  you want to delete ${tr.name}[${tr.surety}] Debt?`,
       //     accept: this.acceptDelete
       //   });
       // },
       // acceptDelete() {
-      //   let data = [{purchased_date: this.selected.purchased_date}];
+      //   let data = [{_id: this.selected._id}];
       //   this.$vs.loading({
       //     container: '#table-loader',
       //     type: 'sound',
       //     scale: 1
       //   });
-      //   getClient().callFunction('PurchaseDelete', data).then(() => {
+      //   getClient().callFunction('DebtDelete', data).then((res) => {
       //       this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-      //       this.getPurchases()
+      //       this.getDebts();
+      //     console.log(res)
       //     }
       //   ).catch(
       //     (err) => {
@@ -122,7 +152,6 @@
       //   )
       // },
     }
-
   }
 </script>
 

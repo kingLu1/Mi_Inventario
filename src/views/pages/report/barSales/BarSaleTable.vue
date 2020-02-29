@@ -1,20 +1,32 @@
 <template>
   <div id="table-loader" class="vs-con-loading__container">
     <div id="data-list-list-view " class="data-list-container ">
-      <vx-card title="Sales History">
-        <vs-table max-items="10" pagination stripe hoverFlat noDataText="No Purchases Available"
-                  :data="sales" search>
+      <vx-card>
+        <div class="vx-row flex justify-between mb-base">
+          <div class="vx-col">
+            <h3 class="mb-2">Bar Sales</h3>
+            <p class="mb-1">Sales Total : <span class="money">{{currency | currency}}</span></p>
+            <p class="mb-1">Cash Remit Total : <span class="money">{{currency | currency}}</span></p>
+            <p class="mb-1">Credit Remit Total : <span class="money">{{currency | currency}}</span></p>
+            <p>Debt Total : <span class="money">{{currency | currency}}</span></p>
+          </div>
+          <div class="vx-col">
+            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">20/20/2000</span> to
+              <span class="text-dark text-bold">30/30/300</span></p>
+
+          </div>
+        </div>
+        <vs-table stripe hoverFlat noDataText="No Record Found"
+                  :data="sales">
           <template slot="thead">
             <vs-th>#</vs-th>
-            <vs-th sort-key="sales_date">Sales Date</vs-th>
+            <vs-th sort-key="sales_date">Date</vs-th>
             <vs-th sort-key="paid">Sales Total</vs-th>
             <vs-th sort-key="">Cash Remit</vs-th>
             <vs-th sort-key="expense">Credit Remit</vs-th>
 
             <vs-th sort-key="debts">Debts</vs-th>
             <vs-th sort-key="created_by">Bad Products</vs-th>
-            <vs-th sort-key="created_by">Recorded By</vs-th>
-            <!--            <vs-th sort-key="created_on">Recorded On</vs-th>-->
             <vs-th>Action</vs-th>
           </template>
           <template slot-scope="{data}">
@@ -49,9 +61,6 @@
                 </p>
 
               </vs-td>
-              <vs-td :data="data[indextr].created_on">
-                {{ data[indextr].created_by}}
-              </vs-td>
               <vs-td>
                 <div class="flex">
                   <vx-tooltip text="See Details" position="top">
@@ -64,8 +73,9 @@
                   <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
                     <vs-button s icon-pack="feather" icon="icon-trash"
                                color="danger"
-                               @click="openConfirm(tr)"
+
                     >
+                      <!--                      @click="openConfirm(tr)"-->
                     </vs-button>
                   </vx-tooltip>
                 </div>
@@ -79,9 +89,9 @@
 </template>
 
 <script>
-  import {getSales} from '../../../../../stitch/api/sales';
-  import eventBus from "../../../../../eventBus";
-  import {getClient} from "../../../../../stitch/app";
+  // import {getSales} from '../../../../../stitch/api/sales';
+  // import eventBus from "../../../../../eventBus";
+  // import {getClient} from "../../../../../stitch/app";
 
 
   export default {
@@ -90,59 +100,44 @@
       sales: [],
       selected: {},
     }),
-    mounted() {
-      this.getSales()
+    props: {
+      records: {
+        required: true
+      }
     },
     methods: {
-      getSales() {
-        this.$vs.loading({
-          container: '#table-loader',
-          type: 'sound',
-          scale: 1
-        });
-        this.axios.get(getSales).then((res) => {
-          this.sales = res.data;
-          this.$vs.loading.close('#table-loader > .con-vs-loading');
-        }).catch((err) => {
-          this.notify({
-            title: 'Error',
-            text: err.message,
-            color: 'danger'
-          });
-          this.$vs.loading.close('#table-loader  > .con-vs-loading')
-        });
-      },
+
       viewDetails(p) {
-        eventBus.$emit('goToDetails', p)
+        // eventBus.$emit('goToDetails', p)
       },
-      openConfirm(tr) {
-        this.selected = tr;
-        this.$vs.dialog({
-          type: 'confirm',
-          color: 'danger',
-          title: `Confirm`,
-          text: `Are you sure  you want to delete ${tr.sales_date} Sales Record?`,
-          accept: this.acceptDelete
-        });
-      },
-      acceptDelete() {
-        let data = [{sales_date: this.selected.sales_date}];
-        this.$vs.loading({
-          container: '#table-loader',
-          type: 'sound',
-          scale: 1
-        });
-        getClient().callFunction('SaleDelete', data).then(() => {
-            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-            this.getSales()
-          }
-        ).catch(
-          (err) => {
-            this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
-          }
-        )
-      },
+      // openConfirm(tr) {
+      //   this.selected = tr;
+      //   this.$vs.dialog({
+      //     type: 'confirm',
+      //     color: 'danger',
+      //     title: `Confirm`,
+      //     text: `Are you sure  you want to delete ${tr.sales_date} Sales Record?`,
+      //     accept: this.acceptDelete
+      //   });
+      // },
+      // acceptDelete() {
+      //   let data = [{sales_date: this.selected.sales_date}];
+      //   this.$vs.loading({
+      //     container: '#table-loader',
+      //     type: 'sound',
+      //     scale: 1
+      //   });
+      //   getClient().callFunction('SaleDelete', data).then(() => {
+      //       this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+      //       this.getSales()
+      //     }
+      //   ).catch(
+      //     (err) => {
+      //       this.$vs.loading.close('#table-loader > .con-vs-loading');
+      //       console.log(err)
+      //     }
+      //   )
+      // },
     }
 
   }

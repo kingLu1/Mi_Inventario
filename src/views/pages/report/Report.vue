@@ -2,7 +2,7 @@
   <div class="vx-row">
     <div class="vx-col w-full h-full">
       <date-picker :option=option class="mb-base" @search="search"/>
-      <component :is="activeComponent"/>
+      <component :is="activeComponent" :records="records"/>
     </div>
   </div>
 
@@ -11,32 +11,39 @@
 <script>
   import datePicker from '../../../myComponents/DateRangePicker';
   import blank from '../../../myComponents/Blank';
-  import barP from './barPurchases/BarPurchaseIndex';
-  import barbeque from "./barbeque/Barbeque";
-  import pool from './pool/Pool';
-  import kitchen from './kitchen/Kitchen'
+  import barPurchase from './barPurchases/BarPurchaseIndex';
+  import barSale from './barSales/BarSaleIndex'
+  import barDebt from './barDebts/BarDebtIndex'
 
   export default {
     name: "Report",
     components: {
       datePicker,
-      barP,
-      barbeque,
-      pool,
-      kitchen,
-      blank
+      blank,
+      barPurchase,
+      barSale,
+      barDebt
+
+
     },
     data: () => ({
-      activeComponent: barP,
+      activeComponent: barDebt,
+      records: [],
       option: [
         {
-          slug: 'Bar ~ Debtors'
+          slug: 'Bar ~ Debtors',
+          outlet: 'bar',
+          db:'debts'
         },
         {
-          slug: 'Bar ~ Purchases'
+          slug: 'Bar ~ Purchases',
+          outlet: 'bar',
+          db: 'purchases'
         },
         {
-          slug: 'Bar ~ Sales'
+          slug: 'Bar ~ Sales',
+          outlet: 'bar',
+          sales: 'sales'
         },
 
       ]

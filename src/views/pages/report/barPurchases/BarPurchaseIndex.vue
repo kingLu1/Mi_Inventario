@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div>
-      <component :is="activeComponent" :activePurchase="activePurchase"/>
-    </div>
+    <component :is="activeComponent" :records="records" :activePurchase="activePurchase"/>
   </div>
 </template>
 
@@ -13,6 +11,11 @@
 
   export default {
     name: "BarPurchaseIndex",
+    props: {
+      records: {
+        required: true
+      }
+    },
     data: () => ({
       activeComponent: BarPurchaseTable,
       activePurchase: '',
@@ -25,7 +28,7 @@
       backToPurchasing() {
         // eventBus.$emit('backToPurchasing')
       },
-      goToTable(){
+      goToTable() {
         this.activeComponent = "BarPurchaseTable"
       },
       listener() {
