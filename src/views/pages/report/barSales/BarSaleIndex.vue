@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component :is="activeComponent" :records="records"/>
+    <component :is="activeComponent" :records="records" :date="date"/>
   </div>
 </template>
 
@@ -14,6 +14,9 @@
     props: {
       records: {
         required: true
+      },
+      date: {
+        required: true
       }
     },
     components: {
@@ -21,32 +24,10 @@
       // BarSaleDetails
     },
     created() {
-      // this.listener();
-      // eventBus.$emit('showActions', false)
     },
     beforeDestroy() {
-      // eventBus.$emit('showActions', true)
     },
     methods: {
-      backToSales() {
-        // eventBus.$emit('backToSales')
-      },
-      goToTable() {
-        // this.activeComponent = "HistoryTable"
-      },
-      listener() {
-        // eventBus.$on('goToDetails', (payload) => {
-        //   this.activeSales = payload;
-        //   this.activeComponent = 'HistoryDetails'
-        // });
-        // eventBus.$on('backToHistoryTable', () => {
-        //   this.activeComponent = 'HistoryTable'
-        // });
-        // eventBus.$on(
-        //   "showInnerActions",
-        //   (payload) => this.showInnerAction = payload
-        // );
-      }
     },
     data: () => ({
       activeComponent: 'BarSaleTable',

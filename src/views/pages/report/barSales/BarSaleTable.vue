@@ -11,8 +11,8 @@
             <p>Debt Total : <span class="money">{{currency | currency}}</span></p>
           </div>
           <div class="vx-col">
-            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">20/20/2000</span> to
-              <span class="text-dark text-bold">30/30/300</span></p>
+            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">{{date.from}}</span> to
+              <span class="text-dark text-bold">{{date.to}}</span></p>
 
           </div>
         </div>
@@ -70,14 +70,6 @@
                                @click="viewDetails(tr)">
                     </vs-button>
                   </vx-tooltip>
-                  <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
-                    <vs-button s icon-pack="feather" icon="icon-trash"
-                               color="danger"
-
-                    >
-                      <!--                      @click="openConfirm(tr)"-->
-                    </vs-button>
-                  </vx-tooltip>
                 </div>
               </vs-td>
             </vs-tr>
@@ -89,13 +81,10 @@
 </template>
 
 <script>
-  // import {getSales} from '../../../../../stitch/api/sales';
-  // import eventBus from "../../../../../eventBus";
-  // import {getClient} from "../../../../../stitch/app";
-
+  import {getClient} from "../../../../stitch/app";
 
   export default {
-    name: "HistoryTable",
+    name: "BarSalesTable",
     data: () => ({
       sales: [],
       selected: {},
@@ -103,41 +92,21 @@
     props: {
       records: {
         required: true
+      },
+      date: {
+        required: true
       }
     },
     methods: {
-
       viewDetails(p) {
-        // eventBus.$emit('goToDetails', p)
       },
-      // openConfirm(tr) {
-      //   this.selected = tr;
-      //   this.$vs.dialog({
-      //     type: 'confirm',
-      //     color: 'danger',
-      //     title: `Confirm`,
-      //     text: `Are you sure  you want to delete ${tr.sales_date} Sales Record?`,
-      //     accept: this.acceptDelete
-      //   });
-      // },
-      // acceptDelete() {
-      //   let data = [{sales_date: this.selected.sales_date}];
-      //   this.$vs.loading({
-      //     container: '#table-loader',
-      //     type: 'sound',
-      //     scale: 1
-      //   });
-      //   getClient().callFunction('SaleDelete', data).then(() => {
-      //       this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-      //       this.getSales()
-      //     }
-      //   ).catch(
-      //     (err) => {
-      //       this.$vs.loading.close('#table-loader > .con-vs-loading');
-      //       console.log(err)
-      //     }
-      //   )
-      // },
+    },
+    mounted() {
+      this.$vs.loading({
+        container: '#table-loader',
+        type: 'sound',
+        scale: 2
+      });
     }
 
   }

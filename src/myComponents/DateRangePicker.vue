@@ -5,7 +5,11 @@
         <div class="mb-2">
           <p>Select Outlet<span class="text-danger ml-1">*</span></p>
         </div>
-        <v-select label="slug" v-model="selected" :options="option" style="width:196px;"/>
+        <v-select label="slug" v-model="selected" :options="option"
+                  style="width:196px;"/>
+        <span class="text-danger text-sm"
+              v-show="errors.has('Outlet')">{{ errors.first('Outlet') }}</span>
+
       </div>
       <div class="vx-col mb-2 flex w-full sm:1/2 md:w-2/4 lg:w-1/4 xl:w-1/5">
         <div>
@@ -13,8 +17,13 @@
             <!--            label-->
             <p>From<span class="text-danger ml-1">*</span></p>
           </div>
-          <flat-pickr :config="configFromdateTimePicker" v-model="fromDate" placeholder="Select Date"
+          <flat-pickr name="From Date" v-validate="'required'" :config="configFromdateTimePicker" v-model="fromDate"
+                      placeholder="Select Date"
                       @on-change="onFromChange"/>
+          <div>
+             <span class="text-danger text-sm"
+                   v-show="errors.has('From Date')">{{ errors.first('From Date') }}</span>
+          </div>
         </div>
       </div>
       <div class="vx-col mb-2 flex w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/5">
@@ -22,11 +31,17 @@
           <div class="mb-2">
             <p>To<span class="text-danger ml-1">*</span></p>
           </div>
-          <flat-pickr :config="configTodateTimePicker" v-model="toDate" placeholder="Select Date"
+          <flat-pickr name="To Date" :config="configTodateTimePicker" v-model="toDate" placeholder="Select Date"
+                      v-validate="'required'"
                       @on-change="onToChange"/>
+          <div>
+             <span class="text-danger text-sm"
+                   v-show="errors.has('To Date')">{{ errors.first('To Date') }}</span>
+          </div>
+
         </div>
       </div>
-      <div class="vx-col actions mt-2 pb-3 flex w-full h-full sm:w-full md:w-full lg:w-1/4 xl:w-1/5">
+      <div class="vx-col actions mt-2 pb-2 pt-1 flex w-full h-full sm:w-full md:w-full lg:w-1/4 xl:w-1/5">
         <div class="flex flex-wrap">
           <vs-button @click="search()" color="primary" type="filled" icon-pack="feather" icon="icon-search"
                      class="mr-2">
@@ -75,19 +90,25 @@
         this.$set(this.configFromdateTimePicker, 'maxDate', dateStr);
       },
       search() {
-        let data = {
-          a: this.selected,
-          b: this.toDate,
-          c: this.fromDate
-        }
-
-        console.log(data)
+        this.$validator.validateAll().then(result => {
+            if (result) {
+              let data = {
+                selected: this.selected,
+                to: this.toDate,
+                from: this.fromDate
+              };
+              this.$emit('search', data)
+            } else {
+              // err
+            }
+          }
+        )
       },
-      downloadReport() {
-        console.log('download')
-
-
-      }
+      // downloadReport() {
+      //   console.log('download')
+      //
+      //
+      // }
 
     },
     components: {

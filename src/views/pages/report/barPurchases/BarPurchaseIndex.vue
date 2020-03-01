@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component :is="activeComponent" :records="records" :activePurchase="activePurchase"/>
+    <component :is="activeComponent" :records="records" :date="date" :activePurchase="activePurchase"/>
   </div>
 </template>
 
@@ -14,6 +14,9 @@
     props: {
       records: {
         required: true
+      },
+      date: {
+        required: true
       }
     },
     data: () => ({
@@ -21,26 +24,7 @@
       activePurchase: '',
       showInnerAction: false
     }),
-    created() {
-      this.listener();
-    },
-    methods: {
-      backToPurchasing() {
-        // eventBus.$emit('backToPurchasing')
-      },
-      goToTable() {
-        this.activeComponent = "BarPurchaseTable"
-      },
-      listener() {
-        // eventBus.$on('goToDetails', (payload) => {
-        //   this.activePurchase = payload;
-        //   this.activeComponent = 'BarPurchaseDetails'
-        // });
-        // eventBus.$on('backToHistoryTable', () => {
-        //   this.activeComponent = 'BarPurchaseTable'
-        // });
-      }
-    },
+    methods: {},
     components: {
       BarPurchaseTable, BarPurchaseDetails
     }

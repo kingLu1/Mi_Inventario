@@ -9,12 +9,12 @@
             <p>Paid Total : <span class="money">{{currency | currency}}</span></p>
           </div>
           <div class="vx-col">
-            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">20/20/2000</span> to
-              <span class="text-dark text-bold">30/30/300</span></p>
+            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">{{date.from}}</span> to
+              <span class="text-dark text-bold">{{date.to}}</span></p>
 
           </div>
         </div>
-        <vs-table  stripe hoverFlat noDataText="No Record Found"
+        <vs-table stripe hoverFlat noDataText="No Record Found"
                   :data="purchases">
           <template slot="thead">
             <vs-th>#</vs-th>
@@ -51,13 +51,6 @@
                                @click="viewDetails(tr)">
                     </vs-button>
                   </vx-tooltip>
-                  <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
-                    <vs-button s icon-pack="feather" icon="icon-trash"
-                               color="danger"
-                    >
-                      <!--                      @click="openConfirm(tr)"-->
-                    </vs-button>
-                  </vx-tooltip>
                 </div>
               </vs-td>
             </vs-tr>
@@ -69,9 +62,8 @@
 </template>
 
 <script>
-  // import {getPurchases} from '../../../../../stitch/api/purchases';
   import eventBus from "../../../../eventBus";
-  // import {getClient} from "../../../../../stitch/app";
+  import {getClient} from "../../../../stitch/app";
 
 
   export default {
@@ -84,43 +76,21 @@
     props: {
       records: {
         required: true
+      }, date: {
+        required: true
       }
     },
     mounted() {
-      // this.getPurchases()
+      this.$vs.loading({
+        container: '#table-loader',
+        type: 'sound',
+        scale: 2
+      });
     },
     methods: {
       viewDetails(p) {
-        eventBus.$emit('goToDetails', p)
+        // eventBus.$emit('goToDetails', p)
       },
-      // openConfirm(tr) {
-      //   this.selected = tr;
-      //   this.$vs.dialog({
-      //     type: 'confirm',
-      //     color: 'danger',
-      //     title: `Confirm`,
-      //     text: `Are you sure  you want to delete ${tr.purchased_date} Purchase Record?`,
-      //     accept: this.acceptDelete
-      //   });
-      // },
-      // acceptDelete() {
-      //   let data = [{purchased_date: this.selected.purchased_date}];
-      //   this.$vs.loading({
-      //     container: '#table-loader',
-      //     type: 'sound',
-      //     scale: 1
-      //   });
-      //   getClient().callFunction('PurchaseDelete', data).then(() => {
-      //       this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-      //       this.getPurchases()
-      //     }
-      //   ).catch(
-      //     (err) => {
-      //       this.$vs.loading.close('#table-loader > .con-vs-loading');
-      //       console.log(err)
-      //     }
-      //   )
-      // },
     }
 
   }

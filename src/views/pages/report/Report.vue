@@ -1,8 +1,8 @@
 <template>
   <div class="vx-row">
     <div class="vx-col w-full h-full">
-      <date-picker :option=option class="mb-base" @search="search"/>
-      <component :is="activeComponent" :records="records"/>
+      <date-picker :option="option" class="mb-base" @search="search"/>
+      <component :is="activeComponent" :records="records" :date="date"/>
     </div>
   </div>
 
@@ -27,21 +27,25 @@
 
     },
     data: () => ({
-      activeComponent: barDebt,
+      activeComponent: 'blank',
       records: [],
+      date: {},
       option: [
         {
-          slug: 'Bar ~ Debtors',
+          id: 1,
+          slug: 'Bar~ Debtors',
           outlet: 'bar',
-          db:'debts'
+          db: 'debts'
         },
         {
-          slug: 'Bar ~ Purchases',
+          id: 2,
+          slug: 'Bar~ Purchases',
           outlet: 'bar',
           db: 'purchases'
         },
         {
-          slug: 'Bar ~ Sales',
+          id: 3,
+          slug: 'Bar~ Sales',
           outlet: 'bar',
           sales: 'sales'
         },
@@ -49,9 +53,30 @@
       ]
     }),
     methods: {
-      search() {
+      search(data) {
+        this.date = {
+          to: data.to,
+          from: data.from
+        };
+        if (data.selected.id === 1) {
+          this.switchedToBarDebt()
+        } else if (data.selected.id === 2) {
+          this.switchedToBarPurchase()
+        } else if (data.selected.id === 3) {
+          this.switchedToBarSale()
+        }
 
+      },
+      switchedToBarDebt() {
+        this.activeComponent = "barDebt"
+      },
+      switchedToBarSale() {
+        this.activeComponent = "barSale"
+      },
+      switchedToBarPurchase() {
+        this.activeComponent = "barPurchase"
       }
+
     },
   }
 </script>

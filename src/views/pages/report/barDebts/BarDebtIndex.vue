@@ -1,12 +1,10 @@
 <template>
   <div>
-    <component :is="activeComponent" :records="records"/>
+    <component :is="activeComponent" :records="records" :date="date"/>
   </div>
 </template>
 
 <script>
-  // import eventBus from "../../../../../eventBus";
-  // import BarDebtDetails from "./BarDebtDetails";
   import BarDebtTable from "./BarDebtTable";
 
   export default {
@@ -14,6 +12,9 @@
     props: {
       records: {
         required: true
+      },
+      date: {
+        required: true,
       }
     },
     components: {
@@ -23,29 +24,8 @@
     data: () => ({
       activeComponent: 'BarDebtTable',
       activeDebt: '',
-      showInnerAction: false
     }),
-    methods: {
-      backToSales() {
-        // eventBus.$emit('backToSales')
-      },
-      goToTable() {
-        this.activeComponent = "DebtsTable"
-      },
-      listener() {
-        // eventBus.$on('goToDetails', (payload) => {
-        //   this.activeDebt = payload;
-        //   this.activeComponent = 'DebtsDetails';
-        // });
-        // eventBus.$on('backToDebtsTable', () => {
-        //   this.activeComponent = 'DebtsTable'
-        // });
-        // eventBus.$on(
-        //   "showInnerActions",
-        //   (payload) => this.showInnerAction = payload
-        // );
-      }
-    },
+    methods: {},
 
   }
 </script>

@@ -9,8 +9,8 @@
             <p class="mb-1">Cleared: <span class="text-success">10</span></p>
           </div>
           <div class="vx-col">
-            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">20/20/2000</span> to
-              <span class="text-dark text-bold">30/30/300</span></p>
+            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">{{date.from}}</span> to
+              <span class="text-dark text-bold">{{date.to}}</span></p>
 
           </div>
         </div>
@@ -61,14 +61,6 @@
                                @click="viewDetails(tr)">
                     </vs-button>
                   </vx-tooltip>
-                  <vx-tooltip text="Delete" position="top" v-if="$acl.check('superAdmin')">
-                    <vs-button s icon-pack="feather" icon="icon-trash"
-                               color="danger"
-
-                    >
-<!--                      @click="openConfirm(tr)"-->
-                    </vs-button>
-                  </vx-tooltip>
                 </div>
               </vs-td>
             </vs-tr>
@@ -81,7 +73,6 @@
 
 <script>
 
-
   export default {
     name: "DebtsTable",
     data: () => (
@@ -90,29 +81,25 @@
         selected: {}
       }
     ),
+    props: {
+      records: {
+        required: true
+      },
+      date: {
+        required: true
+      }
+    },
     created() {
 
     },
+    mounted() {
+      this.$vs.loading({
+        container: '#table-loader',
+        type: 'sound',
+        scale: 2
+      });
+    },
     methods: {
-      // getDebts() {
-      //   this.$vs.loading({
-      //     container: '#table-loader',
-      //     type: 'sound',
-      //     scale: 1
-      //   });
-      //   this.axios.get(getBarDebts).then((res) => {
-      //     this.debts = res.data;
-      //     console.log(res.data);
-      //     this.$vs.loading.close('#table-loader > .con-vs-loading');
-      //   }).catch((err) => {
-      //     this.notify({
-      //       title: 'Error',
-      //       text: err.message,
-      //       color: 'danger'
-      //     });
-      //     this.$vs.loading.close('#table-loader  > .con-vs-loading')
-      //   });
-      // },
       viewDetails(p) {
         // eventBus.$emit('goToDetails', p)
       },
