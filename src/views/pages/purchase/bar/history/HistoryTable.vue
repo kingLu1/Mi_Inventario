@@ -6,7 +6,7 @@
                   :data="purchases" search>
           <template slot="thead">
             <vs-th>#</vs-th>
-            <vs-th sort-key="purchased_date">Purchase Date</vs-th>
+            <vs-th sort-key="date">Purchase Date</vs-th>
             <vs-th sort-key="paid">Purchase Total</vs-th>
             <vs-th sort-key="">Paid Total</vs-th>
             <vs-th sort-key="expense">Expense Total</vs-th>
@@ -19,8 +19,8 @@
               <vs-td :data="data[indextr]">
                 {{ indextr + 1 }}
               </vs-td>
-              <vs-td :data="data[indextr].purchased_date">
-                {{ data[indextr].purchased_date | moment("dddd, MMMM Do YYYY") }}
+              <vs-td :data="data[indextr].date">
+                {{ data[indextr].date | moment("dddd, MMMM Do YYYY") }}
               </vs-td>
               <vs-td :data="data[indextr].total">
                 <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>
@@ -102,12 +102,12 @@
           type: 'confirm',
           color: 'danger',
           title: `Confirm`,
-          text: `Are you sure  you want to delete ${tr.purchased_date} Purchase Record?`,
+          text: `Are you sure  you want to delete ${tr.date} Purchase Record?`,
           accept: this.acceptDelete
         });
       },
       acceptDelete() {
-        let data = [{purchased_date: this.selected.purchased_date}];
+        let data = [{date: this.selected.date}];
         this.$vs.loading({
           container: '#table-loader',
           type: 'sound',

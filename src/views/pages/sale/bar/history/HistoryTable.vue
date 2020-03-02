@@ -6,7 +6,7 @@
                   :data="sales" search>
           <template slot="thead">
             <vs-th>#</vs-th>
-            <vs-th sort-key="sales_date">Sales Date</vs-th>
+            <vs-th sort-key="date">Sales Date</vs-th>
             <vs-th sort-key="paid">Sales Total</vs-th>
             <vs-th sort-key="">Cash Remit</vs-th>
             <vs-th sort-key="expense">Credit Remit</vs-th>
@@ -22,8 +22,8 @@
               <vs-td :data="data[indextr]">
                 {{ indextr + 1 }}
               </vs-td>
-              <vs-td :data="data[indextr].sales_date">
-                {{ data[indextr].sales_date }}
+              <vs-td :data="data[indextr].date">
+                {{ data[indextr].date }}
               </vs-td>
               <vs-td :data="data[indextr].total">
                 <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>
@@ -121,12 +121,12 @@
           type: 'confirm',
           color: 'danger',
           title: `Confirm`,
-          text: `Are you sure  you want to delete ${tr.sales_date} Sales Record?`,
+          text: `Are you sure  you want to delete ${tr.date} Sales Record?`,
           accept: this.acceptDelete
         });
       },
       acceptDelete() {
-        let data = [{sales_date: this.selected.sales_date}];
+        let data = [{date: this.selected.date}];
         this.$vs.loading({
           container: '#table-loader',
           type: 'sound',

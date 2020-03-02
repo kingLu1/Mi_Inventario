@@ -18,7 +18,7 @@
                   :data="purchases">
           <template slot="thead">
             <vs-th>#</vs-th>
-            <vs-th sort-key="purchased_date">Date</vs-th>
+            <vs-th sort-key="date">Date</vs-th>
             <vs-th sort-key="paid">Purchase Total</vs-th>
             <vs-th sort-key="">Paid Total</vs-th>
             <vs-th sort-key="expense">Expense</vs-th>
@@ -30,8 +30,8 @@
               <vs-td :data="data[indextr]">
                 {{ indextr + 1 }}
               </vs-td>
-              <vs-td :data="data[indextr].purchased_date">
-                {{ data[indextr].purchased_date | moment("dddd, MMMM Do YYYY") }}
+              <vs-td :data="data[indextr].date">
+                {{ data[indextr].date | moment("dddd, MMMM Do YYYY") }}
               </vs-td>
               <vs-td :data="data[indextr].total">
                 <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>

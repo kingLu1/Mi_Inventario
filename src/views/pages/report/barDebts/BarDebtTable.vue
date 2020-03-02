@@ -18,7 +18,7 @@
                   :data="debts">
           <template slot="thead">
             <vs-th>#</vs-th>
-            <vs-th sort-key="purchased_date">Debtor Name</vs-th>
+            <vs-th sort-key="date">Debtor Name</vs-th>
             <vs-th sort-key="paid">Surety Name</vs-th>
             <vs-th sort-key="">Amount</vs-th>
             <vs-th sort-key="status">Status</vs-th>
@@ -30,7 +30,7 @@
               <vs-td :data="data[indextr]">
                 {{ indextr + 1 }}
               </vs-td>
-              <vs-td :data="data[indextr].sales_date">
+              <vs-td :data="data[indextr].date">
                 {{ data[indextr].name }}
               </vs-td>
               <vs-td :data="data[indextr].total">

@@ -2,7 +2,7 @@
   <div class="vx-row p-base pt-4 " id="table-loader">
     <div class="vx-col w-full">
       <div>
-        <p class="mb-4">Date : {{activeSales.sales_date}} </p>
+        <p class="mb-4">Date : {{activeSales.date}} </p>
         <p class="mb-4">Sales Total : <span class="money">{{activeSales.total.$numberInt | currency}}</span></p>
         <p class="mb-4">Cash Remit : <span class="money">{{activeSales.remit_cash | currency}}</span></p>
         <p class="mb-4">Credit Remit : <span class="money">{{activeSales.remit_credit | currency}}</span></p>
@@ -136,12 +136,12 @@
           type: 'confirm',
           color: 'danger',
           title: `Confirm`,
-          text: `Are you sure  you want to delete ${tr.sales_date} Sales Record?`,
+          text: `Are you sure  you want to delete ${tr.date} Sales Record?`,
           accept: this.acceptDelete
         });
       },
       acceptDelete() {
-        let data = [{sales_date: this.activeSales.sales_date}];
+        let data = [{date: this.activeSales.date}];
         this.$vs.loading({
           container: '#table-loader',
           type: 'sound',
