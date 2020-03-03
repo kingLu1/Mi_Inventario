@@ -5,17 +5,19 @@
         <div class="vx-row flex justify-between mb-base">
           <div class="vx-col">
             <h3 class="mb-2">Bar Purchases</h3>
-            <p class="mb-1">Purchase Total : <span class="money">{{currency | currency}}</span></p>
-            <p>Paid Total : <span class="money">{{currency | currency}}</span></p>
+            <p class="mb-1" v-if="records.length">Purchase Total : <span class="money">{{getPurchaseTotal(records) | currency}}</span>
+            </p>
+            <p v-if="records.length">Paid Total : <span class="money">{{getPaidTotal(records) | currency}}</span></p>
           </div>
           <div class="vx-col">
-            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">{{date.from}}</span> to
+            <p class="text-gray">Showing {{records.length}} result(s) from <span class="text-dark text-bold">{{date.from}}</span>
+              to
               <span class="text-dark text-bold">{{date.to}}</span></p>
 
           </div>
         </div>
         <vs-table stripe hoverFlat noDataText="No Record Found"
-                  :data="purchases">
+                  :data="records">
           <template slot="thead">
             <vs-th>#</vs-th>
             <vs-th sort-key="date">Date</vs-th>
@@ -34,7 +36,7 @@
                 {{ data[indextr].date | moment("dddd, MMMM Do YYYY") }}
               </vs-td>
               <vs-td :data="data[indextr].total">
-                <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>
+                <div class="money">{{ data[indextr].total | currency }}</div>
               </vs-td>
               <vs-td :data="data[indextr].paid">
                 <div class="money">{{ data[indextr].paid | currency }}</div>
@@ -68,11 +70,7 @@
 
   export default {
     name: "BarPurchaseTable",
-    data: () => ({
-      purchases: [],
-      selected: {},
-      currency: 10000,
-    }),
+    data: () => ({}),
     props: {
       records: {
         required: true
@@ -80,17 +78,41 @@
         required: true
       }
     },
-    mounted() {
-      this.$vs.loading({
-        container: '#table-loader',
-        type: 'sound',
-        scale: 2
-      });
-    },
     methods: {
       viewDetails(p) {
-        // eventBus.$emit('goToDetails', p)
+        eventBus.$emit('goToPurchaseDetails', p)
       },
+      showLoading() {
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 2
+        });
+      },
+      listener() {
+        eventBus.$on('showLoading', () => this.showLoading())
+      },
+      getPurchaseTotal(data) {
+        let sorted = data.map(item =>
+          parseInt(item.total)
+        );
+        return sorted.reduce((x, y) => x + y, 0);
+      },
+      getPaidTotal(data) {
+        let sorted = data.map(item =>
+          parseInt(item.paid)
+        );
+        return sorted.reduce((x, y) => x + y, 0);
+      },
+    },
+    created() {
+      this.listener()
+    },
+    watch: {
+      records() {
+        this.$vs.loading.close('#table-loader > .con-vs-loading');
+
+      }
     }
 
   }

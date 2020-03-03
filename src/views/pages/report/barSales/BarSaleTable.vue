@@ -5,9 +5,12 @@
         <div class="vx-row flex justify-between mb-base">
           <div class="vx-col">
             <h3 class="mb-2">Bar Sales</h3>
-            <p class="mb-1" v-if="records.length">Sales Total : <span class="money">{{getSalesTotal(records) | currency}}</span></p>
-            <p class="mb-1" v-if="records.length">Cash Remit Total : <span class="money">{{getCashTotal(records) | currency}}</span></p>
-            <p class="mb-1" v-if="records.length">Credit Remit Total : <span class="money">{{getCreditTotal(records)| currency}}</span></p>
+            <p class="mb-1" v-if="records.length">Sales Total : <span class="money">{{getSalesTotal(records) | currency}}</span>
+            </p>
+            <p class="mb-1" v-if="records.length">Cash Remit Total : <span class="money">{{getCashTotal(records) | currency}}</span>
+            </p>
+            <p class="mb-1" v-if="records.length">Credit Remit Total : <span class="money">{{getCreditTotal(records)| currency}}</span>
+            </p>
             <!--            <p>Debt Total : <span class="money">{{currency | currency}}</span></p>-->
           </div>
           <div class="vx-col">
@@ -87,11 +90,7 @@
 
   export default {
     name: "BarSalesTable",
-    data: () => ({
-      sales: [],
-      selected: {},
-      currency: 0
-    }),
+    data: () => ({}),
     props: {
       records: {
         required: true

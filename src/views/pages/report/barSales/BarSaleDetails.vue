@@ -8,14 +8,14 @@
         <vs-button icon-pack="feather" icon="icon-corner-up-left"
                    color="primary" type="border"
                    class="  border" @click="goToSaleTable()">
-          Back to Table
+          Back
         </vs-button>
       </vx-tooltip>
     </div>
     <div class="vx-row pt-4 " id="table-loader">
       <div class="vx-col w-full">
         <div>
-<!--          <p class="mb-4">Date : {{activeSales.date}} </p>-->
+          <!--          <p class="mb-4">Date : {{activeSales.date}} </p>-->
           <p class="mb-4">Sales Total : <span class="money">{{activeSales.total | currency}}</span></p>
           <p class="mb-4">Cash Remit : <span class="money">{{activeSales.remit_cash | currency}}</span></p>
           <p class="mb-4">Credit Remit : <span class="money">{{activeSales.remit_credit | currency}}</span></p>
@@ -176,7 +176,6 @@
     },
     created() {
       eventBus.$emit('showDatePicker', false)
-      console.log(this.activeSales)
     },
     beforeDestroy() {
       eventBus.$emit('showDatePicker', true)

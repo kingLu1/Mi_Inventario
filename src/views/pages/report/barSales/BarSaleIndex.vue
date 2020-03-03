@@ -36,11 +36,12 @@
         eventBus.$on('goToSaleDetails', (p) => {
           this.activeSales = p;
           this.activeComponent = 'BarSaleDetails'
-        },
-        eventBus.$on('goToSaleTable', () => this.activeComponent = 'BarSaleTable'))
-      }
-    },
+        });
+        eventBus.$on('goToSaleTable', () => this.activeComponent = 'BarSaleTable')
 
+      }
+
+    }
   }
 </script>
 
