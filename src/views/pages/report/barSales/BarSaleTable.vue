@@ -5,19 +5,20 @@
         <div class="vx-row flex justify-between mb-base">
           <div class="vx-col">
             <h3 class="mb-2">Bar Sales</h3>
-            <p class="mb-1">Sales Total : <span class="money">{{currency | currency}}</span></p>
-            <p class="mb-1">Cash Remit Total : <span class="money">{{currency | currency}}</span></p>
-            <p class="mb-1">Credit Remit Total : <span class="money">{{currency | currency}}</span></p>
-            <p>Debt Total : <span class="money">{{currency | currency}}</span></p>
+            <p class="mb-1" v-if="records.length">Sales Total : <span class="money">{{getSalesTotal(records) | currency}}</span></p>
+            <p class="mb-1" v-if="records.length">Cash Remit Total : <span class="money">{{getCashTotal(records) | currency}}</span></p>
+            <p class="mb-1" v-if="records.length">Credit Remit Total : <span class="money">{{getCreditTotal(records)| currency}}</span></p>
+            <!--            <p>Debt Total : <span class="money">{{currency | currency}}</span></p>-->
           </div>
           <div class="vx-col">
-            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">{{date.from}}</span> to
+            <p class="text-gray">Showing {{records.length}} result(s) from <span class="text-dark text-bold">{{date.from}}</span>
+              to
               <span class="text-dark text-bold">{{date.to}}</span></p>
 
           </div>
         </div>
         <vs-table stripe hoverFlat noDataText="No Record Found"
-                  :data="sales">
+                  :data="records">
           <template slot="thead">
             <vs-th>#</vs-th>
             <vs-th sort-key="date">Date</vs-th>
@@ -38,7 +39,7 @@
                 {{ data[indextr].date }}
               </vs-td>
               <vs-td :data="data[indextr].total">
-                <div class="money">{{ data[indextr].total.$numberInt | currency }}</div>
+                <div class="money text-bold">{{ data[indextr].total | currency }}</div>
               </vs-td>
               <vs-td :data="data[indextr].paid">
                 <div class="money">{{ data[indextr].remit_cash | currency }}</div>
@@ -81,13 +82,15 @@
 </template>
 
 <script>
-  import {getClient} from "../../../../stitch/app";
+
+  import eventBus from "../../../../eventBus";
 
   export default {
     name: "BarSalesTable",
     data: () => ({
       sales: [],
       selected: {},
+      currency: 0
     }),
     props: {
       records: {
@@ -98,15 +101,46 @@
       }
     },
     methods: {
+      listener() {
+        eventBus.$on('showLoading', () => this.showLoading())
+      },
       viewDetails(p) {
+        eventBus.$emit('goToSaleDetails', p)
+      },
+      showLoading() {
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 2
+        });
+      },
+      getSalesTotal(data) {
+        let sorted = data.map(item =>
+          parseInt(item.total)
+        );
+        return sorted.reduce((x, y) => x + y, 0);
+      },
+      getCashTotal(data) {
+        let sorted = data.map(item =>
+          parseInt(item.remit_cash)
+        );
+        return sorted.reduce((x, y) => x + y, 0);
+      },
+      getCreditTotal(data) {
+        let sorted = data.map(item =>
+          parseInt(item.remit_credit)
+        );
+        return sorted.reduce((x, y) => x + y, 0);
       },
     },
-    mounted() {
-      this.$vs.loading({
-        container: '#table-loader',
-        type: 'sound',
-        scale: 2
-      });
+    created() {
+      this.listener()
+    },
+    watch: {
+      records() {
+        this.$vs.loading.close('#table-loader > .con-vs-loading');
+
+      }
     }
 
   }

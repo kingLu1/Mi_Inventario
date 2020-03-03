@@ -1,16 +1,20 @@
 <template>
   <div>
-    <component :is="activeComponent" :records="records" :date="date"/>
+    <component :is="activeComponent" :records="records" :date="date" :activeSales="activeSales"/>
   </div>
 </template>
 
 <script>
-  // import eventBus from "../../../../../eventBus";
-  // import BarSaleDetails from "./BarSaleDetails";
+  import BarSaleDetails from "./BarSaleDetails";
   import BarSaleTable from "./BarSaleTable";
+  import eventBus from "../../../../eventBus";
 
   export default {
     name: "BarSaleIndex",
+    data: () => ({
+      activeComponent: 'BarSaleTable',
+      activeSales: '',
+    }),
     props: {
       records: {
         required: true
@@ -21,18 +25,22 @@
     },
     components: {
       BarSaleTable,
-      // BarSaleDetails
+      BarSaleDetails
     },
-    created() {
-    },
-    beforeDestroy() {
+    mounted() {
+      eventBus.$emit('showLoading');
+      this.listener()
     },
     methods: {
+      listener() {
+        eventBus.$on('goToSaleDetails', (p) => {
+          this.activeSales = p;
+          this.activeComponent = 'BarSaleDetails'
+        },
+        eventBus.$on('goToSaleTable', () => this.activeComponent = 'BarSaleTable'))
+      }
     },
-    data: () => ({
-      activeComponent: 'BarSaleTable',
-      activeSales: '',
-    })
+
   }
 </script>
 
