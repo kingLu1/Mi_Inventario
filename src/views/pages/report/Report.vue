@@ -40,7 +40,7 @@
       option: [
         {
           id: 1,
-          slug: 'Bar~ Debtors',
+          slug: 'Bar~ Debts',
           outlet: 'bar',
           db: 'debts'
         },

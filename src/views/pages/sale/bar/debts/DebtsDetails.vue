@@ -11,7 +11,7 @@
           Unpaid
         </span></p>
         <p class="mb-4" v-if="activeDebt.date_paid">Paid On : {{activeDebt.date_paid}} </p>
-        <p class="mb-4">Amount : <span class="text-danger">{{getDebtTotal() | currency}}</span></p>
+        <p class="mb-4">Amount : <span :class="status()">{{getDebtTotal() | currency}}</span></p>
 
         <div v-if="showDetails" class="mb-4 pr-2">
           <vs-divider position="left-center">Details</vs-divider>
@@ -78,6 +78,9 @@
           item.price * item.holding.$numberInt
         );
         return sorted.reduce((x, y) => x + y);
+      },
+      status() {
+        return ( this.activeDebt.status) ? 'text-danger' : 'text-success';
       },
       openConfirm() {
         let tr = this.activeDebt;

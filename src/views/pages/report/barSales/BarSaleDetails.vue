@@ -37,6 +37,7 @@
               </div>
             </vx-card>
           </div>
+          <!--          TODO implement Show Debtors-->
           <p class="mb-4">Debtors : {{activeSales.bad_products.length}} <span v-if="activeSales.debts">
           <span class="text-primary text-sm font-semibold cursor-pointer" v-if="!showBadProducts "
                 @click="showBadProducts = !showBadProducts">Show</span>
@@ -99,12 +100,12 @@
           class="mr-2 w-full" @click="showProducts=!showProducts">
           Hide Details
         </vs-button>
-        <vs-button
-          color="danger"
-          v-if="$acl.check('superAdmin')"
-          class="mr-2 w-full" @click="openConfirm">
-          Delete
-        </vs-button>
+        <!--        <vs-button-->
+        <!--          color="danger"-->
+        <!--          v-if="$acl.check('superAdmin')"-->
+        <!--          class="mr-2 w-full" @click="openConfirm">-->
+        <!--          Delete-->
+        <!--        </vs-button>-->
 
       </div>
 
@@ -142,34 +143,34 @@
         );
         return sortedArray.reduce((x, y) => x + y)
       },
-      openConfirm() {
-        let tr = this.activeSales;
-        this.$vs.dialog({
-          type: 'confirm',
-          color: 'danger',
-          title: `Confirm`,
-          text: `Are you sure  you want to delete ${tr.date} Sales Record?`,
-          accept: this.acceptDelete
-        });
-      },
-      acceptDelete() {
-        let data = [{date: this.activeSales.date}];
-        this.$vs.loading({
-          container: '#table-loader',
-          type: 'sound',
-          scale: 1
-        });
-        getClient().callFunction('SaleDelete', data).then(() => {
-            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-            eventBus.$emit('backToHistoryTable')
-          }
-        ).catch(
-          (err) => {
-            this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
-          }
-        )
-      },
+      // openConfirm() {
+      //   let tr = this.activeSales;
+      //   this.$vs.dialog({
+      //     type: 'confirm',
+      //     color: 'danger',
+      //     title: `Confirm`,
+      //     text: `Are you sure  you want to delete ${tr.date} Sales Record?`,
+      //     accept: this.acceptDelete
+      //   });
+      // },
+      // acceptDelete() {
+      //   let data = [{date: this.activeSales.date}];
+      //   this.$vs.loading({
+      //     container: '#table-loader',
+      //     type: 'sound',
+      //     scale: 1
+      //   });
+      //   getClient().callFunction('SaleDelete', data).then(() => {
+      //       this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+      //       eventBus.$emit('backToHistoryTable')
+      //     }
+      //   ).catch(
+      //     (err) => {
+      //       this.$vs.loading.close('#table-loader > .con-vs-loading');
+      //       console.log(err)
+      //     }
+      //   )
+      // },
       goToSaleTable() {
         eventBus.$emit('goToSaleTable')
       }

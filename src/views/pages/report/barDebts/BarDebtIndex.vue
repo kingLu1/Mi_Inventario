@@ -1,14 +1,16 @@
 <template>
   <div>
-    <component :is="activeComponent" :records="records" :date="date"/>
+    <component :is="activeComponent" :records="records" :date="date" :activeDebt="activeDebt"/>
   </div>
 </template>
 
 <script>
   import BarDebtTable from "./BarDebtTable";
+  import eventBus from "../../../../eventBus";
+  import BarDebtDetails from "./BarDebtDetails";
 
   export default {
-    name: "Index",
+    name: "BarDebtIndex",
     props: {
       records: {
         required: true
@@ -19,13 +21,27 @@
     },
     components: {
       BarDebtTable,
-      // BarDebtDetails
+      BarDebtDetails
     },
     data: () => ({
       activeComponent: 'BarDebtTable',
       activeDebt: '',
     }),
-    methods: {},
+    mounted() {
+      eventBus.$emit('showLoading');
+      this.listener()
+    },
+    methods: {
+      listener() {
+        eventBus.$on('goToDebtDetails', (p) => {
+          this.activeDebt = p;
+          this.activeComponent = 'BarDebtDetails'
+        });
+        eventBus.$on('goToDebtTable', () => this.activeComponent = 'BarDebtTable')
+
+      }
+
+    }
 
   }
 </script>

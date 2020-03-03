@@ -5,17 +5,21 @@
         <div class="vx-row flex justify-between mb-base">
           <div class="vx-col">
             <h3 class="mb-2">Bar Debts</h3>
-            <p class="mb-1">Active: <span class="text-danger">10</span></p>
-            <p class="mb-1">Cleared: <span class="text-success">10</span></p>
+            <p class="mb-1">Active: <span class="text-danger">{{active.length}} <span class="text-dark text-sm mr-1">holding</span> <span
+              class="text-danger">{{getDebtTotal(active) | currency}}</span></span>
+            </p>
+            <p class="mb-1">Cleared: <span class="text-success">{{cleared.length}} <span class="text-dark text-sm mr-1">paid</span> <span
+              class="money">{{getDebtTotal(cleared) | currency}}</span></span></p>
           </div>
           <div class="vx-col">
-            <p class="text-gray">Showing 10 result(s) from <span class="text-dark text-bold">{{date.from}}</span> to
+            <p class="text-gray">Showing {{records.length}} result(s) from <span class="text-dark text-bold">{{date.from}}</span>
+              to
               <span class="text-dark text-bold">{{date.to}}</span></p>
 
           </div>
         </div>
         <vs-table stripe hoverFlat noDataText="No Debts"
-                  :data="debts">
+                  :data="records">
           <template slot="thead">
             <vs-th>#</vs-th>
             <vs-th sort-key="date">Debtor Name</vs-th>
@@ -37,8 +41,7 @@
                 <div>{{ data[indextr].surety }}</div>
               </vs-td>
               <vs-td :data="data[indextr].paid">
-
-                <div class="text-danger">{{ totalAmount(tr) | currency }}</div>
+                <div :class="status(tr)">{{ totalAmount(tr) | currency }}</div>
               </vs-td>
 
               <vs-td :data="data[indextr].status">
@@ -50,7 +53,7 @@
                 </p>
               </vs-td>
               <vs-td :data="data[indextr].created_on">
-                {{ data[indextr].date}}
+                {{ data[indextr].date | moment("dddd, MMMM Do YYYY")}}
               </vs-td>
               <vs-td>
                 <div class="flex">
@@ -73,12 +76,16 @@
 
 <script>
 
+  import eventBus from "../../../../eventBus";
+
   export default {
     name: "DebtsTable",
     data: () => (
       {
-        debts: [],
-        selected: {}
+        active: [],
+        cleared: [],
+        activeTotal: 0,
+        clearedTotal: 0,
       }
     ),
     props: {
@@ -90,54 +97,68 @@
       }
     },
     created() {
-
+      this.listener()
+      this.getActiveDebt(this.records);
+      this.getClearedDebt(this.records);
     },
-    mounted() {
-      this.$vs.loading({
-        container: '#table-loader',
-        type: 'sound',
-        scale: 2
-      });
+    watch: {
+      records() {
+        this.getActiveDebt(this.records);
+        this.getClearedDebt(this.records);
+        this.$vs.loading.close('#table-loader > .con-vs-loading');
+      }
     },
     methods: {
       viewDetails(p) {
-        // eventBus.$emit('goToDetails', p)
+        eventBus.$emit('goToDebtDetails', p)
       },
-      // totalAmount(tr) {
-      //   let sorted = tr.products.map(item =>
-      //     item.price * item.holding.$numberInt
-      //   );
-      //   return sorted.reduce((x, y) => x + y);
-      // },
-      // openConfirm(tr) {
-      //   this.selected = tr;
-      //   this.$vs.dialog({
-      //     type: 'confirm',
-      //     color: 'danger',
-      //     title: `Confirm`,
-      //     text: `Are you sure  you want to delete ${tr.name}[${tr.surety}] Debt?`,
-      //     accept: this.acceptDelete
-      //   });
-      // },
-      // acceptDelete() {
-      //   let data = [{_id: this.selected._id}];
-      //   this.$vs.loading({
-      //     container: '#table-loader',
-      //     type: 'sound',
-      //     scale: 1
-      //   });
-      //   getClient().callFunction('DebtDelete', data).then((res) => {
-      //       this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-      //       this.getDebts();
-      //     console.log(res)
-      //     }
-      //   ).catch(
-      //     (err) => {
-      //       this.$vs.loading.close('#table-loader > .con-vs-loading');
-      //       console.log(err)
-      //     }
-      //   )
-      // },
+      status(tr) {
+        return (tr.status) ? 'text-danger' : 'text-success';
+      },
+      totalAmount(tr) {
+        let sorted = tr.products.map(item =>
+          item.price * item.holding
+        );
+        return sorted.reduce((x, y) => x + y, 0);
+      },
+      showLoading() {
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 2
+        });
+      },
+      listener() {
+        eventBus.$on('showLoading', () => this.showLoading())
+      },
+      getActiveDebt(data) {
+        this.active = [];
+        data.map(item => {
+            if (item.status) {
+              this.active.push(item)
+            }
+          }
+        );
+
+      },
+
+      getClearedDebt(data) {
+        this.cleared = [];
+        data.map(item => {
+            if (!item.status) {
+              this.cleared.push(item)
+            }
+          }
+        );
+      },
+      getDebtTotal(data) {
+        let sortedArray = []
+        data.map(item => item.products).map(item => {
+          sortedArray.push(...item)
+        });
+        return sortedArray.map(item => parseInt(item.holding) * parseInt(item.price)).reduce((x, y) => x + y, 0)
+
+      },
     }
   }
 </script>

@@ -441,7 +441,7 @@
       },
       addDebt() {
         let debt = {
-          date: Date(), ...this.activeDebtor, products: this.activeSelected.map(
+          date: this.$moment(this.date, "YYYY-MM-DD").format(), ...this.activeDebtor, products: this.activeSelected.map(
             (item) => {
               return {
                 product_id: item._id,
@@ -581,7 +581,7 @@
               name: item.name,
               surety: item.surety,
               products: item.products,
-              date_paid: Date(),
+              date_paid: this.$moment(Date(), "YYYY-MM-DD HH:mm:ss").format(),
               date: item.date
             }
           }

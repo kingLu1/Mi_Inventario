@@ -14,7 +14,7 @@
             <!--            <p>Debt Total : <span class="money">{{currency | currency}}</span></p>-->
           </div>
           <div class="vx-col">
-            <p class="text-gray">Showing {{records.length}} result(s) from <span class="text-dark text-bold">{{date.from}}</span>
+            <p class="text-gray" v-if="records.length">Showing {{records.length}} result(s) from <span class="text-dark text-bold">{{date.from}}</span>
               to
               <span class="text-dark text-bold">{{date.to}}</span></p>
 
@@ -39,7 +39,7 @@
                 {{ indextr + 1 }}
               </vs-td>
               <vs-td :data="data[indextr].date">
-                {{ data[indextr].date }}
+                {{ data[indextr].date | moment("dddd, MMMM Do YYYY") }}
               </vs-td>
               <vs-td :data="data[indextr].total">
                 <div class="money text-bold">{{ data[indextr].total | currency }}</div>
@@ -60,10 +60,9 @@
 
               </vs-td>
               <vs-td :data="data[indextr].created_on">
-                <p class="text-sm text-center">
+                <p class="text-sm text-center" v-if="records.length">
                   {{ data[indextr].bad_products.length}}
                 </p>
-
               </vs-td>
               <vs-td>
                 <div class="flex">
@@ -138,7 +137,6 @@
     watch: {
       records() {
         this.$vs.loading.close('#table-loader > .con-vs-loading');
-
       }
     }
 

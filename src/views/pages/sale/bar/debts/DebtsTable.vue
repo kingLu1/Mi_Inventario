@@ -26,7 +26,7 @@
               </vs-td>
               <vs-td :data="data[indextr].paid">
 
-                <div class="text-danger">{{ totalAmount(tr) | currency }}</div>
+                <div :class="status(tr)">{{ totalAmount(tr) | currency }}</div>
               </vs-td>
 
               <vs-td :data="data[indextr].status">
@@ -141,6 +141,9 @@
             console.log(err)
           }
         )
+      },
+      status(tr) {
+        return (tr.status) ? 'text-danger' : 'text-success';
       },
     }
   }
