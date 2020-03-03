@@ -4,7 +4,7 @@ import { app } from "./app";
 // Initialize a MongoDB Service Client
 const mongoClient = app.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
 
-// Instantiate a collection handle for todo.items
+// Instantiate a collection handle for software.items
 const Db = mongoClient.db("software");
 
 export { Db };

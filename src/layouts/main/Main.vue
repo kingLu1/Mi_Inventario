@@ -93,7 +93,7 @@
 <!--                      </div>-->
 <!--                    </vs-dropdown-item>-->
 <!--                    <vs-dropdown-item>-->
-<!--                      <div @click="$router.push('/apps/todo').catch(() => {})" class="flex items-center">-->
+<!--                      <div @click="$router.push('/apps/tod0').catch(() => {})" class="flex items-center">-->
 <!--                        <feather-icon icon="CheckSquareIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />-->
 <!--                        <span>Tasks</span>-->
 <!--                      </div>-->
