@@ -39,7 +39,7 @@
                 {{ indextr + 1 }}
               </vs-td>
               <vs-td :data="data[indextr].name">
-                {{ data[indextr].name }}
+                {{ data[indextr].name | capitalize}}
               </vs-td>
               <vs-td :data="data[indextr].desc">
                 {{ data[indextr].desc }}

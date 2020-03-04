@@ -10,7 +10,7 @@
                       v-validate="'required'"
                       placeholder="Product Name"
                       data-vv-validate-on="blur"
-                      v-model="model.product.name"
+                      v-model="model.name"
                       class="mt-5 w-full"/>
             <span class="text-danger text-sm"
                   v-show="errors.has('Product Name')">{{ errors.first('Product Name') }}</span>
@@ -18,7 +18,7 @@
             <vs-select v-validate="'required'" v-model="model.product.category" name="Product Category" label="Category"
 
                        class="select-large mt-5 w-full">
-              <vs-select-item :value="c.name" :text="c.name" v-for="c in categories"/>
+              <vs-select-item :value="c.name" :text="c.name | capitalize" v-for="c in categories"/>
             </vs-select>
             <span class="text-danger text-sm"
                   v-show="errors.has('Product Category')">{{ errors.first('Product Category') }}</span>
@@ -26,7 +26,7 @@
             <vs-select v-validate="'required'" v-model="model.product.vendor" name="Product Vendor" label="Vendor"
 
                        class="select-large mt-5 w-full">
-              <vs-select-item :value="v.name" :text="v.name" v-for="v in vendors"/>
+              <vs-select-item :value="v.name" :text="v.name | capitalize" v-for="v in vendors"/>
             </vs-select>
             <span class="text-danger text-sm"
                   v-show="errors.has('Product Vendor')">{{ errors.first('Product Vendor') }}</span>
@@ -217,6 +217,7 @@
         }
       ,
       model: {
+        name: '',
         product: {},
         allProduct: {
           created_on: Date(),
@@ -239,7 +240,10 @@
       addToCart() {
         this.$validator.validateAll().then(result => {
             if (result) {
-              let product = Object.assign(this.model.product, this.model.allProduct);
+              let name = {
+                name: this.model.name.toLowerCase()
+              }
+              let product = Object.assign(this.model.product, this.model.allProduct,name);
               if (!this.checkInCart(product)) {
                 this.cart.unshift(product);
                 this.clearFields()

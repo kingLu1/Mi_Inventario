@@ -11,9 +11,9 @@
         icon="XIcon"
         @click.stop="isSidebarActiveLocal = false"
         class="cursor-pointer"
-      ></feather-icon>
+      />
     </div>
-    <vs-divider class="mb-0"></vs-divider>
+    <vs-divider class="mb-0"/>
     <VuePerfectScrollbar class="scroll-area--data-list-add-new pt-4 pb-6" :settings="settings">
 
       <div class="p-6">
@@ -22,7 +22,7 @@
                   v-validate="'required'"
                   placeholder="Product Name"
                   data-vv-validate-on="blur"
-                  v-model="model.product.name"
+                  v-model="model.name"
                   class="mt-5 w-full"/>
         <span class="text-danger text-sm"
               v-show="errors.has('Product Name')">{{ errors.first('Product Name') }}</span>
@@ -30,7 +30,7 @@
         <vs-select v-validate="'required'" v-model="model.product.category" name="Product Category" label="Category"
 
                    class="select-large mt-5 w-full">
-          <vs-select-item :value="c.name" :text="c.name" v-for="c in categories"/>
+          <vs-select-item :value="c.name" :text="c.name | capitalize" v-for="c in categories"/>
         </vs-select>
         <span class="text-danger text-sm"
               v-show="errors.has('Product Category')">{{ errors.first('Product Category') }}</span>
@@ -38,7 +38,7 @@
         <vs-select v-validate="'required'" v-model="model.product.vendor" name="Product Vendor" label="Vendor"
 
                    class="select-large mt-5 w-full">
-          <vs-select-item :value="v.name" :text="v.name" v-for="v in vendors"/>
+          <vs-select-item :value="v.name" :text="v.name | capitalize" v-for="v in vendors"/>
         </vs-select>
         <span class="text-danger text-sm"
               v-show="errors.has('Product Vendor')">{{ errors.first('Product Vendor') }}</span>
@@ -139,6 +139,7 @@
         }
       ,
       model: {
+        name: '',
         product: {
           created_on: Date(),
           created_by: '',
@@ -157,12 +158,16 @@
                 container: '#button-with-loading',
                 scale: 0.45
               })
-              let data = [this.model.product];
+              let name = {
+                name: this.model.name.toLowerCase()
+              }
+              let data = [Object.assign(name, this.model.product)];
               getClient().callFunction('ProductCreate', data).then(
                 res => {
                   this.$vs.loading.close('#button-with-loading > .con-vs-loading');
                   this.$emit('newProduct');
                   this.notify({text: 'Successfully Added New Product!', title: '', color: 'success'})
+                  this.model.name = "";
                   this.model.product = {
                     created_on: Date(),
                     created_by: this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name,

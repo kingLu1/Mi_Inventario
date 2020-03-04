@@ -11,9 +11,9 @@
         icon="XIcon"
         @click.stop="isSidebarActiveLocal = false"
         class="cursor-pointer"
-      ></feather-icon>
+      />
     </div>
-    <vs-divider class="mb-0"></vs-divider>
+    <vs-divider class="mb-0"/>
     <VuePerfectScrollbar class="scroll-area--data-list-add-new pt-4 pb-6" :settings="settings">
 
       <div class="p-6">
@@ -21,7 +21,7 @@
                   name="Category Name" v-validate="'required'"
                   placeholder="Category Name"
                   data-vv-validate-on="blur"
-                  v-model="model.category.name"
+                  v-model="model.name"
                   class="mt-5 w-full"/>
         <span class="text-danger text-sm"
               v-show="errors.has('Category Name')">{{ errors.first('Category Name') }}</span>
@@ -46,97 +46,102 @@
 </template>
 
 <script>
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar';
-    import {getClient} from '../../../../stitch/app';
-    import {mapState} from 'vuex'
+  import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+  import {getClient} from '../../../../stitch/app';
+  import {mapState} from 'vuex'
 
 
-    export default {
-        name: "CategoryAdd",
-        props: {
-            isSidebarActive: {
-                type: Boolean,
-                required: true
-            }
-        },
-        components: {
-            VuePerfectScrollbar
-        },
-        data: () => ({
-            //Button Loading
-            backgroundLoading: '#7367F0',
-            colorLoading: 'white',
-            //
-            settings: {
-                maxScrollbarLength: 60,
-                wheelSpeed: .60,
-            },
-            model: {
-                category: {
-                    created_on: Date(),
-                    created_by: ''
-                }
-            },
-        }),
-        methods: {
-            addCategory() {
-                this.$validator.validateAll().then(result => {
-                        this.$vs.loading({
-                            background: this.backgroundLoading,
-                            color: this.colorLoading,
-                            container: '#button-with-loading',
-                            scale: 0.45
-                        })
-                        let data = [this.model.category];
-                        if (result) {
-                            getClient().callFunction('CategoryCreate', data).then(
-                                res => {
-                                    this.$emit('newCategory');
-                                    this.notify({
-                                        text: 'Successfully Added New Category!',
-                                        title: '',
-                                        color: 'success'
-                                    });
-                                    this.model.category.name = '';
-                                    this.model.category.desc = '';
-                                    this.isSidebarActiveLocal = false;
-
-                                    this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-
-                                }
-                            ).catch(
-                                err => {
-                                    console.log(err)
-                                    this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-                                    this.notify({text: err.message, title: 'Error', color: 'danger'})
-                                }
-                            )
-                        } else {
-                            // steps have errors
-                        }
-                    }
-                )
-            }
-        },
-        computed: {
-            isSidebarActiveLocal: {
-                get() {
-                    return this.isSidebarActive
-                }
-                ,
-                set(val) {
-                    if (!val) {
-                        this.$emit('closeSidebar');
-                    }
-                }
-            },
-            ...mapState(['AppActiveUser'])
-        },
-        mounted() {
-            this.model.category.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
-
+  export default {
+    name: "CategoryAdd",
+    props: {
+      isSidebarActive: {
+        type: Boolean,
+        required: true
+      }
+    },
+    components: {
+      VuePerfectScrollbar
+    },
+    data: () => ({
+      //Button Loading
+      backgroundLoading: '#7367F0',
+      colorLoading: 'white',
+      //
+      settings: {
+        maxScrollbarLength: 60,
+        wheelSpeed: .60,
+      },
+      model: {
+        name: '',
+        category: {
+          created_on: Date(),
+          created_by: ''
         }
+      },
+    }),
+    methods: {
+      addCategory() {
+        this.$validator.validateAll().then(result => {
+            this.$vs.loading({
+              background: this.backgroundLoading,
+              color: this.colorLoading,
+              container: '#button-with-loading',
+              scale: 0.45
+            })
+            let name = {
+              name: this.model.name.toLowerCase()
+            }
+            let data = [Object.assign(this.model.category, name)];
+            console.log(data)
+            if (result) {
+              getClient().callFunction('CategoryCreate', data).then(
+                res => {
+                  this.$emit('newCategory');
+                  this.notify({
+                    text: 'Successfully Added New Category!',
+                    title: '',
+                    color: 'success'
+                  });
+                  this.model.name = '';
+                  this.model.category.desc = '';
+                  this.isSidebarActiveLocal = false;
+
+                  this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+
+                }
+              ).catch(
+                err => {
+                  console.log(err)
+                  this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+                  this.notify({text: err.message, title: 'Error', color: 'danger'})
+                }
+              )
+            } else {
+              // steps have errors
+            }
+          }
+        )
+      }
+    },
+    computed: {
+      isSidebarActiveLocal: {
+        get() {
+          return this.isSidebarActive
+        }
+        ,
+        set(val) {
+          if (!val) {
+            this.$emit('closeSidebar');
+          }
+        }
+      },
+      ...mapState(['AppActiveUser'])
+    },
+    mounted() {
+      this.model.category.created_by = this.AppActiveUser.first_name + " " + this.AppActiveUser.last_name
+
     }
+  }
 </script>
 
 <style lang="scss">
