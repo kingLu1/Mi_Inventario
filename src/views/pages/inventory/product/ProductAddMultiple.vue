@@ -150,12 +150,13 @@
                     <p>{{c.worst_qty}}</p>
                   </div>
                   <div class="flex items-center justify-center ">
-                    <vs-button @click="removeProduct(index)" size="small" color="danger" type="border" icon-pack="feather" icon="icon-x"
+                    <vs-button @click="removeProduct(index)" size="small" color="danger" type="border"
+                               icon-pack="feather" icon="icon-x"
                                class="mr-2 round">
                     </vs-button>
 
-<!--                    <feather-icon icon="XIcon" class=" cursor-pointer mr-2"-->
-<!--                                  svgClasses="stroke-current text-danger h-7 w-7" @click="removeProduct(index)"/>-->
+                    <!--                    <feather-icon icon="XIcon" class=" cursor-pointer mr-2"-->
+                    <!--                                  svgClasses="stroke-current text-danger h-7 w-7" @click="removeProduct(index)"/>-->
                   </div>
                 </div>
               </VuePerfectScrollbar>
@@ -196,6 +197,7 @@
   import {getClient} from '../../../../stitch/app'
   import {mapState} from 'vuex'
   import {getVendors, getCategory} from '../../../../stitch/api/inventory';
+  import eventBus from "../../../../eventBus";
 
 
   export default {
@@ -235,6 +237,7 @@
         this.$emit("backToTable")
       },
       clearFields() {
+        this.model.name = "";
         this.model.product = {}
       },
       addToCart() {
@@ -243,7 +246,7 @@
               let name = {
                 name: this.model.name.toLowerCase()
               }
-              let product = Object.assign(this.model.product, this.model.allProduct,name);
+              let product = Object.assign(this.model.product, this.model.allProduct, name);
               if (!this.checkInCart(product)) {
                 this.cart.unshift(product);
                 this.clearFields()
@@ -284,6 +287,8 @@
             this.$vs.loading.close('#button-with-loading > .con-vs-loading');
             this.$emit('backToTable');
             this.notify({text: 'Successfully Added New Products!', title: '', color: 'success'})
+            eventBus.$emit('newProduct')
+
           }
         ).catch(
           err => {

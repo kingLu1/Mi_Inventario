@@ -36,7 +36,8 @@
                 <p class="text-danger  text-center text-sm" v-else>
                   Unpaid
                 </p>
-              </vs-td>    <vs-td :data="data[indextr].created_on">
+              </vs-td>
+              <vs-td :data="data[indextr].created_on">
                 {{ data[indextr].date}}
               </vs-td>
               <vs-td>
@@ -109,7 +110,7 @@
       },
       totalAmount(tr) {
         let sorted = tr.products.map(item =>
-          item.price * item.holding.$numberInt
+          item.price.$numberInt * item.holding.$numberInt
         );
         return sorted.reduce((x, y) => x + y);
       },

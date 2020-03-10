@@ -58,7 +58,7 @@
               <p class="flex">
           <span class="centerx">
 <!--            :label="totalQuantity(p)-->
-            <number-input v-model="p.sold" :min="1" :max="returnNumber(p.inStock.$numberInt)" inline controls center size="small"/>
+            <number-input v-model="p.sold" :min="1" :max="returnNumber(p.inStock)" inline controls center size="small"/>
 <!--            <vs-input-number v-model="p.sold" min="1" :max="p.inStock.$numberInt" color="dark "/>-->
           </span>
               </p>
@@ -90,6 +90,7 @@
   import vSelect from "vue-select";
   import VuePerfectScrollbar from 'vue-perfect-scrollbar'
   import eventBus from "../../../../../eventBus";
+  import {getClient} from "../../../../../stitch/app";
 
   export default {
     name: "AddProducts",
@@ -122,8 +123,8 @@
 
       },
       getProducts() {
-        this.axios.get(getProducts).then((res) => {
-          this.products = res.data
+        getClient().callFunction('ProductGet').then((res) => {
+          this.products = res
         }).catch((err) => {
           this.notify({
             title: 'Error',

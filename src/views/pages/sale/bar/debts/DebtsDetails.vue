@@ -70,12 +70,12 @@
     }),
     methods: {
       returnSubtitleForProducts(ps) {
-        return `${ps.product} - Holding ${ps.holding.$numberInt} item(s) cost ‎₦${ps.price * ps.holding.$numberInt} (${ps.price}/item)`
+        return `${ps.product} - Holding ${ps.holding.$numberInt} item(s) cost ‎₦${ps.price.$numberInt * ps.holding.$numberInt} (${ps.price.$numberInt}/item)`
 
       },
       getDebtTotal() {
         let sorted = this.activeDebt.products.map(item =>
-          item.price * item.holding.$numberInt
+          item.price.$numberInt * item.holding.$numberInt
         );
         return sorted.reduce((x, y) => x + y);
       },

@@ -1,4 +1,5 @@
 <template>
+<!--  Todo fix  show debtors-->
   <div class="vx-row p-base pt-4 " id="table-loader">
     <div class="vx-col w-full">
       <div>

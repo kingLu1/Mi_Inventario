@@ -108,6 +108,7 @@
   import VuePerfectScrollbar from 'vue-perfect-scrollbar'
   import {getClient} from '../../../../stitch/app'
   import {mapState} from 'vuex'
+  import eventBus from "../../../../eventBus";
 
   export default {
     name: "ProductAdd",
@@ -165,7 +166,7 @@
               getClient().callFunction('ProductCreate', data).then(
                 res => {
                   this.$vs.loading.close('#button-with-loading > .con-vs-loading');
-                  this.$emit('newProduct');
+                  eventBus.$emit('newProduct');
                   this.notify({text: 'Successfully Added New Product!', title: '', color: 'success'})
                   this.model.name = "";
                   this.model.product = {
@@ -185,6 +186,8 @@
               )
             } else {
               // steps have errors
+              this.$vs.loading.close('#button-with-loading > .con-vs-loading');
+
             }
           }
         )

@@ -103,7 +103,7 @@
                 </span>
               </p>
             </div>
-            <p class="mb-4">In Stock Quantity: <span class="text-primary">{{activeProduct.qty_in_stock.$numberInt}} item(s) / {{parseFloat((activeProduct.qty_in_stock.$numberInt/activeProduct.qty_per_crate).toFixed(1) )}} crate(s)</span>
+            <p class="mb-4">In Stock Quantity: <span class="text-primary">{{activeProduct.qty_in_stock}} item(s) / {{parseFloat((activeProduct.qty_in_stock/activeProduct.qty_per_crate).toFixed(1) )}} crate(s)</span>
             </p>
             <div class="flex">
               <p class="mb-4 flex">Quantity Per Crate :
@@ -227,7 +227,7 @@
     },
     methods: {
       health() {
-        let q = (this.activeProduct.qty_in_stock.$numberInt / this.activeProduct.qty_per_crate);
+        let q = (this.activeProduct.qty_in_stock / this.activeProduct.qty_per_crate);
         if (q === 0) {
           this.healthZero = true
         } else if (q <= this.activeProduct.worst_qty) {

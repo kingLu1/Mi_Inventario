@@ -79,7 +79,7 @@
     }),
     methods: {
       returnSubtitle(ps) {
-        return `${ps.purchasing.$numberInt} Crate(s)(${ps.qty_per_crate * ps.purchasing.$numberInt} items) cost ‎₦${ps.purchasing.$numberInt * ps.crate_price.$numberInt}`
+        return `${ps.purchasing.$numberInt} Crate(s)(${ps.qty_per_crate.$numberInt * ps.purchasing.$numberInt } items) cost ‎₦${ps.purchasing.$numberInt * ps.crate_price.$numberInt}`
       },
       getVendorTotal(p) {
         let sortedArray = p.map(item =>
@@ -118,6 +118,7 @@
     },
     created() {
       eventBus.$emit('showInnerActions', true)
+      console.log(this.activePurchase)
     },
     beforeDestroy() {
       eventBus.$emit('showInnerActions', false)

@@ -83,6 +83,7 @@
       },
       model: {
         name: '',
+
         vendor: {
           created_on: Date(),
           created_by: ''

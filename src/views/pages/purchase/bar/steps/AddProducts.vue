@@ -67,7 +67,7 @@
               <p class="flex justify-center">
                 <!--          <span class="centerx">-->
                 <!--            <vs-input-number v-model="p.purchasing" color="dark" :label="totalQuantity(p)"/>-->
-                <number-input v-model="p.purchasing" :min="0" inline controls center size="small"></number-input>
+                <number-input v-model="p.purchasing" :min="0" inline controls center size="small"/>
                 <!--          </span>-->
               </p>
             </div>
@@ -98,6 +98,7 @@
   import vSelect from "vue-select";
   import VuePerfectScrollbar from 'vue-perfect-scrollbar';
   import eventBus from "../../../../../eventBus";
+  import {getClient} from "../../../../../stitch/app";
 
   export default {
     name: "AddProducts",
@@ -133,8 +134,8 @@
         }
       },
       getProducts() {
-        this.axios.get(getProducts).then((res) => {
-          this.products = res.data
+        getClient().callFunction('ProductGet').then((res) => {
+          this.products = res
         }).catch((err) => {
           this.notify({
             title: 'Error',

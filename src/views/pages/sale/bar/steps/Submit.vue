@@ -461,9 +461,8 @@
         eventBus.$emit('goToSummary', this.summarizedData.soldProducts)
       },
       getProducts() {
-
-        this.axios.get(getProducts).then((res) => {
-          this.allProducts = res.data;
+        getClient().callFunction('ProductGet').then((res) => {
+          this.allProducts = res;
         }).catch((err) => {
           this.notify({
             title: 'Error',
@@ -553,7 +552,7 @@
       },
       debtorsWithSuretyAndDate({name, surety, products, date}) {
         let sorted = products.map(item =>
-          item.price * item.holding.$numberInt
+          item.price.$numberInt * item.holding.$numberInt
         );
         let amount = sorted.reduce((x, y) => x + y);
         return `${name}[${surety}] - ‎₦${amount} on ${date}`
@@ -581,7 +580,7 @@
               name: item.name,
               surety: item.surety,
               products: item.products,
-              date_paid: this.$moment(Date(), "YYYY-MM-DD HH:mm:ss").format(),
+              date_paid: Date(),
               date: item.date
             }
           }
@@ -593,7 +592,7 @@
       },
       debtorTotalDebts(debt) {
         let sorted = debt.products.map(item =>
-          item.price * item.holding.$numberInt
+          item.price.$numberInt * item.holding.$numberInt
         );
         return sorted.reduce((x, y) => x + y);
       },
