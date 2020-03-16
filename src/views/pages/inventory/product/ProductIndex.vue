@@ -46,16 +46,14 @@
         this.activeComponent = "Detail"
       },
       backToTable() {
-        this.activeComponent = "Table";
-        // this.getProducts()
-
+        this.activeComponent = "Table"
       },
       getProducts() {
         eventBus.$emit('loading', true);
-        let data = [this.search]
+        let data = [this.search];
         getClient().callFunction('FilterProduct', data).then((res) => {
           this.products = res;
-          console.log(res)
+          console.log(res);
           eventBus.$emit('loading', false);
           eventBus.$emit('found', res.length)
         }).catch((err) => {
@@ -68,7 +66,7 @@
             icon: 'icon-alert-circle',
             color: 'danger'
           });
-          eventBus.$emit('found', false)
+          eventBus.$emit('found', false);
           eventBus.$emit('loading', false)
 
         });
@@ -96,7 +94,6 @@
       },
       searchByName(keyword) {
         if (keyword === null) {
-
         } else {
           (keyword) ? this.keyword = keyword : this.keyword = keyword;
           this.newProducts = [];
@@ -150,9 +147,7 @@
       searchBy() {
         return this.search.searchBy
       }
-
     }
-
   }
 </script>
 
