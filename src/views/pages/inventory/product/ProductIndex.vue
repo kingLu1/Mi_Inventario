@@ -88,7 +88,6 @@
             color: 'danger'
           });
           eventBus.$emit('found', false)
-
         });
 
       },
@@ -152,5 +151,4 @@
 </script>
 
 <style scoped>
-
 </style>
