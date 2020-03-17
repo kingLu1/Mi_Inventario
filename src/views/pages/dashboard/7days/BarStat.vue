@@ -1,15 +1,15 @@
 <template lang="html">
   <statistics-card-line
     icon="CoffeeIcon"
-    :statistic="totalSold | k_formatter" statisticTitle="Drinks Sold"
-    :chartData="subscribersGainedChartData.series"
+    :statistic="totalSold | k_formatter" statisticTitle="Products Sold"
+    :chartData="stats.series"
     color="warning"
     type='area'/>
 </template>
 
 <script>
   import StatisticsCardLine from '@/components/statistics-cards/StatisticsCardLine.vue'
-  import {getSales} from "../../../../stitch/api/sales";
+  import {getClient} from "../../../../stitch/app";
 
   export default {
     name: 'BarStat',
@@ -18,12 +18,12 @@
     },
     data() {
       return {
-        sales: [],
         totalSold: 0,
-        subscribersGainedChartData: {
+        sales: [],
+        stats: {
           series: [{
-            name: 'Subscribers',
-            data: [28, 40, 36, 52, 38, 60, 55]
+            name: 'Sold',
+            data: [0, 0, 0, 0, 0, 0, 0]
           }],
           chartOptions: {
             grid: {
@@ -81,24 +81,50 @@
       }
     },
     methods: {
-      getSales() {
-        this.axios.get(getSales).then((res) => {
-          this.sales = res.data;
-        }).catch((err) => {
-          this.notify({
-            title: 'Error',
-            text: err.message,
-            color: 'danger'
-          });
-        });
+      getSalesStat() {
+        getClient().callFunction('BarStats').then(res => {
+          this.sales = res;
+          let data = res.map(item =>
+            item.total
+          );
+          this.stats.series = [{
+            name: 'Sold(₦)',
+            data: data.reverse()
+          }]
+          // console.log(data.reverse())
+
+        }).catch(err =>
+          console.log(err))
       },
+      getTotalProductSold() {
+        let products = this.sales.map(item => item.products);
+        let i;
+        let arr = []
+        let sortedArr = []
+        for (i = 0; i < products.length; i++) {
+          for (let j = 0; j < products[i].length; j++) {
+            if (products[i][j].sold.length) {
+              arr.push(products[i][j].sold)
+            }
+          }
+        }
+        for (let m = 0; m < arr.length; m++) {
+          for (let n = 0; n < arr[m].length; n++) {
+            sortedArr.push(arr[m][n].sold)
+          }
+        }
+        this.totalSold = sortedArr.reduce((prev, curr) => {
+          return prev + curr;
+        }, 0)
+      }
     },
     created() {
-      this.getSales()
-    },
+      this.getSalesStat()
+    }
+    ,
     watch: {
       sales() {
-
+        this.getTotalProductSold()
       }
     }
   }

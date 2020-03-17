@@ -15,31 +15,31 @@
         <pool/>
       </div>
     </div>
-    <div class="vx-row">
-      <div class="vx-col w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2 mb-base">
-        <daily></daily>
-      </div>
-      <div class="vx-col w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
-        <div class="vx-row">
-          <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">
-            <div class="vx-row">
-              <div class="vx-col w-full sm:w-full mb-base">
-                <purchase></purchase>
-              </div>
-              <div class="vx-col w-full sm:w-full  mb-base">
-                <expense></expense>
-              </div>
-            </div>
+<!--    <div class="vx-row">-->
+<!--      <div class="vx-col w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2 mb-base">-->
+<!--        <daily></daily>-->
+<!--      </div>-->
+<!--      <div class="vx-col w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">-->
+<!--        <div class="vx-row">-->
+<!--          <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2">-->
+<!--            <div class="vx-row">-->
+<!--              <div class="vx-col w-full sm:w-full mb-base">-->
+<!--                <purchase></purchase>-->
+<!--              </div>-->
+<!--              <div class="vx-col w-full sm:w-full  mb-base">-->
+<!--                <expense></expense>-->
+<!--              </div>-->
+<!--            </div>-->
 
-          </div>
-          <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2 mb-base">
-            <div class="vx-col w-full">
-              <timeline/>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--          </div>-->
+<!--          <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2 mb-base">-->
+<!--            <div class="vx-col w-full">-->
+<!--              <timeline/>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="vx-row">
       <div class="vx-col w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-1/2 mb-base">
         <recent-purchase></recent-purchase>
