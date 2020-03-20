@@ -1,7 +1,7 @@
 <template lang="html">
   <statistics-card-line
     icon="CoffeeIcon"
-    :statistic="totalSold | k_formatter" statisticTitle="Products Sold"
+    :statistic="totalSold + getDebtsPaidProductTotal() | k_formatter" statisticTitle="Products Sold"
     :chartData="stats.series"
     color="warning"
     type='area'/>
@@ -10,6 +10,7 @@
 <script>
   import StatisticsCardLine from '@/components/statistics-cards/StatisticsCardLine.vue'
   import {getClient} from "../../../../stitch/app";
+  import {getBarPaidDebts} from "../../../../stitch/api/debts";
 
   export default {
     name: 'BarStat',
@@ -20,6 +21,7 @@
       return {
         totalSold: 0,
         sales: [],
+        debtsPaid: [],
         stats: {
           series: [{
             name: 'Sold',
@@ -81,6 +83,18 @@
       }
     },
     methods: {
+      getDebts() {
+        this.axios.get(getBarPaidDebts).then((res) => {
+          // console.log(res.data);
+          this.debtsPaid = res.data
+        }).catch((err) => {
+          this.notify({
+            title: 'Error',
+            text: err.message,
+            color: 'danger'
+          });
+        });
+      },
       getSalesStat() {
         getClient().callFunction('BarStats').then(res => {
           let data = res.map(item =>
@@ -121,16 +135,35 @@
         this.totalSold = sortedArr.reduce((prev, curr) => {
           return prev + curr;
         }, 0)
+      },
+      getDebtsPaidProductTotal() {
+        let products = this.debtsPaid.map(item => item.products);
+        let i;
+        let arr = [];
+        for (i = 0; i < products.length; i++) {
+          for (let j = 0; j < products[i].length; j++) {
+            arr.push(parseInt(products[i][j].holding.$numberInt))
+          }
+        }
+
+        return arr.reduce((prev, curr) => {
+          return prev + curr;
+        }, 0)
+
       }
     },
     created() {
       this.getSalesStat()
       this.getSalesTodaySold()
+      this.getDebts()
     }
     ,
     watch: {
       sales() {
         this.getTotalProductSold()
+      },
+      debtsPaid() {
+        this.getDebtsPaidProductTotal()
       }
     }
   }
