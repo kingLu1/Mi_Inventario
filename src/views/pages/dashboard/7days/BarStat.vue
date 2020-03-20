@@ -83,7 +83,6 @@
     methods: {
       getSalesStat() {
         getClient().callFunction('BarStats').then(res => {
-          this.sales = res;
           let data = res.map(item =>
             item.total
           );
@@ -93,6 +92,12 @@
           }]
           // console.log(data.reverse())
 
+        }).catch(err =>
+          console.log(err))
+      },
+      getSalesTodaySold() {
+        getClient().callFunction('BarTotalSold').then(res => {
+          this.sales = res;
         }).catch(err =>
           console.log(err))
       },
@@ -120,6 +125,7 @@
     },
     created() {
       this.getSalesStat()
+      this.getSalesTodaySold()
     }
     ,
     watch: {
