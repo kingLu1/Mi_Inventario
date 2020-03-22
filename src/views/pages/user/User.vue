@@ -3,6 +3,7 @@
     <vs-row>
       <vs-col vs-lg="2" vs-sm="4" vs-xs="12">
         <add :isSidebarActive="addUser" @closeSidebar="addUser= false" class=" sidebarX"/>
+        <edit :isSidebarActive="editUser" :selected="selected" @closeSidebar="editUser= false" class=" sidebarX"/>
       </vs-col>
 
     </vs-row>
@@ -52,22 +53,27 @@
             </vs-td>
             <vs-td>
               <div class="flex">
-                <vx-tooltip text="View" position="top">
-                  <vs-button type="border" icon-pack="feather" icon="icon-eye"
-                             color="primary"
-                             class="mr-2" @click="">
-                  </vs-button>
-                </vx-tooltip>
-                <vx-tooltip text="Edit" position="top">
+                <vx-tooltip text="Edit User" position="top">
                   <vs-button type="border" icon-pack="feather" icon="icon-edit-2"
                              color="dark"
+                             class="mr-2" @click="EditUser(tr)">
+                  </vs-button>
+                </vx-tooltip>
+                <vx-tooltip text="Deactivate User" position="top" v-if="$acl.check('superAdmin')" v-show="tr.active">
+                  <vs-button icon-pack="feather" icon="icon-shield-off"
+                             color="warning"
+                             class="mr-2" @click="disableUser(tr)">
+                  </vs-button>
+                </vx-tooltip>
+                <vx-tooltip text="Activate User" position="top" v-if="$acl.check('superAdmin')" v-show="!tr.active">
+                  <vs-button icon-pack="feather" icon="icon-shield"
+                             color="success"
                              class="mr-2" @click="">
                   </vs-button>
                 </vx-tooltip>
-
-                <vx-tooltip text="Delete" position="top">
+                <vx-tooltip text="Delete User" position="top" v-if="$acl.check('superAdmin')">
                   <vs-button icon-pack="feather" icon="icon-trash"
-                             color="danger" @click="">
+                             color="danger" @click="openConfirm(tr)">
                   </vs-button>
                 </vx-tooltip>
               </div>
@@ -76,60 +82,101 @@
         </template>
       </vs-table>
     </vx-card>
-
   </div>
 </template>
 
 <script>
-    import add from './UserAdd';
-    import {getAllUsers} from '../../../stitch/api/user'
+  import add from './UserAdd';
+  import edit from './UserEdit';
+  import {getAllUsers} from '../../../stitch/api/user'
+  import {getClient} from "../../../stitch/app";
 
-    export default {
-        name: "User",
-        data: () => ({
-            users: [],
-            user: [],
-            addUser: false
-        }),
-        components: {
-            add
+  export default {
+    name: "User",
+    data: () => ({
+      users: [],
+      user: [],
+      addUser: false,
+      editUser: false,
+      selected: {}
+    }),
+    components: {
+      add, edit
+    },
+    computed: {
+      isSidebarActiveLocal: {
+        get() {
+          return this.isSidebarActive
         },
-        computed: {
-            isSidebarActiveLocal: {
-                get() {
-                    return this.isSidebarActive
-                },
-                set(val) {
-                    if (!val) {
-                        this.$emit('closeSidebar');
-                    }
-                }
-            }
-        },
-        methods: {
-            getAllUsers() {
-                this.$vs.loading({
-                    container: '#table-loader',
-                    type: 'sound',
-                    scale: 1
-                });
-                this.axios.get(getAllUsers).then((res) => {
-                    this.users = res.data;
-                    this.$vs.loading.close('#table-loader > .con-vs-loading');
-                }).catch((err) => {
-                    this.notify({text: err.message, title: 'Error', color: 'danger'});
-                    this.$vs.loading.close('#table-loader  > .con-vs-loading')
-
-                });
-            }
-        },
-        created() {
-
-        },
-        mounted() {
-            this.getAllUsers()
+        set(val) {
+          if (!val) {
+            this.$emit('closeSidebar');
+          }
         }
+      }
+    },
+    methods: {
+      getAllUsers() {
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        this.axios.get(getAllUsers).then((res) => {
+          this.users = res.data;
+          this.$vs.loading.close('#table-loader > .con-vs-loading');
+        }).catch((err) => {
+          this.notify({text: err.message, title: 'Error', color: 'danger'});
+          this.$vs.loading.close('#table-loader  > .con-vs-loading')
+
+        });
+      },
+      EditUser(tr) {
+        this.editUser = true;
+        this.selected = tr
+      },
+      openConfirm(tr) {
+        this.user = tr;
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirm`,
+          text: `Are you sure  you want to delete User ${tr.first_name + ' ' + tr.last_name}?`,
+          accept: this.acceptDelete
+        });
+      },
+      acceptDelete() {
+        let data = [{date: this.selected.date}];
+        this.$vs.loading({
+          container: '#table-loader',
+          type: 'sound',
+          scale: 1
+        });
+        getClient().callFunction('PurchaseDelete', data).then(() => {
+            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+            this.getPurchases()
+          }
+        ).catch(
+          (err) => {
+            this.$vs.loading.close('#table-loader > .con-vs-loading');
+            console.log(err)
+          }
+        )
+      },
+      disableUser(tr) {
+        let url = `/groups/self/apps/Whatelse/users/${tr.user_id} /disable`
+        this.axios.put(url)
+        console.log(tr)
+      }
+
+    },
+    created() {
+
+    },
+    mounted() {
+      this.getAllUsers()
     }
+  }
 </script>
 <style lang="scss" scoped>
   #data-list-list-view {

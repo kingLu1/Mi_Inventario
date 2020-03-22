@@ -48,7 +48,7 @@
           </template>
           <p>
             Record Sales for
-            <span class="font-black cursor-pointer " @click="$router.push('sales/barPurchases')">Bar</span>
+            <span class="font-black cursor-pointer " @click="$router.push({path:'sales'})">Bar</span>
             <!--            <span class="font-black" @click="$router.push('purchase/kitchen')">kitchen</span>-->
           </p>
         </vx-card>
@@ -62,7 +62,7 @@
           </template>
           <p>
             Keep Records of stock added to
-            <span class="font-black cursor-pointer" @click="$router.push('purchase/barPurchases')">Bar</span>
+            <span class="font-black cursor-pointer" @click="$router.push('purchase')">Bar</span>
             <!--            <span class="font-bold underline">kitchen</span>-->
           </p>
         </vx-card>
@@ -92,8 +92,8 @@
             </vs-button>
           </template>
           <p>
-            <span class="font-bold cursor-pointer" @click="$router.push('/users')">Add New Users</span>,
-            <span class="font-bold cursor-pointer" @click="$router.push('/users')">View All Users</span>
+            <span class="font-bold cursor-pointer" @click="$router.push('/users')">Add New Users</span>
+<!--            <span class="font-bold cursor-pointer" @click="$router.push('/users')">View All Users</span>-->
           </p>
         </vx-card>
       </div>
@@ -103,63 +103,63 @@
 
 </template>
 <script>
-    import  {mapGetters, mapState} from 'vuex'
-    import eventBus from "../eventBus";
+  import {mapGetters, mapState} from 'vuex'
+  import eventBus from "../eventBus";
 
-    import kitchen from './pages/dashboard/7days/KitchenStat';
-    import bar from './pages/dashboard/7days/BarStat';
-    import pool from './pages/dashboard/7days/PoolStat';
-    import barbeque from './pages/dashboard/7days/BarbequeStat';
+  import kitchen from './pages/dashboard/7days/KitchenStat';
+  import bar from './pages/dashboard/7days/BarStat';
+  import pool from './pages/dashboard/7days/PoolStat';
+  import barbeque from './pages/dashboard/7days/BarbequeStat';
 
-    export default {
-        components: {
-            kitchen, bar, pool, barbeque
-        },
-        data: () => ({
-            timeOfDay: new Date().getHours(),
-            greet: '',
-            salute: '',
+  export default {
+    components: {
+      kitchen, bar, pool, barbeque
+    },
+    data: () => ({
+      timeOfDay: new Date().getHours(),
+      greet: '',
+      salute: '',
 
-        }),
-        computed: {
-            ...mapGetters([
-                // 'user'
-            ]),
-            ...mapState(['AppActiveUser']),
-        },
+    }),
+    computed: {
+      ...mapGetters([
+        // 'user'
+      ]),
+      ...mapState(['AppActiveUser']),
+    },
 
-        watch: {}
-        ,
-        methods: {
-            greeting() {
-                if (this.timeOfDay <= 12) {
-                    this.salute = "How was your night? I hope you slept well.";
-                    this.greet = "Good Morning";
-                } else if (this.timeOfDay <= 18) {
-                    this.salute = "How is your day going? I hope you crushing it !!!";
-                    this.greet = "Good Afternoon";
-                } else if (this.timeOfDay >= 18) {
-                    this.salute = "How was your day? I hope it was as amazing as you !!!";
-                    this.greet = "Good Evening";
-                }
-            },
-            listener() {
-                eventBus.$once('changeAccess', (payload) => {
-                    this.$acl.change(payload)
-                })
-            }
-        },
-        beforeCreate() {
-        },
-        created() {
-            this.greeting()
-            this.listener()
-            // console.log(this.$route)
-        },
-        mounted() {
-
+    watch: {}
+    ,
+    methods: {
+      greeting() {
+        if (this.timeOfDay <= 12) {
+          this.salute = "How was your night? I hope you slept well.";
+          this.greet = "Good Morning";
+        } else if (this.timeOfDay <= 18) {
+          this.salute = "How is your day going? I hope you crushing it !!!";
+          this.greet = "Good Afternoon";
+        } else if (this.timeOfDay >= 18) {
+          this.salute = "How was your day? I hope it was as amazing as you !!!";
+          this.greet = "Good Evening";
         }
+      },
+      listener() {
+        eventBus.$once('changeAccess', (payload) => {
+          this.$acl.change(payload)
+        })
+      }
+    },
+    beforeCreate() {
+    },
+    created() {
+      this.greeting()
+      this.listener()
+      // console.log(this.$route)
+    },
+    mounted() {
+
     }
+  }
 </script>
 <style>
 
