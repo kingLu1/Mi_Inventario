@@ -52,7 +52,6 @@ Vue.use(VueHammer);
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
 
-
 // Feather font icon
 require('./assets/css/iconfont.css');
 

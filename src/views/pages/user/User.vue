@@ -1,5 +1,5 @@
 <template>
-  <div id="table-loader" class="vs-con-loading__container">
+  <div class="vs-con-loading__container" id="table-loader">
     <vs-row>
       <vs-col vs-lg="2" vs-sm="4" vs-xs="12">
         <add :isSidebarActive="addUser" @closeSidebar="addUser= false" class=" sidebarX"/>
@@ -8,13 +8,13 @@
 
     </vs-row>
     <vx-card>
-      <vs-table max-items="10" stripe hoverFlat noDataText="No User Available" pagination :data="users" search>
-        <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
+      <vs-table :data="users" hoverFlat max-items="10" noDataText="No User Available" pagination search stripe>
+        <div class="flex flex-wrap-reverse items-center flex-grow justify-between" slot="header">
           <div class="flex flex-wrap-reverse items-center">
             <!-- ADD NEW -->
             <div
-              class="p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-between text-lg font-medium text-base text-primary border border-solid border-primary"
-              @click="addUser = true">
+              @click="addUser = true"
+              class="p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-between text-lg font-medium text-base text-primary border border-solid border-primary">
               <feather-icon icon="PlusIcon" svgClasses="h-4 w-4"/>
 
               <span class="ml-2 text-base text-primary">Add New</span>
@@ -53,29 +53,29 @@
             </vs-td>
             <vs-td>
               <div class="flex">
-                <vx-tooltip text="Edit User" position="top">
-                  <vs-button type="border" icon-pack="feather" icon="icon-edit-2"
-                             color="dark"
-                             class="mr-2" @click="EditUser(tr)">
+                <vx-tooltip position="top" text="Edit User">
+                  <vs-button @click="EditUser(tr)" class="mr-2" color="dark"
+                             icon="icon-edit-2"
+                             icon-pack="feather" type="border">
                   </vs-button>
                 </vx-tooltip>
-                <vx-tooltip text="Deactivate User" position="top" v-if="$acl.check('superAdmin')" v-show="tr.active">
-                  <vs-button icon-pack="feather" icon="icon-shield-off"
-                             color="warning"
-                             class="mr-2" @click="disableUser(tr)">
-                  </vs-button>
-                </vx-tooltip>
-                <vx-tooltip text="Activate User" position="top" v-if="$acl.check('superAdmin')" v-show="!tr.active">
-                  <vs-button icon-pack="feather" icon="icon-shield"
-                             color="success"
-                             class="mr-2" @click="">
-                  </vs-button>
-                </vx-tooltip>
-                <vx-tooltip text="Delete User" position="top" v-if="$acl.check('superAdmin')">
-                  <vs-button icon-pack="feather" icon="icon-trash"
-                             color="danger" @click="openConfirm(tr)">
-                  </vs-button>
-                </vx-tooltip>
+                <!--                <vx-tooltip position="top" text="Deactivate User" v-if="$acl.check('superAdmin')" v-show="tr.active">-->
+                <!--                  <vs-button @click="disableUser(tr)" class="mr-2"-->
+                <!--                             color="warning"-->
+                <!--                             icon="icon-shield-off" icon-pack="feather">-->
+                <!--                  </vs-button>-->
+                <!--                </vx-tooltip>-->
+                <!--                <vx-tooltip position="top" text="Activate User" v-if="$acl.check('superAdmin')" v-show="!tr.active">-->
+                <!--                  <vs-button @click="" class="mr-2"-->
+                <!--                             color="success"-->
+                <!--                             icon="icon-shield" icon-pack="feather">-->
+                <!--                  </vs-button>-->
+                <!--                </vx-tooltip>-->
+                <!--                <vx-tooltip position="top" text="Delete User" v-if="$acl.check('superAdmin')">-->
+                <!--                  <vs-button @click="openConfirm(tr)" color="danger"-->
+                <!--                             icon="icon-trash" icon-pack="feather">-->
+                <!--                  </vs-button>-->
+                <!--                </vx-tooltip>-->
               </div>
             </vs-td>
           </vs-tr>
@@ -145,29 +145,28 @@
           accept: this.acceptDelete
         });
       },
-      acceptDelete() {
-        let data = [{date: this.selected.date}];
-        this.$vs.loading({
-          container: '#table-loader',
-          type: 'sound',
-          scale: 1
-        });
-        getClient().callFunction('PurchaseDelete', data).then(() => {
-            this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
-            this.getPurchases()
-          }
-        ).catch(
-          (err) => {
-            this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
-          }
-        )
-      },
-      disableUser(tr) {
-        let url = `/groups/self/apps/Whatelse/users/${tr.user_id} /disable`
-        this.axios.put(url)
-        console.log(tr)
-      }
+      // acceptDelete() {
+      //   let data = [{date: this.selected.date}];
+      //   this.$vs.loading({
+      //     container: '#table-loader',
+      //     type: 'sound',
+      //     scale: 1
+      //   });
+      // getClient().callFunction('PurchaseDelete', data).then(() => {
+      //     this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
+      //     this.getPurchases()
+      //   }
+      // ).catch(
+      //   (err) => {
+      //     this.$vs.loading.close('#table-loader > .con-vs-loading');
+      //     console.log(err)
+      //   }
+      // )
+      // },
+      // disableUser(tr) {
+      // let url = ` https://stitch.mongodb.com/api/admin/v3.0/groups/self/apps/Whatelse/users/${tr.user_id}/disable`
+      // this.axios.put(url)
+      // }
 
     },
     created() {

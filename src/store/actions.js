@@ -89,6 +89,7 @@ const actions = {
     app.auth.loginWithCredential(credential)
       .then((res) => {
         let data = [{user_id: res.id}]
+        console.log(res)
         getClient().callFunction('UserGetData', data).then((res) => {
             commit('GET_USER_DATA', res)
             eventBus.$emit('changeAccess', res.role)
