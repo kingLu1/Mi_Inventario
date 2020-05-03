@@ -53,7 +53,7 @@
         let data = [this.search];
         getClient().callFunction('FilterProduct', data).then((res) => {
           this.products = res;
-          console.log(res);
+          // console.log(res);
           eventBus.$emit('loading', false);
           eventBus.$emit('found', res.length)
         }).catch((err) => {
@@ -97,7 +97,7 @@
           (keyword) ? this.keyword = keyword : this.keyword = keyword;
           this.newProducts = [];
           this.products.filter(product => {
-            (product.name.toLowerCase().includes(keyword.toLowerCase())) ? this.newProducts.push(product) : console.log(false)
+            (product.name.toLowerCase().includes(keyword.toLowerCase())) ? this.newProducts.push(product) : null
           })
         }
       },

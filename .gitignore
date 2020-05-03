@@ -2,7 +2,6 @@
 *.rej
 *.orig
 bin/
-dist/
 dist_electron/
 node_modules/
 vuesax-laravel-starter/node_modules/

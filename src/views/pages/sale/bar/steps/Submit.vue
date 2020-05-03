@@ -516,7 +516,7 @@
                     debtorPaid: this.debtsPaid
                 }
                   ;
-                  console.log(data);
+                  // console.log(data);
                   getClient().callFunction('SalesBar', [data]).then(
                     res => {
                       this.$vs.loading.close('#table-loader > .con-vs-loading');
@@ -560,7 +560,7 @@
       getDebts() {
         this.axios.get(getBarUnpaidDebts).then((res) => {
           this.holdingDebts = res.data;
-          console.log(res.data);
+          // console.log(res.data);
           this.$vs.loading.close('#table-loader > .con-vs-loading');
         }).catch((err) => {
           this.notify({

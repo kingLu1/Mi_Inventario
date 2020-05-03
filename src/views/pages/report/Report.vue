@@ -89,7 +89,7 @@
         getClient().callFunction('GetRecord', [data]).then(
           res => {
             this.records = res;
-            console.log(res)
+            // console.log(res)
           }
         ).catch(
           err => {

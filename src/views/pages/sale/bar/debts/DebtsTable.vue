@@ -94,7 +94,7 @@
         });
         this.axios.get(getBarDebts).then((res) => {
           this.debts = res.data;
-          console.log(res.data);
+          // console.log(res.data);
           this.$vs.loading.close('#table-loader > .con-vs-loading');
         }).catch((err) => {
           this.notify({
@@ -134,12 +134,12 @@
         getClient().callFunction('DebtDelete', data).then((res) => {
             this.notify({text: 'Deleted Successful!!', title: '', color: 'success'});
             this.getDebts();
-          console.log(res)
+          // console.log(res)
           }
         ).catch(
           (err) => {
             this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
+            // console.log(err)
           }
         )
       },

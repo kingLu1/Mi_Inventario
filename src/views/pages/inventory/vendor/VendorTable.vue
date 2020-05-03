@@ -135,7 +135,7 @@
                 ).catch(
                     (err) => {
                         this.$vs.loading.close('#table-loader > .con-vs-loading');
-                        console.log(err)
+                        // console.log(err)
                     }
                 )
             },
@@ -147,11 +147,11 @@
                 });
                 this.axios.get(getVendors).then((res) => {
                     this.vendors = res.data;
-                    console.log(res.data)
+                    // console.log(res.data)
                     this.$vs.loading.close('#table-loader > .con-vs-loading');
                 }).catch((err) => {
                     this.notify({text: err.message, title: 'Error', color: 'danger'});
-                    console.log(err.message);
+                    // console.log(err.message);
                     this.$vs.loading.close('#table-loader  > .con-vs-loading')
 
                 });

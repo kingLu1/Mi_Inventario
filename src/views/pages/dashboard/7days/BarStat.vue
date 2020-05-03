@@ -1,9 +1,9 @@
 <template lang="html">
   <statistics-card-line
-    icon="CoffeeIcon"
-    :statistic="totalSold + getDebtsPaidProductTotal() | k_formatter" statisticTitle="Products Sold"
     :chartData="stats.series"
-    color="warning"
+    :statistic="totalSold + getDebtsPaidProductTotal() | k_formatter" color="warning"
+    icon="CoffeeIcon"
+    statisticTitle="Products Sold"
     type='area'/>
 </template>
 
@@ -106,14 +106,20 @@
           }]
           // console.log(data.reverse())
 
-        }).catch(err =>
-          console.log(err))
+        }).catch(err => {
+
+          }
+          // console.log(err)
+        )
       },
       getSalesTodaySold() {
         getClient().callFunction('BarTotalSold').then(res => {
           this.sales = res;
-        }).catch(err =>
-          console.log(err))
+        }).catch(err => {
+
+          }
+          // console.log(err)
+        )
       },
       getTotalProductSold() {
         let products = this.sales.map(item => item.products);

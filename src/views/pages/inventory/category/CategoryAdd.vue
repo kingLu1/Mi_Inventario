@@ -92,7 +92,7 @@
               name: this.model.name.toLowerCase()
             }
             let data = [Object.assign(this.model.category, name)];
-            console.log(data)
+            // console.log(data)
             if (result) {
               getClient().callFunction('CategoryCreate', data).then(
                 res => {
@@ -111,7 +111,7 @@
                 }
               ).catch(
                 err => {
-                  console.log(err)
+                  // console.log(err)
                   this.$vs.loading.close('#button-with-loading > .con-vs-loading');
                   this.notify({text: err.message, title: 'Error', color: 'danger'})
                 }

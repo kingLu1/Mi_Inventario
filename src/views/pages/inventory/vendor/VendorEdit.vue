@@ -96,7 +96,7 @@
                     if (result) {
                         getClient().callFunction('VendorEdit', data).then(
                             res => {
-                                console.log(res)
+                                // console.log(res)
                                 this.$emit('newVendor');
                                 this.notify({
                                     text: 'Successfully Edited Vendor!',

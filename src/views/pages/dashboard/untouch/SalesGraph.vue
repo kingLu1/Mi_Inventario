@@ -53,7 +53,7 @@
         getClient().callFunction('BarGraph').then(res => {
           this.sales = res;
         }).catch(err =>
-          console.log(err))
+          // console.log(err))
       },
       getBarStats() {
         let data = this.sales.map(item =>
@@ -62,7 +62,7 @@
         let date = this.sales.map(item =>
           item.date
         );
-        console.log(date)
+        // console.log(date)
         this.stats.series.push(
           {
             name: 'Bar',

@@ -132,11 +132,11 @@
       },
       getProductTotal() {
         let data = [{"vendor": this.activeVendor.name}];
-        console.log("data:", data)
+        // console.log("data:", data)
         getClient().callFunction('VendorGetProducts', data).then(res => {
           this.products = res;
         }).catch(err => {
-          console.log(err)
+          // console.log(err)
         })
       },
       getHealth(p) {
@@ -175,7 +175,7 @@
         ).catch(
           (err) => {
             this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
+            // console.log(err)
           }
         )
       },

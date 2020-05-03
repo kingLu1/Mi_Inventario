@@ -111,14 +111,14 @@
         ).catch(
           (err) => {
             this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
+            // console.log(err)
           }
         )
       },
     },
     created() {
       eventBus.$emit('showInnerActions', true)
-      console.log(this.activePurchase)
+      // console.log(this.activePurchase)
     },
     beforeDestroy() {
       eventBus.$emit('showInnerActions', false)

@@ -122,7 +122,7 @@
           item.purchasing
         );
         let condition = sortedArray.reduce((x, y) => x + y);
-        console.log(condition);
+        // console.log(condition);
         if (condition !== 0) {
           eventBus.$emit('goToSummary', this.sortedPurchasedProducts)
         } else {
@@ -165,7 +165,7 @@
             }
           }
         ).catch(err => {
-          console.log(err)
+          // console.log(err)
         })
       },
       checkIfInSelectedPurchasedProducts(selectedProduct) {

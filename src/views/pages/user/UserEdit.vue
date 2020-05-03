@@ -145,7 +145,7 @@
           if (result) {
             getClient().callFunction('UserEdit', data).then(
               res => {
-                console.log(res)
+                // console.log(res)
                 // this.$emit('newUser');
                 this.notify({
                   text: 'Successful',
@@ -159,7 +159,7 @@
               }
             ).catch(
               err => {
-                console.log(err)
+                // console.log(err)
                 this.$vs.loading.close('#button-with-loading > .con-vs-loading');
                 this.notify({text: err.message, title: 'Error', color: 'danger'})
               }

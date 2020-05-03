@@ -71,7 +71,7 @@
                             scale: 0.45
                         });
                         emailPassClient.confirmUser(this.token, this.tokenId).then((res) => {
-                            console.log(res)
+                            // console.log(res)
                             this.$vs.loading.close('#resetLoadableButton > .con-vs-loading');
                             this.$router.push('/login')
                             this.$vs.notify({

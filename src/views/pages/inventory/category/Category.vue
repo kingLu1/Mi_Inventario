@@ -124,7 +124,7 @@
                 ).catch(
                     (err) => {
                         this.$vs.loading.close('#table-loader > .con-vs-loading');
-                        console.log(err)
+                        // console.log(err)
                     }
                 )
             },
@@ -147,7 +147,7 @@
                         icon: 'icon-alert-circle',
                         color: 'danger'
                     });
-                    console.log(err.message);
+                    // console.log(err.message);
                     this.$vs.loading.close('#table-loader  > .con-vs-loading')
 
                 });

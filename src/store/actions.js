@@ -89,7 +89,7 @@ const actions = {
     app.auth.loginWithCredential(credential)
       .then((res) => {
         let data = [{user_id: res.id}]
-        console.log(res)
+        // console.log(res)
         getClient().callFunction('UserGetData', data).then((res) => {
             commit('GET_USER_DATA', res)
             eventBus.$emit('changeAccess', res.role)
@@ -97,7 +97,7 @@ const actions = {
         ).catch(
           (err) => {
             // this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
+            // console.log(err)
           }
         );
 
@@ -152,7 +152,7 @@ const actions = {
         }
       ).catch(
         err => {
-          console.log(err);
+          // console.log(err);
         }
       );
     }
@@ -186,18 +186,18 @@ const actions = {
         icon: 'icon-alert-circle',
         color: 'danger'
       });
-      console.log("Error registering new user:", err);
+      // console.log("Error registering new user:", err);
     });
   },
 
   temporaryUser({dispatch}, payload) {
-    console.log(payload.model.user)
+    // console.log(payload.model.user)
     let data;
     data = [payload.model.user];
     getClient().callFunction('AddTemporaryUser', data).then(res => {
       // console.log(res)
     }).catch(err => {
-      console.log(err)
+      // console.log(err)
     })
   }
 

@@ -98,7 +98,7 @@
                                 icon: 'icon-alert-circle',
                                 color: 'danger'
                             });
-                            console.log("Error sending password reset email:", err);
+                            // console.log("Error sending password reset email:", err);
                         });
                     }
                 })

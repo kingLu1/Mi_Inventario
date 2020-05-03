@@ -120,7 +120,7 @@
         ).catch(
           (err) => {
             this.$vs.loading.close('#table-loader > .con-vs-loading');
-            console.log(err)
+            // console.log(err)
           }
         )
       },
