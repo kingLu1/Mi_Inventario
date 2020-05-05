@@ -23,7 +23,7 @@
             <span class="text-danger  text-center text-md" v-else>
           Unpaid
         </span></p>
-          <p class="mb-4" v-if="activeDebt.date_paid">Paid On : {{activeDebt.date_paid}} </p>
+          <p class="mb-4" v-if="activeDebt.date_paid">Paid On : {{activeDebt.date_paid | moment("MMMM Do YYYY, h:mm:ss a")}} </p>
           <p class="mb-4">Amount : <span class="text-danger">{{getDebtTotal() | currency}}</span></p>
 
           <div v-if="showDetails" class="mb-4 pr-2">

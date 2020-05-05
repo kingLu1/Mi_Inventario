@@ -2,14 +2,14 @@
   <div class="vx-row p-base pt-4" id="table-loader">
     <div class="vx-col w-full">
       <div>
-        <p class="mb-4">Purchased Date : {{activePurchase.date}} </p>
+        <p class="mb-4">Purchased Date : {{activePurchase.date | moment("MMMM Do YYYY")}} </p>
         <p class="mb-4">Purchased Total : <span class="money">{{activePurchase.total.$numberInt | currency}}</span></p>
         <p class="mb-4">Paid Amount : <span class="money">{{activePurchase.paid | currency}}</span></p>
         <p class="mb-4" v-if="activePurchase.paid_remark">Remark : {{activePurchase.paid_remark}} </p>
         <p class="mb-4" v-if="activePurchase.expense">Expense : <span class="text-danger"> {{activePurchase.expense | currency}}</span>
         </p>
         <p class="mb-4" v-if="activePurchase.expense_remark"> Expense Remark : {{activePurchase.expense_remark}} </p>
-        <p class="mb-4"> Recorded On : {{activePurchase.created_on}} </p>
+        <p class="mb-4"> Recorded On : {{activePurchase.created_on | moment("MMMM Do YYYY, h:mm:ss a")}} </p>
         <p class="mb-4"> Recorded By: {{activePurchase.created_by}}</p>
       </div>
 

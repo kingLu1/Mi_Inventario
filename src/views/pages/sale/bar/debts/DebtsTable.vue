@@ -18,7 +18,7 @@
               <vs-td :data="data[indextr]">
                 {{ indextr + 1 }}
               </vs-td>
-              <vs-td :data="data[indextr].date">
+              <vs-td :data="data[indextr].name">
                 {{ data[indextr].name }}
               </vs-td>
               <vs-td :data="data[indextr].total">
@@ -38,7 +38,7 @@
                 </p>
               </vs-td>
               <vs-td :data="data[indextr].created_on">
-                {{ data[indextr].date}}
+                {{ data[indextr].date | moment("dddd, Do MMMM YYYY")}}
               </vs-td>
               <vs-td>
                 <div class="flex">

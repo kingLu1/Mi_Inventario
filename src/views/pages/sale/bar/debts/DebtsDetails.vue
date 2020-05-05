@@ -2,7 +2,7 @@
   <div class="vx-row p-base pt-4" id="table-loader">
     <div class="vx-col w-full">
       <div>
-        <p class="mb-4">Debt Date : {{activeDebt.date}} </p>
+        <p class="mb-4">Debt Date : {{activeDebt.date | moment("dddd, Do MMMM YYYY")}} </p>
         <p class="mb-4">Customer : {{activeDebt.name}} </p>
         <p class="mb-4">Surety : {{activeDebt.surety}} </p>
         <p class="mb-4">Status : <span class="text-success text-center text-md"
@@ -10,7 +10,7 @@
           <span class="text-danger  text-center text-md" v-else>
           Unpaid
         </span></p>
-        <p class="mb-4" v-if="activeDebt.date_paid">Paid On : {{activeDebt.date_paid}} </p>
+        <p class="mb-4" v-if="activeDebt.date_paid">Paid On : {{activeDebt.date_paid | moment("MMMM Do YYYY, h:mm:ss a")}} </p>
         <p class="mb-4">Amount : <span :class="status()">{{getDebtTotal() | currency}}</span></p>
 
         <div v-if="showDetails" class="mb-4 pr-2">

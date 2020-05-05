@@ -93,6 +93,7 @@
       },
       searchByName(keyword) {
         if (keyword === null) {
+          /* eslint-disable */
         } else {
           (keyword) ? this.keyword = keyword : this.keyword = keyword;
           this.newProducts = [];

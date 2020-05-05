@@ -53,7 +53,7 @@
                 </p>
               </vs-td>
               <vs-td :data="data[indextr].created_on">
-                {{ data[indextr].date | moment("dddd, MMMM Do YYYY")}}
+                {{ data[indextr].date | moment("dddd, Do MMMM YYYY")}}
               </vs-td>
               <vs-td>
                 <div class="flex">

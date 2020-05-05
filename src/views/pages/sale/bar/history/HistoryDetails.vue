@@ -3,7 +3,7 @@
   <div class="vx-row p-base pt-4 " id="table-loader">
     <div class="vx-col w-full">
       <div>
-        <p class="mb-4">Date : {{activeSales.date}} </p>
+        <p class="mb-4">Date : {{activeSales.date | moment("dddd, MMMM Do YYYY")}} </p>
         <p class="mb-4">Sales Total : <span class="money">{{activeSales.total.$numberInt | currency}}</span></p>
         <p class="mb-4">Cash Remit : <span class="money">{{activeSales.remit_cash | currency}}</span></p>
         <p class="mb-4">Credit Remit : <span class="money">{{activeSales.remit_credit | currency}}</span></p>
@@ -47,7 +47,7 @@
             </div>
           </vx-card>
         </div>
-        <p class="mb-4"> Recorded On : {{activeSales.created_on}} </p>
+        <p class="mb-4"> Recorded On : {{activeSales.created_on | moment("dddd, MMMM Do YYYY, h:mm:ss a")}} </p>
         <p class="mb-4"> Recorded By: {{activeSales.created_by}}</p>
       </div>
 

@@ -2,7 +2,7 @@
   <vx-card>
     <div class="flex justify-between items-center">
       <div class="">
-        <h4>Record For {{activePurchase.date | moment("dddd, MMMM Do YYYY")}}</h4>
+        <h4>Record For {{activePurchase.date | moment("dddd, Do MMMM YYYY")}}</h4>
       </div>
       <vx-tooltip text="Go Back" position="top">
         <vs-button icon-pack="feather" icon="icon-corner-up-left"
@@ -22,7 +22,7 @@
           <p class="mb-4" v-if="activePurchase.expense">Expense : <span class="text-danger"> {{activePurchase.expense | currency}}</span>
           </p>
           <p class="mb-4" v-if="activePurchase.expense_remark"> Expense Remark : {{activePurchase.expense_remark}} </p>
-          <p class="mb-4"> Recorded On : {{activePurchase.created_on}} </p>
+          <p class="mb-4"> Recorded On : {{activePurchase.created_on | moment("MMMM Do YYYY, h:mm:ss a")}} </p>
           <p class="mb-4"> Recorded By: {{activePurchase.created_by}}</p>
         </div>
 

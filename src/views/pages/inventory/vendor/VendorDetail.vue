@@ -24,9 +24,9 @@
             <p class="mb-4">Total Number Of Products : <span class="text-primary bold"> {{products.length}}</span></p>
             <span></span>
             <p class="mb-4"> Created By : {{activeVendor.created_by}} </p><span></span>
-            <p class="mb-4"> Created On : {{activeVendor.created_on}} </p><span></span>
+            <p class="mb-4"> Created On : {{activeVendor.created_on | moment("MMMM Do YYYY, h:mm:ss a")}} </p><span></span>
             <p class="mb-4"> Last Updated By: {{activeVendor.last_update}}</p><span></span>
-            <p class="mb-4"> Last Updated On: {{activeVendor.last_update_on}}</p><span></span>
+            <p class="mb-4"> Last Updated On: {{activeVendor.last_update_on | moment("MMMM Do YYYY, h:mm:ss a")}}</p><span></span>
           </div>
 
           <div v-if="showProducts">

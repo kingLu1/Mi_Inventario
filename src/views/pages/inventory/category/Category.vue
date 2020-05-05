@@ -48,7 +48,7 @@
                 {{ data[indextr].created_by }}
               </vs-td>
               <vs-td :data="data[indextr].created_on">
-                {{ data[indextr].created_on }}
+                {{ data[indextr].created_on | moment("dddd, Do MMMM YYYY") }}
               </vs-td>
               <vs-td>
                 <div class="flex">

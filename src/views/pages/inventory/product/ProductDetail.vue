@@ -153,9 +153,9 @@
               </p>
             </div>
             <p class="mb-4"> Created By : {{activeProduct.created_by}} </p><span></span>
-            <p class="mb-4"> Created On : {{activeProduct.created_on}} </p><span></span>
+            <p class="mb-4"> Created On : {{activeProduct.created_on | moment("MMMM Do YYYY, h:mm:ss a")}} </p><span></span>
             <p class="mb-4"> Last Updated By : {{activeProduct.last_update}}</p><span></span>
-            <p class="mb-4"> Last Updated On : {{activeProduct.last_update_on}}</p><span></span>
+            <p class="mb-4"> Last Updated On : {{activeProduct.last_update_on | moment("MMMM Do YYYY, h:mm:ss a")}}</p><span></span>
           </div>
           <div class="flex">
             <vs-button

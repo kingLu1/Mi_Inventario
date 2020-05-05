@@ -2,7 +2,7 @@
   <vx-card>
     <div class="flex justify-between items-center">
       <div class="">
-        <h4>Record For {{activeSales.date | moment("dddd, MMMM Do YYYY")}}</h4>
+        <h4>Record For {{activeSales.date | moment("dddd, Do MMMM  YYYY")}}</h4>
       </div>
       <vx-tooltip text="Go Back" position="top">
         <vs-button icon-pack="feather" icon="icon-corner-up-left"
@@ -58,7 +58,7 @@
               </div>
             </vx-card>
           </div>
-          <p class="mb-4"> Recorded On : {{activeSales.created_on}} </p>
+          <p class="mb-4"> Recorded On : {{activeSales.created_on | moment("MMMM Do YYYY, h:mm:ss a")}} </p>
           <p class="mb-4"> Recorded By: {{activeSales.created_by}}</p>
         </div>
 
